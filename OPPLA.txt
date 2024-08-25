@@ -1,0 +1,57 @@
+# Truth table
+# Exported on Sat Aug 24 23:38:04 BRT 2024
+
+# Hints and Notes on Formatting:
+# * You can edit this file then import it back into Logisim!
+# * Anything after a '#' is a comment and will be ignored.
+# * Blank lines and separator lines (e.g., ~~~~~~) are ignored.
+# * Keep column names simple (no spaces, punctuation, etc.)
+# * 'Name[N..0]' indicates an N+1 bit variable, whereas
+#   'Name' by itself indicates a 1-bit variable.
+# * You can use 'x' or '-' to indicate "don't care" for both
+#   input and output bits.
+# * You can use binary (e.g., '10100011xxxx') notation or
+#   or hex (e.g., 'C3x'). Logisim will figure out which is which.
+
+Opcode[6..0] | No_Destination Load Store Signed_Load Data_Size[1..0] Shift_Operation[1..0] Shift Load_Immediate_High ALU_Enable ALU_Operation[3..0] Get_Last_Program_Counter Jump Call Return_Instruction Relative Interrupt
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  0000XXX    |       0         0     0        X            00                 XX             0            0              1             0110                    0              0    1           0             0         1    
+  000100X    |       0         0     0        X            00                 XX             0            0              1             0110                    0              0    1           0             0         0    
+  000101X    |       0         0     0        X            00                 XX             0            0              1             0110                    0              1    0           0             0         0    
+  000110X    |       0         0     0        X            00                 XX             0            0              1             0110                    0              0    1           0             1         0    
+  000111X    |       0         0     0        X            00                 XX             0            0              1             0110                    0              1    0           0             1         0    
+  0010X0X    |       0         0     0        X            00                 00             1            0              0             XXXX                    0              0    0           0             0         0    
+  0010X1X    |       0         0     0        X            00                 XX             0            0              0             XXXX                    0              0    0           0             0         0    
+  001100X    |       0         0     0        X            00                 01             1            0              0             XXXX                    0              0    0           0             0         0    
+  001101X    |       0         0     0        X            00                 XX             0            0              0             XXXX                    0              0    0           0             0         0    
+  00111XX    |       0         0     0        X            00                 11             1            0              0             XXXX                    0              0    0           0             0         0    
+  01000XX    |       0         0     0        X            00                 XX             0            0              0             XXXX                    0              0    0           0             0         0    
+  0100100    |       0         1     0        0            00                 XX             0            0              0             0110                    0              0    0           0             0         0    
+  0100101    |       0         1     0        0            00                 XX             0            0              0             0110                    0              0    0           0             1         0    
+  0100110    |       0         1     0        1            00                 XX             0            0              0             0110                    0              0    0           0             0         0    
+  0100111    |       0         1     0        1            00                 XX             0            0              0             0110                    0              0    0           0             1         0    
+  01010X0    |       0         1     0        X            11                 XX             0            0              0             0110                    0              0    0           0             0         0    
+  01010X1    |       0         1     0        X            11                 XX             0            0              0             0110                    0              0    0           0             1         0    
+  0101100    |       0         1     0        0            01                 XX             0            0              0             0110                    0              0    0           0             0         0    
+  0101101    |       0         1     0        0            01                 XX             0            0              0             0110                    0              0    0           0             1         0    
+  0101110    |       0         1     0        1            01                 XX             0            0              0             0110                    0              0    0           0             0         0    
+  0101111    |       0         1     0        1            01                 XX             0            0              0             0110                    0              0    0           0             1         0    
+  01100X0    |       1         0     1        X            01                 XX             0            0              0             0110                    0              0    0           0             0         0    
+  01100X1    |       1         0     1        X            01                 XX             0            0              0             0110                    0              0    0           0             1         0    
+  01101X0    |       1         0     1        X            00                 XX             0            0              0             0110                    0              0    0           0             0         0    
+  01101X1    |       1         0     1        X            00                 XX             0            0              0             0110                    0              0    0           0             1         0    
+  0111XX0    |       1         0     1        X            11                 XX             0            0              0             0110                    0              0    0           0             0         0    
+  0111XX1    |       1         0     1        X            11                 XX             0            0              0             0110                    0              0    0           0             1         0    
+  10000XX    |       0         0     0        X            00                 XX             0            0              1             0001                    0              0    0           0             0         0    
+  10001XX    |       0         0     0        X            00                 XX             0            0              1             0010                    0              0    0           0             0         0    
+  1001XXX    |       0         0     0        X            00                 XX             0            0              1             0011                    0              0    0           0             0         0    
+  101000X    |       0         0     0        X            00                 XX             0            0              1             0100                    0              0    0           0             0         0    
+  101001X    |       0         0     0        X            00                 XX             0            0              1             0101                    0              0    0           0             0         0    
+  101010X    |       0         0     0        X            00                 XX             0            0              1             1100                    0              0    0           0             0         0    
+  101011X    |       0         0     0        X            00                 XX             0            0              1             1101                    0              0    0           0             0         0    
+  10110XX    |       0         0     0        X            00                 XX             0            0              1             0110                    0              0    0           0             0         0    
+  10111XX    |       0         0     0        X            00                 XX             0            0              1             0111                    0              0    0           0             0         0    
+  11000XX    |       0         0     0        X            00                 XX             0            0              1             0110                    0              0    0           1             0         0    
+  11001XX    |       0         0     0        X            00                 XX             0            0              1             0110                    0              0    0           1             0         1    
+  1101XXX    |       0         0     0        X            00                 XX             0            0              0             XXXX                    1              0    0           0             0         0    
+  111XXXX    |       0         0     0        0            00                 XX             0            1              1             0000                    0              0    0           0             0         0    
