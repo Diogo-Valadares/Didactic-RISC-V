@@ -1,0 +1,11 @@
+﻿ADD @0 @0 @0
+LDHI @1 1
+SUB @1 @1 256
+JMP NOT_EQUAL @zero 2
+ADD @0 @0 @0
+LDHI @3 2
+SUB @3 @3 512
+JMP NOT_EQUAL @zero 6
+ADD @0 @0 @0
+JMP ALWAYS @zero 1
+ADD @0 @0 @0
