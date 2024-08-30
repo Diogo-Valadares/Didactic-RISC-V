@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Assembler", "Assembler.cspr
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Itens de Solução", "Itens de Solução", "{DE09F71C-9C9C-451D-A5DD-C29CFA7D7EE7}"
 	ProjectSection(SolutionItems) = preProject
-		bin\Debug\net8.0\teste.asm = bin\Debug\net8.0\teste.asm
+		bin\Debug\net8.0\LDHI_Sub_ADD.asm = bin\Debug\net8.0\LDHI_Sub_ADD.asm
+		LOAD_SAVE.asm = LOAD_SAVE.asm
+		SHIFTER_OPERATIONS.asm = SHIFTER_OPERATIONS.asm
 	EndProjectSection
 EndProject
 Global

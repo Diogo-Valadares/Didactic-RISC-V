@@ -7,4 +7,11 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="LoadSave.asm" />
+    <None Remove="SHIFTER_OPERATIONS.asm" />
+    <None Remove="SHIFTER_OPERATIONS.txt" />
+    <None Remove="TextFile1.txt" />
+  </ItemGroup>
+
 </Project>

@@ -1,4 +1,4 @@
-﻿namespace Assembler;
+﻿namespace RiscAssembler;
 public partial class Assembler
 {
     private static readonly string[] separator = ["\r\n", "\r", "\n"];

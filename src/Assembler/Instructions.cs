@@ -1,4 +1,4 @@
-﻿namespace Assembler;
+﻿namespace RiscAssembler;
 public enum Instructions
 {
     CALLI = 0x00,

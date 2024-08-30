@@ -1,4 +1,4 @@
-﻿namespace Assembler;
+﻿namespace RiscAssembler;
 public enum Condition
 {
     ALWAYS = 0x0,
