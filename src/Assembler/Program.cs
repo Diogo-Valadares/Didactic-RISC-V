@@ -16,6 +16,8 @@ else
 {
     configSettings.Add("searchFolder", "./");
     configSettings.Add("destination", "./program/");
+    configSettings.Add("bitWidth", "8");
+    configSettings.Add("addressWidth", "8");
     var configFile = File.CreateText(configFilePath);
     foreach (var config in configSettings)
     {
@@ -50,7 +52,16 @@ var targetFile = $"{configSettings["searchFolder"]}{fileNames[fileNumber]}";
 var fileContents = File.Open(targetFile, FileMode.Open);
 var reader = new StreamReader(fileContents);
 var input = reader.ReadToEnd();
-var output = RiscAssembler.Assembler.Assemble(input);
+string output = "";
+try
+{
+    output = RiscAssembler.Assembler.Assemble(input, int.Parse(configSettings["bitWidth"]), int.Parse(configSettings["addressWidth"]));
+}
+catch(Exception e)
+{
+    Console.WriteLine(e.Message + "\n\n");
+    Console.WriteLine(e.StackTrace);
+}
 
 Console.Write(output);
 
@@ -58,3 +69,4 @@ var compiledFilePath = $"{configSettings["destination"]}{fileNames[fileNumber]}"
 var compiledFile = File.CreateText(compiledFilePath);
 compiledFile.Write(output);
 compiledFile.Flush();
+Console.ReadLine();
