@@ -6,12 +6,6 @@ ADD @0 @0 @0
 LDW @1 @0 .var1
 LDW @2 @0 .var2
 LDW @3 @0 .one
-JMP ALWAYS @0 :start
-ADD @0 @0 @0
-
-.word var1 #FFFFFFFF
-.word var2 #AAAAAAAA
-.word one 1
 
 :start
 AND @16 @1 @2	//Should Result in #AAAAAAAA
@@ -26,3 +20,7 @@ SUBCR @24 @0 2	//Should Result in #00000001
 
 JMP ALWAYS @0 :start
 ADD @0 @0 @0
+
+.word var1 #FFFFFFFF
+.word var2 #AAAAAAAA
+.word one 1
