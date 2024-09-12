@@ -43,37 +43,40 @@ public partial class Assembler
                 {
                     memory[address] = uint.Parse(parts[2][1..^0],hexStyle);
                 }
+                else if (parts[2].StartsWith(':'))
+                {
+                    memory[address] = labels[parts[2]];
+                }
                 else                    
                 {
                     memory[address] = uint.Parse(parts[2],intStyle);
                 }
                 continue;
-            }
-
+            }   
             //Operation
             if (!Enum.TryParse(parts[0], out Instructions mnemonic))
             {
-                Console.WriteLine($"Unknown instruction \"{parts[0]}\". Ignoring.\n");
-                continue;
+                throw new Exception($"Unknown instruction \"{parts[0]}\".");
             }
             memory[address] = (uint)mnemonic << 25;
             Console.WriteLine($"\n{ToBinary((uint)mnemonic << 25)} Instruction {parts[0]}({memory[address]}) added to [{address}] with:");
-            
+
+            memory[address] |= 1 << 24;//TODO:SCC bit. Make a way to turn if off later.
+
             //Parameter1
             if (TryGetRegisterAddress(parts[1], out uint destination))
             {
                 memory[address] |= destination << 19;
-                Console.WriteLine($"{ToBinary(destination << 19)} Destination: {destination}");
+                PrintParameterDebug(destination << 19, "Destination", "x8");
             }
             else if (Enum.TryParse(parts[1], out Condition condition))
             {
                 memory[address] |= (uint)condition << 19;
-                Console.WriteLine($"{ToBinary((uint)condition << 19)} Condition: {condition}({(uint)condition})");
+                PrintParameterDebug((uint)condition << 19, $"Condition({condition})", "x8");
             }
             else
             {
-                Console.WriteLine($"Unknown condition \"{parts[1]}\". Ignoring.\n");
-                continue;
+                throw new Exception($"Invalid Register or Unknown condition \"{parts[1]}\".");
             }
 
             //Parameter2
@@ -83,36 +86,35 @@ public partial class Assembler
                     if (TryGetRegisterAddress(parts[2], out uint source1))
                     {
                         memory[address] |= source1 << 14;
-                        Console.WriteLine($"{ToBinary(source1 << 14)} Source 1: {source1}");
+                        PrintParameterDebug(source1 << 14, "Source 1", "x8");
+                        break;
                     }
-                    break;
+                    throw new Exception("Invalid Register: " + parts[2]);                                        
                 case '.':
                     if (words.TryGetValue(parts[2][1..^0], out uint value))
                     {
                         memory[address] |= value;
-                        Console.WriteLine($"{ToBinary(value)} Variable Address (immediate High): {value}({parts[2]})");
+                        PrintParameterDebug(value, "Variable Address (immediate 19bit)", "x8");
+                        continue;
                     }
-                    else
-                    {
-                        throw new Exception("Variable \"" + parts[2][1..^0] + "\" Not found");
-                    }
-                    break;
+                    throw new Exception("Variable \"" + parts[2][1..^0] + "\" Not found");                    
                 case ':':
                     if (labels.TryGetValue(parts[2], out value))
                     {
                         memory[address] |= value;
-                        Console.WriteLine($"{ToBinary(value)} Address (immediate High): {value}({parts[2]})");
+                        PrintParameterDebug(value, "Label Address (immediate 19bit)", "x8");
+                        continue;
                     }
-                    break;
+                    throw new Exception("Label \"" + parts[2][1..^0] + "\" Not found");
                 case '#':
-                    uint immediate = uint.Parse(parts[2][1..^1], hexStyle);
+                    uint immediate = uint.Parse(parts[2][1..^0], hexStyle);
                     memory[address] |= immediate & 0x7FFFF;
-                    Console.WriteLine($"{ToBinary(immediate)} Immediate high: {immediate}");
+                    PrintParameterDebug(immediate & 0x7FFFF, "immediate 19bit", "x8");
                     continue;
                 default:
                     immediate = uint.Parse(parts[2], intStyle);
                     memory[address] |= immediate & 0x7FFFF;
-                    Console.WriteLine($"{ToBinary(immediate)} Immediate high: {immediate}");
+                    PrintParameterDebug(immediate & 0x7FFFF, "immediate 19bit","");
                     continue;
             }
             //parameter 3
@@ -122,51 +124,40 @@ public partial class Assembler
                     if (TryGetRegisterAddress(parts[3], out uint source2))
                     {
                         memory[address] |= source2;
-                        Console.WriteLine($"{ToBinary(source2)} Source 2: {source2}");
+                        PrintParameterDebug(source2, "Source 2", "x8");
+                        break;
                     }
-                    break;
+                    throw new Exception("Invalid Register: " + parts[3]);
                 case '.':
                     if (words.TryGetValue(parts[3][1..^0], out uint value))
                     {
                         memory[address] |= value;
                         memory[address] |= 1 << 13;
-                        Console.WriteLine($"{ToBinary(value)} Variable Address (Immediate): {value}({parts[3]})");
+                        PrintParameterDebug(value, "Variable Address (Immediate)", "x8");
+                        continue;
                     }
-                    else
-                    {
-                        throw new Exception("Variable \"" + parts[3][1..^0] + "\" Not found");
-                    }
-                    break;
+                    throw new Exception("Variable \"" + parts[3][1..^0] + "\" Not found");
                 case ':':
                     if (labels.TryGetValue(parts[3], out value))
                     {
                         memory[address] |= value;
                         memory[address] |= 1 << 13;
-                        Console.WriteLine($"{ToBinary(value)} Address (immediate): {value}({parts[3]})");
+                        PrintParameterDebug(value, "Label Address (immediate)", "x8");
+                        continue;
                     }
-                    break;
+                    throw new Exception("Label \"" + parts[3][1..^0] + "\" Not found");
                 case '#':
-                    uint immediate = uint.Parse(parts[3][1..^1], hexStyle);
+                    uint immediate = uint.Parse(parts[3][1..^0], hexStyle);
                     memory[address] |= immediate & 0x1FFF;
-                    Console.WriteLine($"{ToBinary(immediate)} Immediate: {immediate}");
+                    memory[address] |= 1 << 13;
+                    PrintParameterDebug(immediate & 0x1FFF, "Immediate", "x8");
                     continue;
                 default:
                     immediate = uint.Parse(parts[3], intStyle);
                     memory[address] |= immediate & 0x1FFF;
                     memory[address] |= 1 << 13;
-                    Console.WriteLine($"{ToBinary((immediate) | (1 << 13))} Immediate: {immediate}");
+                    PrintParameterDebug(immediate & 0x1FFF, "Immediate", "");
                     continue;
-            }
-
-            //Flags
-            if (parts.Length > 4 && parts[4].Equals("NO_CONDITION_SET"))
-            {
-                memory[address] |= 0 << 24;
-                Console.WriteLine($"{ToBinary(1 << 24)} No condition set flag");
-            }
-            else
-            {
-                memory[address] |= 1 << 24;
             }
         }
 
@@ -183,34 +174,6 @@ public partial class Assembler
             }
         }
         return output;
-
-        void InsertInMemory(uint value, uint address, Parameter parameter)
-        {
-            switch (parameter)
-            {
-                case Parameter.OperationCode:
-                    memory![address] |= value << 25;
-                    break;
-                case Parameter.SetConditionCodes:
-                    memory![address] |= value << 19;
-                    break;
-                case Parameter.Destination:
-                case Parameter.Condition:
-                    memory![address] |= value << 19;
-                    break;
-                case Parameter.Source1:
-                case Parameter.Immediate19bit:
-                    memory![address] |= value << 14;
-                    break;
-                case Parameter.Immediate13bit:
-                    memory![address] |= 1 << 13;
-                    memory![address] |= value;
-                    break;
-                case Parameter.Source2:
-                    memory![address] |= value;
-                    break;
-            }
-        }
     }
 
     private static void RemoveCommentsAndBlankLines(List<string> lines)
@@ -275,6 +238,11 @@ public partial class Assembler
         if (text.Equals("@zero")) return true;
         address = uint.Parse(text[1..], intStyle);
         return true;
+    }
+
+    private static void PrintParameterDebug(uint value, string parameterName, string format)
+    {
+        Console.WriteLine($"{ToBinary(value)} {parameterName}: {value.ToString(format)}");
     }
 
     private static string ToBinary(uint value) => Convert.ToString(value, 2).PadLeft(32, '0');
