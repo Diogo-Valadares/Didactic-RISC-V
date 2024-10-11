@@ -54,7 +54,7 @@ public partial class Assembler
                 continue;
             }   
             //Operation
-            if (!Enum.TryParse(parts[0], out Instructions mnemonic))
+            if (!Enum.TryParse(parts[0].ToUpper(), out Instructions mnemonic))
             {
                 throw new Exception($"Unknown instruction \"{parts[0]}\".");
             }
@@ -69,7 +69,7 @@ public partial class Assembler
                 memory[address] |= destination << 19;
                 PrintParameterDebug(destination << 19, "Destination", "x8");
             }
-            else if (Enum.TryParse(parts[1], out Condition condition))
+            else if (Enum.TryParse(parts[1].ToUpper(), out Condition condition))
             {
                 memory[address] |= (uint)condition << 19;
                 PrintParameterDebug((uint)condition << 19, $"Condition({condition})", "x8");
@@ -82,7 +82,8 @@ public partial class Assembler
             //Parameter2
             switch (parts[2][0])
             {
-                case '@':
+                case 'r':
+                case 'R':
                     if (TryGetRegisterAddress(parts[2], out uint source1))
                     {
                         memory[address] |= source1 << 14;
@@ -120,7 +121,8 @@ public partial class Assembler
             //parameter 3
             switch (parts[3][0])
             {
-                case '@':
+                case 'r':
+                case 'R':
                     if (TryGetRegisterAddress(parts[3], out uint source2))
                     {
                         memory[address] |= source2;
@@ -234,8 +236,8 @@ public partial class Assembler
     private static bool TryGetRegisterAddress(string text, out uint address)
     {
         address = 0;
-        if (!text.StartsWith('@')) return false;
-        if (text.Equals("@zero")) return true;
+        if (!text.StartsWith('r') && !text.StartsWith('R')) return false;
+        if (text.Equals("rzero") || text.Equals("Rzero")) return true;
         address = uint.Parse(text[1..], intStyle);
         return true;
     }
