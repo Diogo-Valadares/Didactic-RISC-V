@@ -1,15 +1,17 @@
-ADD @0 @0 @0 //NO_OP
-ADD @3 @0 127
-CALL @31 @zero :callTestFunction
-ADD @0 @0 @0 //NO_OP
-ADD @1 @zero 63
-SUB @1 @1 32
-
-JMPR ALWAYS 0
-ADD @0 @0 @0
+add R0 R0 R0 //NO_OP
+call R31 R0 :callTestFunction
+add R0 R0 R0 //NO_OP
+jmpr always 0
+add R0 R0 R0
 
 :callTestFunction
-ADD @2 @zero #FF
-SUB @2 @2 #0F
-RET @0 @0 @31
-ADD @0 @0 @0 //NO_OP
+add R1 R1 1
+
+sub R0 R1 10
+jmpr equal 12
+
+call R31 R0 :callTestFunction
+add R0 R0 R0 //NO_OP
+
+ret R0 R0 R31
+add R0 R0 R0 //NO_OP

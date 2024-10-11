@@ -1,14 +1,14 @@
-﻿ADD @0 @0 @0
+﻿ADD R0 R0 R0
 :start
-LDHI @1 1
+LDHI R1 1
 :counter1Start
-SUB @1 @1 256
-JMP NOT_EQUAL @0 :counter1Start
-ADD @0 @0 @0
-LDHI @3 2
+SUB R1 R1 256
+JMP NOT_EQUAL R0 :counter1Start
+ADD R0 R0 R0
+LDHI R3 2
 :counter2Start
-SUB @3 @3 512
-JMP NOT_EQUAL @0 :counter2Start
-ADD @0 @0 @0
-JMP ALWAYS @zero :start
-ADD @0 @0 @0
+SUB R3 R3 512
+JMP NOT_EQUAL R0 :counter2Start
+ADD R0 R0 R0
+JMP ALWAYS Rzero :start
+ADD R0 R0 R0
