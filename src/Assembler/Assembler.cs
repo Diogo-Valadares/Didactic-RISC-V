@@ -52,16 +52,23 @@ public partial class Assembler
                     memory[address] = uint.Parse(parts[2],intStyle);
                 }
                 continue;
-            }   
+            }
+            if (parts[0][^1] == '*')
+            {
+                parts[0] = parts[0][0..^1];
+            }
+            else
+            {
+                memory[address] |= 1 << 24;
+            }            
+
             //Operation
             if (!Enum.TryParse(parts[0].ToUpper(), out Instructions mnemonic))
             {
                 throw new Exception($"Unknown instruction \"{parts[0]}\".");
             }
-            memory[address] = (uint)mnemonic << 25;
+            memory[address] |= (uint)mnemonic << 25;
             Console.WriteLine($"\n{ToBinary((uint)mnemonic << 25)} Instruction {parts[0]}({memory[address]}) added to [{address}] with:");
-
-            memory[address] |= 1 << 24;//TODO:SCC bit. Make a way to turn if off later.
 
             //Parameter1
             if (TryGetRegisterAddress(parts[1], out uint destination))
