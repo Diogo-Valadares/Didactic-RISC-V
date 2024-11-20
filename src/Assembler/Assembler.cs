@@ -24,8 +24,6 @@ public partial class Assembler
     {
         var lines = input.Replace("\t", "").Split(separator, StringSplitOptions.None);
         var memory = new uint[2 << addressWidth];
-
-
         var linesList = lines.ToList();
         RemoveCommentsAndBlankLines(linesList);
         Dictionary<string, uint> labels = ExtractLabels(linesList);
@@ -53,6 +51,7 @@ public partial class Assembler
                 }
                 continue;
             }
+
             if (parts[0][^1] == '*')
             {
                 parts[0] = parts[0][0..^1];
@@ -125,6 +124,7 @@ public partial class Assembler
                     PrintParameterDebug(immediate & 0x7FFFF, "immediate 19bit","");
                     continue;
             }
+            
             //parameter 3
             switch (parts[3][0])
             {
@@ -187,16 +187,13 @@ public partial class Assembler
 
     private static void RemoveCommentsAndBlankLines(List<string> lines)
     {
-        for (int currentLine = 0; currentLine < lines.Count; currentLine++)
+        for (int currentLine = lines.Count - 1; currentLine >= 0 ; currentLine--)
         {
             var commentIndex = lines[currentLine].IndexOf("//");
             if (commentIndex >= 0) lines[currentLine] = lines[currentLine][0..(commentIndex)];
-
             if (lines[currentLine] == "")
             {
                 lines.RemoveAt(currentLine);
-                currentLine--;
-                continue;
             }
         }
     }
@@ -225,11 +222,8 @@ public partial class Assembler
                     break;
                 case ".short":
                 case ".half":
-                    throw new NotImplementedException();
-                    break;
                 case ".byte":
                     throw new NotImplementedException();
-                    break;
             }
         }
         return words;
