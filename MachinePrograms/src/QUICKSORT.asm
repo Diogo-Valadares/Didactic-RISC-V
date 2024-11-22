@@ -1,4 +1,12 @@
 ADD R0 R0 0
+
+callr R5 16	    //activating interruptions incase of a window overflow
+add R0 R0 R0	
+jmpr always 16
+add R0 R0 R0
+reti R0 R5 0
+add R0 R0 R0
+
 LDW R1 R0 .basePointer	//the array start and end will be global variables
 LDW R2 R0 .arrayEnd
 
@@ -99,34 +107,36 @@ ADD R0 R0 0
 .word padding2 	#00000000
 				
 :arrayStart		
-.word element1 	#6
-.word element2 	#4
-.word element3 	#5
-.word element4 	#2
-.word element5 	#3
-.word element6 	#1
-.word element7 	#9
-.word element8 	#F
-.word element9 	#A
-.word element10 #3
-.word element11 #C
-.word element12 #6
-.word element13 #3
-.word element14 #0
-.word element15 #8
-//.word element16 #9
-//.word element17 #3
-//.word element18 #6
-//.word element19 #C
-//.word element20 #E
-//.word element21 #E
-//.word element22 #F
-//.word element23 #4
-//.word element24 #2
-//.word element25 #1
-//.word element26 #9
-//.word element27 #3
-//.word element28 #0
-//.word element29 #6
+.word element0 #A1B2C3D4
+.word element1 #1E2F3A4B
+.word element2 #4C5D6E7F
+.word element3 #F0E1D2C3
+.word element4 #7A8B9C0D
+.word element5 #12345678
+.word element6 #9ABCDEF0
+.word element7 #0FEDCBA9
+.word element8 #89ABCDEF
+.word element9 #76543210
+.word element10 #BA98DCFE
+.word element11 #13579BDF
+.word element12 #2468ACE0
+.word element13 #ACE1B2D3
+.word element14 #B1C2D3E4
+.word element15 #C0F1E2D3
+.word element16 #D4E5F6A7
+.word element17 #E6F7A8B9
+.word element18 #F8A9B0C1
+.word element19 #A0B1C2D3
+.word element20 #1234ABCD
+.word element21 #0A1B2C3D
+.word element22 #FEDCBA98
+.word element23 #7654FEDC
+.word element24 #89ABCDE0
+.word element25 #56789ABC
+.word element26 #1D2C3B4A
+.word element27 #2E3D4A5B
+.word element28 #3F4A5B6C
+.word element29 #4E5F6A7B
+.word element30 #5A6B7C8D
 :arrayEnd
-.word element30 #2
+.word element31 #6C7D8E9F

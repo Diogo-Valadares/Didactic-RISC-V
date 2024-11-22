@@ -3,11 +3,11 @@ ADD R0 R0 R0
 .word var #FFFFFFFF
 :start
 LDRW R1 #FFFFFFFC //load the information present in 4 bytes before the address of this instruction
-STRB R1 #00001000 //test if it writes correctly 1000(hex) addresses after the address of this instruction
-STRB R1 #00001002
-STRS R1 #00001000
-STRS R1 #00001001
-STRW R1 #00001000
+STRB R1 #00000100 //test if it writes correctly 100(hex) addresses after the address of this instruction
+STRB R1 #00000102
+STRS R1 #00000100
+STRS R1 #00000101
+STRW R1 #00000100
 
 JMPR ALWAYS #10
 ADD R0 R0 R0

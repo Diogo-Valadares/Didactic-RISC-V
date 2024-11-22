@@ -10,8 +10,6 @@ add R0 R0 R0
 reti R0 R5 0
 add R0 R0 R0
 
-:fillWindow
-
 add R2 R2 R1  
 add R10 R2 0
 add R2 R2 R1  
@@ -24,7 +22,6 @@ add R2 R2 R1
 add R14 R2 0
 add R2 R2 R1  
 add R15 R2 0
-
 add R2 R2 R1  
 add R16 R2 0
 add R2 R2 R1  
@@ -46,6 +43,21 @@ add R24 R2 0
 add R2 R2 R1  
 add R25 R2 0
 
+:fillWindow
+add R9 R9 1
+sub R0 R9 8
+jmpr EQUAL #10
+add R0 R0 R0 
 call R31 R0 :fillWindow
+add R0 R0 R0 
+
+sub R9 R9 1
+sub R0 R9 0
+jmpr EQUAL #10
+add R0 R0 R0 
+ret R0 R31 0
+add R0 R0 R0 
+
+jmpr ALWAYS 0
 add R0 R0 R0
 .word var #00010001
