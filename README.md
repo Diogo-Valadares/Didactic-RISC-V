@@ -1,17 +1,20 @@
 # Didactic-RISC-I
 This project is part of a monography focused on transforming the RISC I architecture into a didactic tool.
 
-![riscInternal](https://github.com/user-attachments/assets/64e3b305-89ff-4646-9ac0-97f5ec46b5a7)
+![riscInternal](https://github.com/user-attachments/assets/4eea920d-c49b-4046-a99b-ded1ad917bcd)
 
 ## Overview
-The entire RISC I architecture has been meticulously recreated using Logisim Evolution, providing a robust platform for educational purposes.
+This project focus on recriating the RISC I architecture to later improve it for didatic porpuses. Both the original RISC I recriation and DRISC archtectures will be contained in this repository for comparison.
+
+The recriation was based on the works of [James B. Peek](https://www2.eecs.berkeley.edu/Pubs/TechRpts/1983/CSD-83-135.pdf) and [Manolis G. H. Katevenis](https://archive.org/details/reducedinstructi0000kate/mode/2up).
+Although it's not a perfect replica, for reasons like simulation limitations and missing documentation, it can still reproduce the whole RISC I Instruction set, while keeping the same overall structucture.
 
 An assembler, written in C#, has been developed to translate assembly language into machine code that can be directly read by the simulation model.
 
 ## Features
-- Complete RISC I Simulation: A faithful recreation of the RISC I architecture in Logisim Evolution.
+- Complete RISC I Simulation: A recreation of the RISC I architecture in Logisim Evolution.
 
-- Custom Assembler: A powerful assembler written in C# for converting assembly language into executable code for the simulator.
+- Custom Assembler: A  assembler written in C# for converting assembly language into executable code for the simulator.
 
 - Educational Focus: Designed to be a comprehensive teaching tool for learning about computer architecture.
 
