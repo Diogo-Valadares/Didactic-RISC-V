@@ -18,6 +18,7 @@ else
     configSettings.Add("destination", "./program/");
     configSettings.Add("bitWidth", "8");
     configSettings.Add("addressWidth", "8");
+    configSettings.Add("assemblerVersion", "DRisc");
     var configFile = File.CreateText(configFilePath);
     foreach (var config in configSettings)
     {
@@ -55,7 +56,14 @@ var input = reader.ReadToEnd();
 string output = "";
 try
 {
-    output = RiscAssembler.Assembler.Assemble(input, int.Parse(configSettings["bitWidth"]), int.Parse(configSettings["addressWidth"]));
+    if (configSettings.TryGetValue("assemblerVersion",out var value) && value == "DRisc")
+    {
+        output = DRiscAssembler.Assembler.Assemble(input, int.Parse(configSettings["bitWidth"]), int.Parse(configSettings["addressWidth"]));
+    }
+    else
+    {
+        output = RiscAssembler.Assembler.Assemble(input, int.Parse(configSettings["bitWidth"]), int.Parse(configSettings["addressWidth"]));
+    }
 }
 catch(Exception e)
 {
