@@ -4,7 +4,7 @@ public enum Instructions
     load = 0x03,
     load_fp = 0x07,
 
-    opimm = 0x13,
+    op_imm = 0x13,
     auipc = 0x17,
 
     store = 0x23,
