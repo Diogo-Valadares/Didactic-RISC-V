@@ -1,7 +1,4 @@
-﻿using System;
-using System.Security.Cryptography;
-
-namespace DRiscAssembler;
+﻿namespace DRiscAssembler;
 
 internal static class Instruction
 {
@@ -77,6 +74,26 @@ internal static class Instruction
         {"SRL",  (p) => TranslateR((uint)Instructions.op, (uint)Operation.srl, p[0], p[1], p[2])},
         {"SRA",  (p) => TranslateR((uint)Instructions.op, (uint)Operation.sra, p[0], p[1], p[2])}
     };
+    /// <summary>
+    /// Defines the set of instructions that are PC-relative to calculate the value of the labels.
+    /// </summary>
+    public static readonly HashSet<string> PCRelativeInstructions =
+    [
+        "BEQ",
+        "BNE",
+        "BLT",
+        "BGT",
+        "BLTU",
+        "BGTU",
+        "BLE",
+        "BGE",
+        "BLEU",
+        "BGEU",
+        "J",
+        "JUMP",
+        "JAL",
+        "CALL"
+    ];
 
     /// <summary>
     /// Translates an R-type instruction to its machine code representation.

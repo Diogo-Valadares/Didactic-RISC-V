@@ -9,7 +9,7 @@ public class Assembler
         var memory = new uint[2 << addressWidth];
         var linesList = lines.ToList();
         RemoveCommentsAndBlankLines(linesList);
-        Dictionary<string, uint> labels = ExtractLabels(linesList);
+        Dictionary<string, int> labels = ExtractLabels(linesList);
         Dictionary<string, uint> words = ExtractVariables(linesList);
         lines = [.. linesList];
 
@@ -84,21 +84,23 @@ public class Assembler
         for (int currentLine = lines.Count - 1; currentLine >= 0; currentLine--)
         {
             var commentIndex = lines[currentLine].IndexOf("//");
-            if (commentIndex >= 0) lines[currentLine] = lines[currentLine][0..(commentIndex)];
+            if (commentIndex >= 0) lines[currentLine] = lines[currentLine][0..commentIndex];
+            commentIndex = lines[currentLine].IndexOf('#');
+            if (commentIndex >= 0) lines[currentLine] = lines[currentLine][0..commentIndex];
             if (lines[currentLine] == "")
             {
                 lines.RemoveAt(currentLine);
             }
         }
     }
-    private static Dictionary<string, uint> ExtractLabels(List<string> lines)
+    private static Dictionary<string, int> ExtractLabels(List<string> lines)
     {
-        Dictionary<string, uint> labels = [];
+        Dictionary<string, int> labels = [];
         for (int currentLine = 0; currentLine < lines.Count; currentLine++)
         {
             if (!lines[currentLine].StartsWith(':')) continue;
-            labels.Add(lines[currentLine], (uint)currentLine << 2);
-            Console.WriteLine($"[{currentLine}]Added label \"{lines[currentLine]}\" with value {(uint)currentLine << 2}");
+            labels.Add(lines[currentLine], (int)currentLine << 2);
+            Console.WriteLine($"[{currentLine}]Added label \"{lines[currentLine]}\" with value {(int)currentLine << 2}");
             lines.RemoveAt(currentLine);
             currentLine--;
         }
@@ -113,7 +115,12 @@ public class Assembler
                 {
                     throw new Exception($"[{currentLine}]Unknown label \"{parts[i]}\" at line {currentLine}.");
                 }
+                
                 var lineBefore = lines[currentLine];
+                if (Instruction.PCRelativeInstructions.Contains(parts[0]))
+                {
+                    value -= currentLine << 2;
+                }
                 lines[currentLine] = lines[currentLine].Replace(parts[i], value.ToString());
                 #region DebugPrint
                 Console.Write($"[{currentLine}]Translated label at line from ");
