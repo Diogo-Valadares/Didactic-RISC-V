@@ -1,0 +1,38 @@
+# Truth table
+# Exported on Sun Jan 19 13:26:01 BRT 2025
+
+# Hints and Notes on Formatting:
+# * You can edit this file then import it back into Logisim!
+# * Anything after a '#' is a comment and will be ignored.
+# * Blank lines and separator lines (e.g., ~~~~~~) are ignored.
+# * Keep column names simple (no spaces, punctuation, etc.)
+# * 'Name[N..0]' indicates an N+1 bit variable, whereas
+#   'Name' by itself indicates a 1-bit variable.
+# * You can use 'x' or '-' to indicate "don't care" for both
+#   input and output bits.
+# * You can use binary (e.g., '10100011xxxx') notation or
+#   or hex (e.g., 'C3x'). Logisim will figure out which is which.
+
+OPCODE[6..0] | FLOATING_POINT IMMEDIATE LOAD OPERATION ADD_UPPER_IMMEDIATE_PC STORE LOAD_UPPER_IMMEDIATE BRANCH JUMP_AND_LINK_REGISTER JUMP_AND_LINK SYSTEM
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  XXXXX0X    |       X            X      X       X               X              X            X             X              X                  X         X   
+  XXXXX10    |       X            X      X       X               X              X            X             X              X                  X         X   
+  0000011    |       0            1      1       0               0              0            0             0              0                  0         0   
+  0000111    |       1            0      1       0               0              0            0             0              0                  0         0   
+  X0X1X11    |       X            X      X       X               X              X            X             X              X                  X         X   
+  0010011    |       0            1      0       1               0              0            0             0              0                  0         0   
+  0010111    |       0            0      0       0               1              0            0             0              0                  0         0   
+  0100011    |       0            1      0       0               0              1            0             0              0                  0         0   
+  0100111    |       X            X      X       X               X              X            X             X              X                  X         X   
+  X1X1011    |       X            X      X       X               X              X            X             X              X                  X         X   
+  0101111    |       1            0      0       0               0              1            0             0              0                  0         0   
+  0110011    |       0            0      0       1               0              0            0             0              0                  0         0   
+  0110111    |       0            0      0       0               0              0            1             0              0                  0         0   
+  X111111    |       X            X      X       X               X              X            X             X              X                  X         X   
+  1000X11    |       X            X      X       X               X              X            X             X              X                  X         X   
+  1010011    |       1            0      0       1               0              0            0             0              0                  0         0   
+  1X10111    |       X            X      X       X               X              X            X             X              X                  X         X   
+  1100011    |       0            0      0       0               0              0            0             1              0                  0         0   
+  1100111    |       0            0      0       0               0              0            0             0              1                  0         0   
+  1101111    |       0            0      0       0               0              0            0             0              0                  1         0   
+  1110011    |       0            0      0       0               0              0            0             0              0                  0         1   
