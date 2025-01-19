@@ -91,36 +91,15 @@ internal static class Instruction
     {
         uint result = instruction;
 
-        if (Enum.TryParse(typeof(Register),rd, true, out var rdEnum))
-        {
-            result |= (uint)(int)rdEnum << 7;
-        }
-        else
-        {
-            throw new Exception($"Destiny register not valid \"{rd}\"");
-        }
+        result |= TryParseRegister(rd) << 7;
 
         result |= (funct10 & 0x7) << 12;
 
-        if (Enum.TryParse(typeof(Register), rs1, true, out var rs1Enum))
-        {
-            result |= (uint)(int)rs1Enum << 15;
-        }
-        else
-        {
-            throw new Exception($"Source1 register not valid \"{rs1}\"");
-        }
+        result |= TryParseRegister(rs1) << 15;
 
-        if (Enum.TryParse(typeof(Register), rs2, true, out var rs2Enum))
-        {
-            result |= (uint)(int)rs2Enum << 20;
-        }
-        else
-        {
-            throw new Exception($"Source2 register not valid \"{rs2}\"");
-        }
+        result |= TryParseRegister(rs2) << 20;
 
-        result |= (funct10 & ~(uint)0x7) << 25;
+        result |= (funct10 & ~(uint)0x7) << 22;
 
         #region print
         var resBin = ToBinary(result);
@@ -154,27 +133,13 @@ internal static class Instruction
     {
         uint result = instruction;
 
-        if (Enum.TryParse(typeof(Register), rd, true, out var rdEnum))
-        {
-            result |= (uint)(int)rdEnum << 7;
-        }
-        else
-        {
-            throw new Exception($"Destiny register not valid \"{rd}\"");
-        }
+        result |= TryParseRegister(rd) << 7;
 
         result |= (funct3 & 0x7) << 12;
 
-        if (Enum.TryParse(typeof(Register), rs1, true, out var rs1Enum))
-        {
-            result |= (uint)(int)rs1Enum << 15;
-        }
-        else
-        {
-            throw new Exception($"Source1 register not valid \"{rs1}\"");
-        }
+        result |= TryParseRegister(rs1) << 15;
 
-        result |= ToInteger(imm12,0xFFF) << 20;
+        result |= ToInteger(imm12, 0xFFF) << 20;
 
         #region print
         var resBin = ToBinary(result);
@@ -202,7 +167,7 @@ internal static class Instruction
     /// <param name="funct3">The function field (funct3).</param>
     /// <param name="imm12">The 12-bit immediate value.</param>
     /// <returns>The machine code representation of the instruction.</returns>
-    private static uint TranslateS(uint instruction, uint funct3, string rs1, string rs2, string imm12)
+    private static uint TranslateS(uint instruction, uint funct3, string rs2, string rs1, string imm12)
     {
         uint result = instruction;
         uint immediate = ToInteger(imm12, 0xFFF);
@@ -210,25 +175,11 @@ internal static class Instruction
         result |= (immediate & 0x1F) << 7;
         result |= (funct3 & 0x7) << 12;
 
-        if (Enum.TryParse(typeof(Register), rs1, true, out var rs1Enum))
-        {
-            result |= (uint)(int)rs1Enum << 15;
-        }
-        else
-        {
-            throw new Exception($"Source1 register not valid \"{rs1}\"");
-        }
+        result |= TryParseRegister(rs1) << 15;
 
-        if (Enum.TryParse(typeof(Register), rs2, true, out var rs2Enum))
-        {
-            result |= (uint)(int)rs2Enum << 20;
-        }
-        else
-        {
-            throw new Exception($"Source2 register not valid \"{rs2}\"");
-        }
+        result |= TryParseRegister(rs2) << 20;
 
-        result |= (immediate & ~(uint)0x1F) << 25;
+        result |= (immediate & ~(uint)0x1F) << 20;
 
         #region print
         var resBin = ToBinary(result);
@@ -261,29 +212,15 @@ internal static class Instruction
     private static uint TranslateB(uint instruction, uint funct3, string rs1, string rs2, string imm12)
     {
         uint result = instruction;
-        uint immediate = ToInteger(imm12, 0xFFF);
+        uint immediate = ToInteger(imm12, 0x1FFF);
 
         result |= (immediate & 0x800) >> 4;
         result |= (immediate & 0x1E) << 7;
         result |= (funct3 & 0x7) << 12;
 
-        if (Enum.TryParse(typeof(Register), rs1, true, out var rs1Enum))
-        {
-            result |= (uint)(int)rs1Enum << 15;
-        }
-        else
-        {
-            throw new Exception($"Source1 register not valid \"{rs1}\"");
-        }
+        result |= TryParseRegister(rs1) << 15;
 
-        if (Enum.TryParse(typeof(Register), rs2, true, out var rs2Enum))
-        {
-            result |= (uint)(int)rs2Enum << 20;
-        }
-        else
-        {
-            throw new Exception($"Source2 register not valid \"{rs2}\"");
-        }
+        result |= TryParseRegister(rs2) << 20;
 
         result |= (immediate & 0x7E0) << 20;
         result |= (immediate & 0x1000) << 19;
@@ -318,14 +255,7 @@ internal static class Instruction
     {
         uint result = instruction;
 
-        if (Enum.TryParse(typeof(Register), rd, true, out var rdEnum))
-        {
-            result |= (uint)(int)rdEnum << 7;
-        }
-        else
-        {
-            throw new Exception($"Destiny register not valid \"{rd}\"");
-        }
+        result |= TryParseRegister(rd) << 7;
 
         result |= ToInteger(imm20, 0xFFFFF) << 12;
 
@@ -353,16 +283,10 @@ internal static class Instruction
     {
         uint result = instruction;
 
-        if (Enum.TryParse(typeof(Register), rd, true, out var rdEnum))
-        {
-            result |= (uint)(int)rdEnum << 7;
-        }
-        else
-        {
-            throw new Exception($"Destiny register not valid \"{rd}\"");
-        }
-        uint imm = ToInteger(imm20,0xFFFFF);      
-        result |= (imm & 0xFF000) |  (imm & 0x800) << 9 | (imm & 0x7FE) << 20| (imm & 0x100000) << 11;
+        result |= TryParseRegister(rd) << 7;
+
+        uint imm = ToInteger(imm20, 0x1FFFFF) >> 1;
+        result |= (imm & 0x7F800) << 1 | (imm & 0x400) << 10 | (imm & 0x3FF) << 21 | (imm & 0x80000) << 12;
 
         #region print
         var resBin = ToBinary(result);
@@ -377,19 +301,32 @@ internal static class Instruction
 
         return result;
     }
- 
+
     /// <summary>
     /// Translates a string number to an integer.
     /// </summary>
     /// <param name="number"></param>
     /// <returns></returns>
-    public static uint ToInteger(string number,uint mask)
+    public static uint ToInteger(string number, uint mask)
     {
         if (number.StartsWith("0x"))
         {
-            return (uint)int.Parse(number[2..],System.Globalization.NumberStyles.AllowHexSpecifier) & mask;
+            return (uint)int.Parse(number[2..], System.Globalization.NumberStyles.AllowHexSpecifier) & mask;
         }
-        return (uint)int.Parse(number,System.Globalization.NumberStyles.Integer) & mask;
+        return (uint)int.Parse(number, System.Globalization.NumberStyles.Integer) & mask;
+    }
+    
+    public static uint TryParseRegister(string register)
+    {
+        if (int.TryParse(register, out var _))
+        {
+            throw new ArgumentException($"Register not valid: \"{register}\"(Did you mean to use an immediate intruction?).");
+        }
+        if (Enum.TryParse(typeof(Register), register, true, out var reg))
+        {
+            return (uint)(int)reg;
+        }
+        throw new ArgumentException($"Register not valid: \"{register}\".");
     }
 
     public static string ToBinary(uint value) => Convert.ToString(value, 2).PadLeft(32, '0');
