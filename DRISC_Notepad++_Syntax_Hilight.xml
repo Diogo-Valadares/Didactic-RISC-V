@@ -1,0 +1,64 @@
+<NotepadPlus>
+    <UserLang name="dasm" ext="" udlVersion="2.1">
+        <Settings>
+            <Global caseIgnored="yes" allowFoldOfComments="no" foldCompact="no" forcePureLC="0" decimalSeparator="0" />
+            <Prefix Keywords1="no" Keywords2="no" Keywords3="yes" Keywords4="no" Keywords5="yes" Keywords6="no" Keywords7="no" Keywords8="no" />
+        </Settings>
+        <KeywordLists>
+            <Keywords name="Comments">00// 01 02 03 04</Keywords>
+            <Keywords name="Numbers, prefix1"></Keywords>
+            <Keywords name="Numbers, prefix2">0x</Keywords>
+            <Keywords name="Numbers, extras1">A B C D E F a b c d e f</Keywords>
+            <Keywords name="Numbers, extras2"></Keywords>
+            <Keywords name="Numbers, suffix1"></Keywords>
+            <Keywords name="Numbers, suffix2"></Keywords>
+            <Keywords name="Numbers, range"></Keywords>
+            <Keywords name="Operators1">,</Keywords>
+            <Keywords name="Operators2"></Keywords>
+            <Keywords name="Folders in code1, open">{</Keywords>
+            <Keywords name="Folders in code1, middle"></Keywords>
+            <Keywords name="Folders in code1, close">}</Keywords>
+            <Keywords name="Folders in code2, open">#REGION</Keywords>
+            <Keywords name="Folders in code2, middle"></Keywords>
+            <Keywords name="Folders in code2, close">#ENDREGION</Keywords>
+            <Keywords name="Folders in comment, open"></Keywords>
+            <Keywords name="Folders in comment, middle"></Keywords>
+            <Keywords name="Folders in comment, close"></Keywords>
+            <Keywords name="Keywords1">LUI AUIPC J JUMP JA JAL JALR ECALL MV BEQ BNE BLT BGT BLTU BGTU BLE BGE BLEU BGEU LB LBU LH LHU LW LF SB SH SW SF ADDI SLTI SLTIU SEQZ XORI ORI ANDI SLLI SRLI SRAI ADD SUB MUL MULH MULHSU MULHU DIV DIVU REM REMU AND OR XOR NOT SLT SLTU SLL SRL SRA J JUMP NOP CALL RET</Keywords>
+            <Keywords name="Keywords2">x0 &#x000D;&#x000A;zero&#x000D;&#x000A;x1 &#x000D;&#x000A;ra &#x000D;&#x000A;x2 &#x000D;&#x000A;sp &#x000D;&#x000A;x3 &#x000D;&#x000A;gp &#x000D;&#x000A;x4 &#x000D;&#x000A;tp &#x000D;&#x000A;x5 &#x000D;&#x000A;t0 &#x000D;&#x000A;x6 &#x000D;&#x000A;t1 &#x000D;&#x000A;x7 &#x000D;&#x000A;t2 &#x000D;&#x000A;x8 &#x000D;&#x000A;s0 &#x000D;&#x000A;fp &#x000D;&#x000A;x9 &#x000D;&#x000A;s1 &#x000D;&#x000A;x10&#x000D;&#x000A;a0 &#x000D;&#x000A;x11&#x000D;&#x000A;a1 &#x000D;&#x000A;x12&#x000D;&#x000A;a2 &#x000D;&#x000A;x13&#x000D;&#x000A;a3 &#x000D;&#x000A;x14&#x000D;&#x000A;a4 &#x000D;&#x000A;x15&#x000D;&#x000A;a5 &#x000D;&#x000A;x16&#x000D;&#x000A;a6 &#x000D;&#x000A;x17&#x000D;&#x000A;a7 &#x000D;&#x000A;x18&#x000D;&#x000A;s2 &#x000D;&#x000A;x19&#x000D;&#x000A;s3 &#x000D;&#x000A;x20&#x000D;&#x000A;s4 &#x000D;&#x000A;x21&#x000D;&#x000A;s5 &#x000D;&#x000A;x22&#x000D;&#x000A;s6 &#x000D;&#x000A;x23&#x000D;&#x000A;s7 &#x000D;&#x000A;x24&#x000D;&#x000A;s8 &#x000D;&#x000A;x25&#x000D;&#x000A;s9 &#x000D;&#x000A;x26&#x000D;&#x000A;s10&#x000D;&#x000A;x27&#x000D;&#x000A;s11&#x000D;&#x000A;x28&#x000D;&#x000A;t3 &#x000D;&#x000A;x29&#x000D;&#x000A;t4 &#x000D;&#x000A;x30&#x000D;&#x000A;t5 &#x000D;&#x000A;x31&#x000D;&#x000A;t6 &#x000D;&#x000A;</Keywords>
+            <Keywords name="Keywords3">:</Keywords>
+            <Keywords name="Keywords4">.word .byte .half .float .macro</Keywords>
+            <Keywords name="Keywords5">.</Keywords>
+            <Keywords name="Keywords6"></Keywords>
+            <Keywords name="Keywords7"></Keywords>
+            <Keywords name="Keywords8"></Keywords>
+            <Keywords name="Delimiters">00 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23</Keywords>
+        </KeywordLists>
+        <Styles>
+            <WordsStyle name="DEFAULT" fgColor="000000" bgColor="FFFFFF" fontStyle="0" nesting="0" />
+            <WordsStyle name="COMMENTS" fgColor="000000" bgColor="FFFFFF" fontStyle="0" nesting="0" />
+            <WordsStyle name="LINE COMMENTS" fgColor="008040" bgColor="FFFFFF" fontStyle="0" nesting="0" />
+            <WordsStyle name="NUMBERS" fgColor="008040" bgColor="FFFFFF" fontStyle="1" nesting="0" />
+            <WordsStyle name="KEYWORDS1" fgColor="0000FF" bgColor="FFFFFF" fontStyle="1" nesting="0" />
+            <WordsStyle name="KEYWORDS2" fgColor="FF0080" bgColor="FFFFFF" fontStyle="1" nesting="0" />
+            <WordsStyle name="KEYWORDS3" fgColor="FF8000" bgColor="FFFFFF" fontStyle="1" nesting="0" />
+            <WordsStyle name="KEYWORDS4" fgColor="8000FF" bgColor="FFFFFF" fontStyle="1" nesting="0" />
+            <WordsStyle name="KEYWORDS5" fgColor="8000FF" bgColor="FFFFFF" fontStyle="0" nesting="0" />
+            <WordsStyle name="KEYWORDS6" fgColor="000000" bgColor="FFFFFF" fontStyle="0" nesting="0" />
+            <WordsStyle name="KEYWORDS7" fgColor="000000" bgColor="FFFFFF" fontStyle="0" nesting="0" />
+            <WordsStyle name="KEYWORDS8" fgColor="000000" bgColor="FFFFFF" fontStyle="0" nesting="0" />
+            <WordsStyle name="OPERATORS" fgColor="000000" bgColor="FFFFFF" fontStyle="0" nesting="0" />
+            <WordsStyle name="FOLDER IN CODE1" fgColor="000000" bgColor="FFFFFF" fontStyle="0" nesting="0" />
+            <WordsStyle name="FOLDER IN CODE2" fgColor="000000" bgColor="FFFFFF" fontStyle="0" nesting="0" />
+            <WordsStyle name="FOLDER IN COMMENT" fgColor="000000" bgColor="FFFFFF" fontStyle="0" nesting="0" />
+            <WordsStyle name="DELIMITERS1" fgColor="000000" bgColor="FFFFFF" fontStyle="0" nesting="0" />
+            <WordsStyle name="DELIMITERS2" fgColor="000000" bgColor="FFFFFF" fontStyle="0" nesting="0" />
+            <WordsStyle name="DELIMITERS3" fgColor="000000" bgColor="FFFFFF" fontStyle="0" nesting="0" />
+            <WordsStyle name="DELIMITERS4" fgColor="000000" bgColor="FFFFFF" fontStyle="0" nesting="0" />
+            <WordsStyle name="DELIMITERS5" fgColor="000000" bgColor="FFFFFF" fontStyle="0" nesting="0" />
+            <WordsStyle name="DELIMITERS6" fgColor="000000" bgColor="FFFFFF" fontStyle="0" nesting="0" />
+            <WordsStyle name="DELIMITERS7" fgColor="000000" bgColor="FFFFFF" fontStyle="0" nesting="0" />
+            <WordsStyle name="DELIMITERS8" fgColor="000000" bgColor="FFFFFF" fontStyle="0" nesting="0" />
+        </Styles>
+    </UserLang>
+</NotepadPlus>
