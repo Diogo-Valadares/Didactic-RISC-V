@@ -41,6 +41,8 @@ internal static class Instruction
         {"SF",   (p) => TranslateS((uint)Instructions.store, (uint)DataSize.@float, p[0], p[1], p[2])},
         //ALU-immediate 
         {"ADDI", (p) => TranslateI((uint)Instructions.op_imm, (uint)Operation.addi, p[0],p[1],p[2])},
+        {"INC",  (p) => TranslateI((uint)Instructions.op_imm, (uint)Operation.addi, p[0],p[0],p[1])},
+        {"DEC",  (p) => TranslateI((uint)Instructions.op_imm, (uint)Operation.addi, p[0],p[0],(-(int)ToInteger(p[1],0xfff)).ToString())},
         {"SLTI", (p) => TranslateI((uint)Instructions.op_imm, (uint)Operation.slti, p[0],p[1],p[2])},
         {"SLTIU",(p) => TranslateI((uint)Instructions.op_imm, (uint)Operation.sltiu, p[0],p[1],p[2])},
         {"SEQZ", (p) => TranslateI((uint)Instructions.op_imm, (uint)Operation.sltiu, p[0],p[1],"1")},

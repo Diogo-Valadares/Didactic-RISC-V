@@ -71,8 +71,6 @@ catch(Exception e)
     Console.WriteLine(e.StackTrace);
 }
 
-Console.Write(output);
-
 var compiledFilePath = $"{configSettings["destination"]}{fileNames[fileNumber]}";
 var compiledFile = File.CreateText(compiledFilePath);
 compiledFile.Write(output);

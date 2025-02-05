@@ -13,17 +13,17 @@ public class Assembler
         Dictionary<string, uint> words = ExtractVariables(linesList);
         lines = [.. linesList];
 
-        for (uint currentLine = 0, address = 0; currentLine < lines.Length; currentLine++, address++)
+        for (uint currentLine = 0; currentLine < lines.Length; currentLine++)
         {
             var parts = lines[currentLine].Split(' ');
 
             switch (parts[0].ToUpper())
             {
                 case ".WORD":
-                    memory[address] = Instruction.ToInteger(parts[2], 0xffffffff);
+                    memory[currentLine] = Instruction.ToInteger(parts[2], 0xffffffff);
                     Console.Write($"\n[{currentLine}]:\t");
                     Console.ForegroundColor = ConsoleColor.Green;
-                    Console.Write(Instruction.ToBinary(memory[address]));
+                    Console.Write(Instruction.ToBinary(memory[currentLine]));
                     Console.ForegroundColor = ConsoleColor.Magenta;
                     Console.Write($" {parts[0]}");
                     Console.ForegroundColor = ConsoleColor.Yellow;
@@ -41,7 +41,7 @@ public class Assembler
             }
             Console.Write($"\n[{currentLine}]:\t");
 
-            memory[address] = translator(parts[1..]);
+            memory[currentLine] = translator(parts[1..]);
             Console.ForegroundColor = ConsoleColor.Red;
             Console.Write($"  {parts[0]}");
             for (int i = 1; i < parts.Length; i++)
@@ -54,9 +54,16 @@ public class Assembler
 
                 Console.Write($" {parts[i]}");
             }
+            if (currentLine > 0 && ((memory[currentLine - 1] & 0x7f) == (uint)Instructions.load) &&
+                (((memory[currentLine - 1] & 0xf80) >> 7) == ((memory[currentLine] & 0x1f00000) >> 20) ||
+                ((memory[currentLine - 1] & 0xf80) >> 7) == ((memory[currentLine] & 0xf8000) >> 15)))
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.Write($"\n[WARNING] Hazard detected! {parts[0]} at {currentLine} uses a register that won't have time to load from the previous instruction.");
+            }
             Console.ForegroundColor = ConsoleColor.White;
         }
-        Console.Write("\n\n");
+
         var output = "v3.0 hex words addressed";
         uint mask = uint.MaxValue >> (32 - bitWidth);
         for (int i = 0, address = 0; i < memory.Length; i++, address += 32 / bitWidth)
@@ -69,6 +76,7 @@ public class Assembler
                 output += $" {portion.ToString($"x{bitWidth / 4}")}";
             }
         }
+        Console.Write("\nCompilation Completed.\n");
         return output;
     }
     public static void PrintInstructions()
@@ -115,9 +123,9 @@ public class Assembler
                 {
                     throw new Exception($"[{currentLine}]Unknown label \"{parts[i]}\" at line {currentLine}.");
                 }
-                
+
                 var lineBefore = lines[currentLine];
-                if (Instruction.PCRelativeInstructions.Contains(parts[0]))
+                if (Instruction.PCRelativeInstructions.Contains(parts[0].ToUpper()))
                 {
                     value -= currentLine << 2;
                 }
