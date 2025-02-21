@@ -10,7 +10,7 @@ SLTI x4 x0 1			//0x00000001
 SLTIU x5 x0 0xffffffff	//0x00000001
 XORI x6 x0 0xaaa		//0xfffffaaa
 SRLI x7 x2 1			//0x0000001f
-SRAI x8 x3 4			//0xffffffff -
+SRAI x8 x3 4			//0xffffffff
 ORI x9 x0 0xfff			//0xffffffff
 ANDI x10 x1 0xf			//0x0000000f
 
@@ -28,7 +28,7 @@ AND x20 x1 x4			//0x00000001
 
 MUL x21 x2 x2			//0x00000f81
 MULH x22 x3 x3			//0x00000000 
-MULHSU x23 x3 x3		//0x00000000?check implementation
+MULHSU x23 x3 x3		//0xfffffff0
 MULHU x24 x1 x3			//0x0ffffffe
 DIV x25 x1 x2			//0x00410410
 DIVU x26 x8 x2			//0x04104104
