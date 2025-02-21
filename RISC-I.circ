@@ -1705,7 +1705,7 @@ c87e0000
       <circ-port dir="in" pin="800,180" x="470" y="290"/>
       <circ-port dir="out" pin="1520,1090" x="640" y="270"/>
       <circ-port dir="out" pin="1520,1130" x="640" y="310"/>
-      <circ-port dir="out" pin="1520,1170" x="640" y="250"/>
+      <circ-port dir="out" pin="1520,1180" x="640" y="250"/>
       <circ-port dir="out" pin="1520,900" x="640" y="290"/>
       <circ-port dir="out" pin="1690,630" x="640" y="350"/>
     </appear>
@@ -1722,6 +1722,80 @@ c87e0000
       <a name="appearance" val="NewPins"/>
       <a name="facing" val="south"/>
       <a name="label" val="Calculate"/>
+    </comp>
+    <comp lib="0" loc="(1290,1140)" name="Splitter">
+      <a name="appear" val="center"/>
+      <a name="bit0" val="none"/>
+      <a name="bit1" val="none"/>
+      <a name="bit10" val="none"/>
+      <a name="bit11" val="none"/>
+      <a name="bit12" val="none"/>
+      <a name="bit13" val="none"/>
+      <a name="bit14" val="none"/>
+      <a name="bit15" val="none"/>
+      <a name="bit16" val="none"/>
+      <a name="bit17" val="none"/>
+      <a name="bit18" val="none"/>
+      <a name="bit19" val="none"/>
+      <a name="bit2" val="none"/>
+      <a name="bit20" val="none"/>
+      <a name="bit21" val="none"/>
+      <a name="bit22" val="none"/>
+      <a name="bit23" val="none"/>
+      <a name="bit24" val="none"/>
+      <a name="bit25" val="none"/>
+      <a name="bit26" val="none"/>
+      <a name="bit27" val="none"/>
+      <a name="bit28" val="none"/>
+      <a name="bit29" val="none"/>
+      <a name="bit3" val="none"/>
+      <a name="bit30" val="none"/>
+      <a name="bit31" val="0"/>
+      <a name="bit4" val="none"/>
+      <a name="bit5" val="none"/>
+      <a name="bit6" val="none"/>
+      <a name="bit7" val="none"/>
+      <a name="bit8" val="none"/>
+      <a name="bit9" val="none"/>
+      <a name="fanout" val="1"/>
+      <a name="incoming" val="32"/>
+    </comp>
+    <comp lib="0" loc="(1290,1160)" name="Splitter">
+      <a name="appear" val="center"/>
+      <a name="bit0" val="none"/>
+      <a name="bit1" val="none"/>
+      <a name="bit10" val="none"/>
+      <a name="bit11" val="none"/>
+      <a name="bit12" val="none"/>
+      <a name="bit13" val="none"/>
+      <a name="bit14" val="none"/>
+      <a name="bit15" val="none"/>
+      <a name="bit16" val="none"/>
+      <a name="bit17" val="none"/>
+      <a name="bit18" val="none"/>
+      <a name="bit19" val="none"/>
+      <a name="bit2" val="none"/>
+      <a name="bit20" val="none"/>
+      <a name="bit21" val="none"/>
+      <a name="bit22" val="none"/>
+      <a name="bit23" val="none"/>
+      <a name="bit24" val="none"/>
+      <a name="bit25" val="none"/>
+      <a name="bit26" val="none"/>
+      <a name="bit27" val="none"/>
+      <a name="bit28" val="none"/>
+      <a name="bit29" val="none"/>
+      <a name="bit3" val="none"/>
+      <a name="bit30" val="none"/>
+      <a name="bit31" val="0"/>
+      <a name="bit4" val="none"/>
+      <a name="bit5" val="none"/>
+      <a name="bit6" val="none"/>
+      <a name="bit7" val="none"/>
+      <a name="bit8" val="none"/>
+      <a name="bit9" val="none"/>
+      <a name="fanout" val="1"/>
+      <a name="incoming" val="32"/>
     </comp>
     <comp lib="0" loc="(1380,730)" name="Splitter">
       <a name="appear" val="right"/>
@@ -1756,7 +1830,7 @@ c87e0000
       <a name="label" val="Overflow"/>
       <a name="output" val="true"/>
     </comp>
-    <comp lib="0" loc="(1520,1170)" name="Pin">
+    <comp lib="0" loc="(1520,1180)" name="Pin">
       <a name="appearance" val="NewPins"/>
       <a name="facing" val="west"/>
       <a name="label" val="Carry_Out"/>
@@ -1851,10 +1925,19 @@ c87e0000
       <a name="fanout" val="4"/>
       <a name="incoming" val="4"/>
     </comp>
+    <comp lib="1" loc="(1370,1150)" name="XOR Gate">
+      <a name="size" val="30"/>
+    </comp>
+    <comp lib="1" loc="(1420,1140)" name="XOR Gate">
+      <a name="size" val="30"/>
+    </comp>
     <comp lib="1" loc="(1460,900)" name="NOR Gate">
       <a name="inputs" val="32"/>
     </comp>
-    <comp lib="1" loc="(1490,1130)" name="XOR Gate">
+    <comp lib="1" loc="(1480,1120)" name="XOR Gate">
+      <a name="size" val="30"/>
+    </comp>
+    <comp lib="1" loc="(1520,1130)" name="AND Gate">
       <a name="size" val="30"/>
     </comp>
     <comp lib="1" loc="(1610,630)" name="Controlled Buffer">
@@ -1928,7 +2011,9 @@ c87e0000
       <a name="showInTab" val="true"/>
       <a name="width" val="32"/>
     </comp>
-    <wire from="(1040,270)" to="(1040,830)"/>
+    <wire from="(1040,270)" to="(1040,810)"/>
+    <wire from="(1040,810)" to="(1040,830)"/>
+    <wire from="(1040,810)" to="(1100,810)"/>
     <wire from="(1060,850)" to="(1080,850)"/>
     <wire from="(1070,630)" to="(1070,640)"/>
     <wire from="(1070,630)" to="(1080,630)"/>
@@ -1936,9 +2021,11 @@ c87e0000
     <wire from="(1070,650)" to="(1070,660)"/>
     <wire from="(1070,650)" to="(1080,650)"/>
     <wire from="(1070,660)" to="(1080,660)"/>
-    <wire from="(1080,1170)" to="(1400,1170)"/>
-    <wire from="(1080,850)" to="(1080,1170)"/>
+    <wire from="(1080,1180)" to="(1520,1180)"/>
+    <wire from="(1080,850)" to="(1080,1180)"/>
+    <wire from="(1100,1130)" to="(1380,1130)"/>
     <wire from="(1100,180)" to="(1100,570)"/>
+    <wire from="(1100,810)" to="(1100,1130)"/>
     <wire from="(1120,630)" to="(1220,630)"/>
     <wire from="(1190,370)" to="(1190,650)"/>
     <wire from="(1190,650)" to="(1220,650)"/>
@@ -1946,17 +2033,23 @@ c87e0000
     <wire from="(1190,670)" to="(1220,670)"/>
     <wire from="(1270,630)" to="(1280,630)"/>
     <wire from="(1280,630)" to="(1380,630)"/>
+    <wire from="(1310,1140)" to="(1330,1140)"/>
+    <wire from="(1310,1160)" to="(1320,1160)"/>
+    <wire from="(1320,1160)" to="(1320,1170)"/>
+    <wire from="(1320,1160)" to="(1330,1160)"/>
+    <wire from="(1320,1170)" to="(1430,1170)"/>
+    <wire from="(1370,1150)" to="(1380,1150)"/>
     <wire from="(1380,630)" to="(1380,730)"/>
     <wire from="(1380,630)" to="(1590,630)"/>
     <wire from="(1400,1060)" to="(1400,1090)"/>
-    <wire from="(1400,1090)" to="(1400,1120)"/>
+    <wire from="(1400,1090)" to="(1400,1110)"/>
     <wire from="(1400,1090)" to="(1520,1090)"/>
-    <wire from="(1400,1120)" to="(1450,1120)"/>
-    <wire from="(1400,1140)" to="(1400,1170)"/>
-    <wire from="(1400,1140)" to="(1450,1140)"/>
-    <wire from="(1400,1170)" to="(1520,1170)"/>
+    <wire from="(1400,1110)" to="(1440,1110)"/>
+    <wire from="(1420,1140)" to="(1490,1140)"/>
+    <wire from="(1430,1130)" to="(1430,1170)"/>
+    <wire from="(1430,1130)" to="(1440,1130)"/>
     <wire from="(1460,900)" to="(1520,900)"/>
-    <wire from="(1490,1130)" to="(1520,1130)"/>
+    <wire from="(1480,1120)" to="(1490,1120)"/>
     <wire from="(1600,390)" to="(1600,620)"/>
     <wire from="(1610,630)" to="(1690,630)"/>
     <wire from="(200,930)" to="(230,930)"/>
@@ -2018,6 +2111,7 @@ c87e0000
     <wire from="(800,180)" to="(800,190)"/>
     <wire from="(800,350)" to="(800,380)"/>
     <wire from="(800,350)" to="(840,350)"/>
+    <wire from="(820,1160)" to="(1290,1160)"/>
     <wire from="(820,210)" to="(820,220)"/>
     <wire from="(820,590)" to="(820,640)"/>
     <wire from="(820,590)" to="(870,590)"/>
@@ -2027,9 +2121,11 @@ c87e0000
     <wire from="(820,690)" to="(870,690)"/>
     <wire from="(820,750)" to="(820,820)"/>
     <wire from="(820,750)" to="(860,750)"/>
+    <wire from="(820,820)" to="(820,1160)"/>
     <wire from="(820,820)" to="(860,820)"/>
     <wire from="(830,210)" to="(830,270)"/>
     <wire from="(830,270)" to="(1040,270)"/>
+    <wire from="(840,1140)" to="(1290,1140)"/>
     <wire from="(840,210)" to="(840,350)"/>
     <wire from="(840,570)" to="(840,610)"/>
     <wire from="(840,570)" to="(930,570)"/>
@@ -2041,6 +2137,7 @@ c87e0000
     <wire from="(840,710)" to="(870,710)"/>
     <wire from="(840,770)" to="(840,840)"/>
     <wire from="(840,770)" to="(860,770)"/>
+    <wire from="(840,840)" to="(840,1140)"/>
     <wire from="(840,840)" to="(860,840)"/>
     <wire from="(880,730)" to="(880,740)"/>
     <wire from="(880,780)" to="(880,790)"/>
