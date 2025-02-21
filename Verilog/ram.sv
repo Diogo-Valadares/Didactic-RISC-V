@@ -1,7 +1,8 @@
 module ram #(
     parameter MEM_INIT_FILE = "",
     parameter ADDR_WIDTH = 16,
-    parameter MEM_DEPTH = 1 << ADDR_WIDTH
+    parameter MEM_DEPTH = 1 << ADDR_WIDTH,
+    parameter PROGRAM_SIZE = MEM_DEPTH
 ) (
     input clock,
     input reset,
@@ -21,8 +22,12 @@ module ram #(
     assign data = (read && !write) ? {mem[stored_address+3], mem[stored_address+2], mem[stored_address+1], mem[stored_address]} : 32'bz;
 
     initial begin
+        integer i;
+        for (i = 0; i < MEM_DEPTH; i = i + 1) begin
+            mem[i] = 8'b0;
+        end
         if (MEM_INIT_FILE != "") begin
-            $readmemh(MEM_INIT_FILE, mem);
+            $readmemh(MEM_INIT_FILE, mem, 0, PROGRAM_SIZE-1);
         end
     end
 

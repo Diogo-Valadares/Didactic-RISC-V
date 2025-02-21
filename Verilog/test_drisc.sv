@@ -1,6 +1,12 @@
 module test_drisc;
+    parameter RAM_DATA = "quicksort.mem";
+    parameter ADDR_WIDTH = 12;
+    parameter PROGRAM_SIZE = 512;
 
-    parameter MEM_WIDTH = 9;
+    parameter CLOCK_TIME = 5;
+    parameter SIMULATION_TIME = 1500*30;
+
+    parameter DISPLAY_TOGGLE = 1;
 
     // Testbench signals
     reg clock;
@@ -12,7 +18,7 @@ module test_drisc;
     wire write;
     wire read;
     wire [6:0] opcode_debug;
-    wire [MEM_WIDTH-1:0] address_bus;
+    wire [ADDR_WIDTH-1:0] address_bus;
 
     // Instantiate the DUT (Device Under Test)
     drisc drisc_processor (
@@ -29,8 +35,9 @@ module test_drisc;
 
     // Instantiate the RAM
     ram #(
-        .MEM_INIT_FILE("jump.mem"),
-        .ADDR_WIDTH(MEM_WIDTH)
+        .MEM_INIT_FILE(RAM_DATA),
+        .ADDR_WIDTH(ADDR_WIDTH),
+        .PROGRAM_SIZE(PROGRAM_SIZE)
     ) ram_inst (
         .clock(clock),
         .reset(reset),
@@ -42,36 +49,44 @@ module test_drisc;
         .data(io_bus_drisc)
     );
 
-    bit display_toggle = 1;
-
     initial begin
         clock = 1;
-        forever #5 clock = ~clock; // 10ns period
+        forever #CLOCK_TIME clock = ~clock; // 10ns period
     end
 
     initial begin
-        $display("Time\t| Instruct | PC \t| Opcode\t(#hh)"); 
+        $display("        |            |      | addr             addr            addr  |             |     Instruction    "); 
+        $display("  Time  | Instruction|  PC  | [ AA ]:Reg A    [ BB ]Reg B     [ CC ] |  Immediate  |   Code   Argument  "); 
         forever #30 begin
-            if (display_toggle) begin
-                $display("%0d\t| %h | %0h  \t| %0s   \t(%0h)", 
+            if (DISPLAY_TOGGLE) begin
+                $display("%0s%0d\t|  %h  | %d | [%s]:%h [%s]:%h [%s] |%d | %s %0s  ", 
+                    ($time % 60) < 15 ? "\033[0m" : "\033[1;30m",
                     $time,
                     drisc_processor.operation_controller_0.current_instruction, 
-                    drisc_processor.pc_current_out[31:2], 
+                    drisc_processor.pc_current_out[11:2], 
+                    decode_register(drisc_processor.registers_addresses[9:5]),
+                    drisc_processor.a_bus,
+                    decode_register(drisc_processor.registers_addresses[14:10]),
+                    drisc_processor.b_bus,
+                    decode_register(drisc_processor.registers_addresses[4:0]),
+                    $signed(drisc_processor.immediate),
                     decoded_opcode,
-                    opcode_debug
+                    decoded_function
                 );
             end
         end
+
     end
 
     initial begin
         #1;
         forever #5 begin
-            if (!display_toggle) begin
+            if (!DISPLAY_TOGGLE) begin
                 if(drisc_processor.phase == 3'b001 & clock == 1) begin
                     $display("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
                 end
-                $display("Time %0d | Phi %b clk %b| PC:Addr In %h, Next %h Curr %h| Instruction : Next %h | Bus A: %h (R[%d]), Bus B: %h (R[%d]), Bus C: %h (R[%d]), imm %h| IO bus: %h, Ram Addr %h %h, W_A/W/R %b%b%b | Opcode: %0s | cnzv: %b %b %b", 
+                $display("%0sTime %0d | Phi %b clk %b| PC:Addr In %h, Next %h Curr %h| Instruction : Next %h | Bus A: %h (R[%d]), Bus B: %h (R[%d]), Bus C: %h (R[%d]), imm %h| IO bus: %h, Ram Addr %h %h, W_A/W/R %b%b%b | Opcode: %0s | cnzv: %b %b %b", 
+                    clock == 1? "\033[0m" : "\033[1;30m",
                     $time,
                     drisc_processor.phase,
                     clock,
@@ -101,14 +116,34 @@ module test_drisc;
         end
     end
     
+    initial begin
+        #60
+        forever #30 begin
+            if (drisc_processor.pc_current_out == drisc_processor.pc_next_out) begin
+                $display("\33[1;31mInfinite loop detected, exiting simulation");
+                $display("\33[0m");
+                dump_registers();
+                dump_ram();
+                $finish;
+            end else if (decoded_opcode == "UNKNOWN") begin
+                $display("\33[1;31mIllegal instruction detected, exiting simulation");
+                $display("\33[0m");
+                dump_registers();
+                dump_ram();
+                $finish;
+            end
+        end
+    end
+
     // Test sequence
     initial begin
         // Initialize signals
         reset = 1;
         #20;
-        reset = 0;
-        #10; 
-        #1600;
+        reset = 0; 
+        #SIMULATION_TIME;
+
+        $display("\33[0m");
         dump_registers();
         dump_ram();
         $finish;
@@ -161,22 +196,69 @@ module test_drisc;
         end
     endtask
 
-    // Task to dump the first 512 addresses of the RAM as a matrix
     task dump_ram;
         integer i, j;
+        logic [7:0] mem [0:(1 << ADDR_WIDTH)-1];
+        for (int i = 0; i < (1 << ADDR_WIDTH); i = i + 1) begin
+            mem[i] = 8'h00;
+        end
+        $readmemh(RAM_DATA, mem, 0, PROGRAM_SIZE-1);
+
         begin
             $display("RAM values:");
-            for (i = 0; i < 32; i = i + 1) begin
-                $write("Address %h: ", i*16);
+            for (i = 0; i < (1 << ADDR_WIDTH)/16 ; i = i + 1) begin
+                $write("\033[0mAddress %h: ", i*16);
                 for (j = 0; j < 16; j = j + 1) begin
-                    $write("%h ", ram_inst.mem[i*16 + j]);
+                    $write("%0s%h",(mem[i*16 + j] === ram_inst.mem[i*16 + j])? "\033[0m" : "\033[1;31m", ram_inst.mem[i*16 + j]);
+                    if ( ((j + 1) % 4) == 0 && j < 15) $write(".");
+                    else $write(" ");
                 end
                 $display("");
             end
         end
     endtask
 
-    // Monitor output signals
+    function bit [31:0] decode_register(input [4:0] register);
+        case (register)
+            5'b00000: decode_register = "zero";
+            5'b00001: decode_register = "ra ";
+            5'b00010: decode_register = "sp ";
+            5'b00011: decode_register = "gp ";
+            5'b00100: decode_register = "tp ";
+            5'b00101: decode_register = "t0 ";
+            5'b00110: decode_register = "t1 ";
+            5'b00111: decode_register = "t2 ";
+            5'b01000: decode_register = "s0 ";
+            5'b01001: decode_register = "s1 ";
+            5'b01010: decode_register = "a0 ";
+            5'b01011: decode_register = "a1 ";
+            5'b01100: decode_register = "a2 ";
+            5'b01101: decode_register = "a3 ";
+            5'b01110: decode_register = "a4 ";
+            5'b01111: decode_register = "a5 ";
+            5'b10000: decode_register = "a6 ";
+            5'b10001: decode_register = "a7 ";
+            5'b10010: decode_register = "s2 ";
+            5'b10011: decode_register = "s3 ";
+            5'b10100: decode_register = "s4 ";
+            5'b10101: decode_register = "s5 ";
+            5'b10110: decode_register = "s6 ";
+            5'b10111: decode_register = "s7 ";
+            5'b11000: decode_register = "s8 ";
+            5'b11001: decode_register = "s9 ";
+            5'b11010: decode_register = "s10";
+            5'b11011: decode_register = "s11";
+            5'b11100: decode_register = "t3 ";
+            5'b11101: decode_register = "t4 ";
+            5'b11110: decode_register = "t5 ";
+            5'b11111: decode_register = "t6 ";
+            default: decode_register = "????";
+        endcase        
+    endfunction
+
+
+
+    // decodes the opcode for debugging purposes
     wire [63:0] decoded_opcode = decode_opcode(opcode_debug);
     function bit [63:0] decode_opcode(input [6:0] opcode);
         case (opcode)
@@ -197,4 +279,56 @@ module test_drisc;
         endcase
     endfunction
 
+    //decodes the function
+    wire [8*15-1:0] decoded_function = decode_op_function(drisc_processor.op_function,drisc_processor.funct_3, opcode_debug);
+    function bit [8*15-1:0] decode_op_function(input [4:0] op_function,input [2:0]funct_3, input [6:0] opcode);
+        if(opcode != 7'h13 && opcode != 7'h33 && opcode != 7'h03 && opcode != 7'h23 && opcode != 7'h63) begin
+            return "--------";
+        end
+        
+        if(opcode == 7'h13 || opcode == 7'h33) begin
+            case ((opcode == 7'h13 & ~(op_function == 1 | op_function == 5 | op_function == 21)) ? 
+                    {2'b0, op_function[2:0]} : op_function)
+                0: decode_op_function = "ADD";
+                1: decode_op_function = "SLL";
+                2: decode_op_function = "SLT";
+                3: decode_op_function = "SLTU";
+                4: decode_op_function = "XOR";
+                5: decode_op_function = "SRL";
+                6: decode_op_function = "OR";
+                7: decode_op_function = "AND";
+                8: decode_op_function = "MUL";
+                9: decode_op_function = "MULH";
+                10: decode_op_function = "MULHSU";
+                11: decode_op_function = "MULHU";
+                12: decode_op_function = "DIV";
+                13: decode_op_function = "DIVU";
+                14: decode_op_function = "REM";
+                15: decode_op_function = "REMU";
+                16: decode_op_function = "SUB";
+                21: decode_op_function = "SRA";
+                default: decode_op_function = "UNKNOWN";
+            endcase
+        end
+        else if(opcode == 7'h03 || opcode == 7'h23) begin
+            case (funct_3)
+                3'b000: decode_op_function = "BYTE";
+                3'b001: decode_op_function = "HALF";
+                3'b010: decode_op_function = "WORD";
+                3'b100: decode_op_function = "U_BYTE";
+                3'b101: decode_op_function = "U_HALF";
+                default: decode_op_function = "INVALID";
+            endcase
+        end else if(opcode == 7'h63) begin
+            case (funct_3)
+                3'b000: decode_op_function = "EQUAL";
+                3'b001: decode_op_function = "NOT_EQUAL";
+                3'b100: decode_op_function = "LESS_THAN";
+                3'b101: decode_op_function = "GREATER_EQUAL";
+                3'b110: decode_op_function = "LESS_THAN_U";
+                3'b111: decode_op_function = "GREATER_EQUAL_U";
+                default: decode_op_function = "INVALID";
+            endcase
+        end        
+    endfunction
 endmodule
