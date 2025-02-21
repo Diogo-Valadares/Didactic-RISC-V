@@ -73,7 +73,7 @@ module operation_controller(
     wire [6:0] funct7 = funct_10[9:3];
     assign funct_3 = funct_10[2:0];  
     assign op_function = 
-        (~load_second_part & operation) ? {funct7[5], funct7[1], funct_3} :
+        (~(load_second_part & phase[2]) & operation) ? {funct7[5], funct7[1], funct_3} :
         branch ? 5'h10 : {~funct_3[2], 4'h5};
 
     // immediate decoder
