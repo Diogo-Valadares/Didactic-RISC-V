@@ -45,6 +45,8 @@ internal static class Instruction
         {"DEC",  (p) => TranslateI((uint)Instructions.op_imm, (uint)Operation.addi, p[0],p[0],(-(int)ToInteger(p[1],0xfff)).ToString())},
         {"SLTI", (p) => TranslateI((uint)Instructions.op_imm, (uint)Operation.slti, p[0],p[1],p[2])},
         {"SLTIU",(p) => TranslateI((uint)Instructions.op_imm, (uint)Operation.sltiu, p[0],p[1],p[2])},
+        {"SGTI", (p) => TranslateI((uint)Instructions.op_imm, (uint)Operation.slti, p[0],p[2],p[1])},
+        {"SGTIU",(p) => TranslateI((uint)Instructions.op_imm, (uint)Operation.sltiu, p[0],p[2],p[1])},
         {"SEQZ", (p) => TranslateI((uint)Instructions.op_imm, (uint)Operation.sltiu, p[0],p[1],"1")},
         {"XORI", (p) => TranslateI((uint)Instructions.op_imm, (uint)Operation.xori, p[0],p[1],p[2])},
         {"ORI",  (p) => TranslateI((uint)Instructions.op_imm, (uint)Operation.ori, p[0],p[1],p[2])},
@@ -70,7 +72,9 @@ internal static class Instruction
         {"NOT",  (p) => TranslateI((uint)Instructions.op_imm, (uint)Operation.xori, p[0], p[1], "-1")},
         //ALU-comparison
         {"SLT",  (p) => TranslateR((uint)Instructions.op, (uint)Operation.slt, p[0], p[1], p[2])},
-        {"SLTU", (p) => TranslateR((uint)Instructions.op,(uint)Operation.sltu, p[0], p[1], p[2])},
+        {"SLTU", (p) => TranslateR((uint)Instructions.op, (uint)Operation.sltu, p[0], p[1], p[2])},
+        {"SGT",  (p) => TranslateR((uint)Instructions.op, (uint)Operation.slt, p[0], p[2], p[1])},
+        {"SGTU", (p) => TranslateR((uint)Instructions.op, (uint)Operation.sltu, p[0], p[2], p[1])},
         //SHIFTER
         {"SLL",  (p) => TranslateR((uint)Instructions.op, (uint)Operation.sll, p[0], p[1], p[2])},
         {"SRL",  (p) => TranslateR((uint)Instructions.op, (uint)Operation.srl, p[0], p[1], p[2])},
