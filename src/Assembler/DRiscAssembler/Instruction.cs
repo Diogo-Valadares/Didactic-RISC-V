@@ -2,83 +2,119 @@
 
 internal static class Instruction
 {
-    public static readonly Dictionary<string, Func<string[], uint>> instructions = new()
+    public static readonly Dictionary<string, Func<string[], uint[]>> instructions = new()
     {
-        {"LUI",  (p) => TranslateU((uint)Instructions.lui, p[0], p[1])},
-        {"AUIPC",(p) => TranslateU((uint)Instructions.auipc, p[0], p[1])},
-        {"J",    (p) => TranslateJ((uint)Instructions.jal, "x0", p[0])},
-        {"JUMP", (p) => TranslateJ((uint)Instructions.jal, "x0", p[0])},
-        {"CALL", (p) => TranslateJ((uint)Instructions.jal, "ra", p[0])},
-        {"JAL",  (p) => TranslateJ((uint)Instructions.jal, p[0], p[1])},
-        {"JALR", (p) => TranslateI((uint)Instructions.jalr, 0, p[0],p[1],p[2])},
-        {"RET",  (p) => TranslateI((uint)Instructions.jalr, 0, "x0","ra","0")},
-        {"JA",   (p) => TranslateI((uint)Instructions.jalr, 0, "x0","x0",p[0])},
-        {"ECALL",(p) => TranslateI((uint)Instructions.system, 0, "x0", "x0", "0")},
-        {"MV",   (p) => TranslateI((uint)Instructions.op_imm, (uint)Operation.addi, p[0],p[1],"0")},
-        {"NOP",  (p) => TranslateI((uint)Instructions.op_imm, (uint)Operation.addi, "x0","x0","0")},        
+        {"LUI",  (p) => [TranslateU((uint)Instructions.lui, p[0], p[1])]},
+        {"LI",   (p) =>
+            {
+                int immediate = (int)ToInteger(p[1]);
+                if(int.Abs(immediate) <= 0x800)
+                {
+                    return [TranslateI((uint)Instructions.op_imm, (uint)Operation.addi, p[0],"x0",p[1])];
+                }
+                else if((immediate & 0xfff) != 0)
+                {
+                    var lui = TranslateU((uint)Instructions.lui, p[0], ((immediate >> 12) +
+                        (((int)immediate & 0x800) >> 11)).ToString());
+                    Console.Write("\n\t");
+                    var addi = TranslateI((uint)Instructions.op_imm, (uint)Operation.addi, p[0],"x0",p[1]);
+                    return [lui,addi];
+                }
+                else
+                {
+                    return [TranslateU((uint)Instructions.lui, p[0], (immediate >> 12).ToString())];
+                }
+            }
+        },
+        {"AUIPC",(p) => [TranslateU((uint)Instructions.auipc, p[0], p[1])]},
+        {"J",    (p) => [TranslateJ((uint)Instructions.jal, "x0", p[0])]},
+        {"JUMP", (p) => [TranslateJ((uint)Instructions.jal, "x0", p[0])]},
+        {"CALL", (p) =>//needs testing
+            {
+                if(int.Abs((int)ToInteger(p[0])) < 0x200000)
+                {
+                    return [TranslateJ((uint)Instructions.jal, "ra", p[0])];
+                }
+                else
+                {
+                    var auipc = TranslateU((uint)Instructions.auipc, "ra", ((ToInteger(p[0]) >> 12) +
+                        (((int)ToInteger(p[0]) & 0x800) >> 11)).ToString());
+                    Console.Write("\n\t");
+                    var jalr = TranslateI((uint)Instructions.jalr, 0, "ra", "ra", p[0]);
+                    return[auipc,jalr];
+                }
+            }
+        },
+        {"JAL",  (p) => [TranslateJ((uint)Instructions.jal, p[0], p[1])]},
+        {"JALR", (p) => [TranslateI((uint)Instructions.jalr, 0, p[0],p[1],p[2])]},
+        {"RET",  (p) => [TranslateI((uint)Instructions.jalr, 0, "x0","ra","0")]},
+        {"JA",   (p) => [TranslateI((uint)Instructions.jalr, 0, "x0","x0",p[0])]},
+        {"ECALL",(p) => [TranslateI((uint)Instructions.system, 0, "x0", "x0", "0")]},
+        {"MV",   (p) => [TranslateI((uint)Instructions.op_imm, (uint)Operation.addi, p[0],p[1],"0")]},
+        {"NOP",  (p) => [TranslateI((uint)Instructions.op_imm, (uint)Operation.addi, "x0","x0","0")]},        
         //BRANCH
-        {"BEQ",  (p) => TranslateB((uint)Instructions.branch, (uint)Branch.beq, p[0], p[1], p[2])},
-        {"BNE",  (p) => TranslateB((uint)Instructions.branch, (uint)Branch.bne, p[0], p[1], p[2])},
-        {"BLT",  (p) => TranslateB((uint)Instructions.branch, (uint)Branch.blt, p[0], p[1], p[2])},
-        {"BGT",  (p) => TranslateB((uint)Instructions.branch, (uint)Branch.blt, p[1], p[0], p[2])},
-        {"BLTU", (p) => TranslateB((uint)Instructions.branch, (uint)Branch.bltu, p[0], p[1], p[2])},
-        {"BGTU", (p) => TranslateB((uint)Instructions.branch, (uint)Branch.bltu, p[1], p[0], p[2])},
-        {"BLE",  (p) => TranslateB((uint)Instructions.branch, (uint)Branch.bge, p[1], p[0], p[2])},
-        {"BGE",  (p) => TranslateB((uint)Instructions.branch, (uint)Branch.bge, p[0], p[1], p[2])},
-        {"BLEU", (p) => TranslateB((uint)Instructions.branch, (uint)Branch.bgeu, p[1], p[0], p[2])},
-        {"BGEU", (p) => TranslateB((uint)Instructions.branch, (uint)Branch.bgeu, p[0], p[1], p[2])},
+        {"BEQ",  (p) => [TranslateB((uint)Instructions.branch, (uint)Branch.beq, p[0], p[1], p[2])]},
+        {"BNE",  (p) => [TranslateB((uint)Instructions.branch, (uint)Branch.bne, p[0], p[1], p[2])]},
+        {"BLT",  (p) => [TranslateB((uint)Instructions.branch, (uint)Branch.blt, p[0], p[1], p[2])]},
+        {"BGT",  (p) => [TranslateB((uint)Instructions.branch, (uint)Branch.blt, p[1], p[0], p[2])]},
+        {"BLTU", (p) => [TranslateB((uint)Instructions.branch, (uint)Branch.bltu, p[0], p[1], p[2])]},
+        {"BGTU", (p) => [TranslateB((uint)Instructions.branch, (uint)Branch.bltu, p[1], p[0], p[2])]},
+        {"BLE",  (p) => [TranslateB((uint)Instructions.branch, (uint)Branch.bge, p[1], p[0], p[2])]},
+        {"BGE",  (p) => [TranslateB((uint)Instructions.branch, (uint)Branch.bge, p[0], p[1], p[2])]},
+        {"BLEU", (p) => [TranslateB((uint)Instructions.branch, (uint)Branch.bgeu, p[1], p[0], p[2])]},
+        {"BGEU", (p) => [TranslateB((uint)Instructions.branch, (uint)Branch.bgeu, p[0], p[1], p[2])]},
         //LOAD
-        {"LB",   (p) => TranslateI((uint)Instructions.load, (uint)DataSize.@byte, p[0], p[1], p[2])},
-        {"LBU",  (p) => TranslateI((uint)Instructions.load, (uint)DataSize.ubyte, p[0], p[1], p[2])},
-        {"LH",   (p) => TranslateI((uint)Instructions.load, (uint)DataSize.half, p[0], p[1], p[2])},
-        {"LHU",  (p) => TranslateI((uint)Instructions.load, (uint)DataSize.uhalf, p[0], p[1], p[2])},
-        {"LW",   (p) => TranslateI((uint)Instructions.load, (uint)DataSize.word, p[0], p[1], p[2])},
-        {"LF",   (p) => TranslateI((uint)Instructions.load, (uint)DataSize.@float, p[0], p[1], p[2])},
+        {"LB",   (p) => [TranslateI((uint)Instructions.load, (uint)DataSize.@byte, p[0], p[1], p[2])]},
+        {"LBU",  (p) => [TranslateI((uint)Instructions.load, (uint)DataSize.ubyte, p[0], p[1], p[2])]},
+        {"LH",   (p) => [TranslateI((uint)Instructions.load, (uint)DataSize.half, p[0], p[1], p[2])]},
+        {"LHU",  (p) => [TranslateI((uint)Instructions.load, (uint)DataSize.uhalf, p[0], p[1], p[2])]},
+        {"LW",   (p) => [TranslateI((uint)Instructions.load, (uint)DataSize.word, p[0], p[1], p[2])]},
+        {"LF",   (p) => [TranslateI((uint)Instructions.load, (uint)DataSize.@float, p[0], p[1], p[2])]},
         //STORE
-        {"SB",   (p) => TranslateS((uint)Instructions.store, (uint)DataSize.@byte, p[0], p[1], p[2])},
-        {"SH",   (p) => TranslateS((uint)Instructions.store, (uint)DataSize.half, p[0], p[1], p[2])},
-        {"SW",   (p) => TranslateS((uint)Instructions.store, (uint)DataSize.word, p[0], p[1], p[2])},
-        {"SF",   (p) => TranslateS((uint)Instructions.store, (uint)DataSize.@float, p[0], p[1], p[2])},
+        {"SB",   (p) => [TranslateS((uint)Instructions.store, (uint)DataSize.@byte, p[0], p[1], p[2])]},
+        {"SH",   (p) => [TranslateS((uint)Instructions.store, (uint)DataSize.half, p[0], p[1], p[2])]},
+        {"SW",   (p) => [TranslateS((uint)Instructions.store, (uint)DataSize.word, p[0], p[1], p[2])]},
+        {"SF",   (p) => [TranslateS((uint)Instructions.store, (uint)DataSize.@float, p[0], p[1], p[2])]},
         //ALU-immediate 
-        {"ADDI", (p) => TranslateI((uint)Instructions.op_imm, (uint)Operation.addi, p[0],p[1],p[2])},
-        {"INC",  (p) => TranslateI((uint)Instructions.op_imm, (uint)Operation.addi, p[0],p[0],p[1])},
-        {"DEC",  (p) => TranslateI((uint)Instructions.op_imm, (uint)Operation.addi, p[0],p[0],(-(int)ToInteger(p[1],0xfff)).ToString())},
-        {"SLTI", (p) => TranslateI((uint)Instructions.op_imm, (uint)Operation.slti, p[0],p[1],p[2])},
-        {"SLTIU",(p) => TranslateI((uint)Instructions.op_imm, (uint)Operation.sltiu, p[0],p[1],p[2])},
-        {"SGTI", (p) => TranslateI((uint)Instructions.op_imm, (uint)Operation.slti, p[0],p[2],p[1])},
-        {"SGTIU",(p) => TranslateI((uint)Instructions.op_imm, (uint)Operation.sltiu, p[0],p[2],p[1])},
-        {"SEQZ", (p) => TranslateI((uint)Instructions.op_imm, (uint)Operation.sltiu, p[0],p[1],"1")},
-        {"XORI", (p) => TranslateI((uint)Instructions.op_imm, (uint)Operation.xori, p[0],p[1],p[2])},
-        {"ORI",  (p) => TranslateI((uint)Instructions.op_imm, (uint)Operation.ori, p[0],p[1],p[2])},
-        {"ANDI", (p) => TranslateI((uint)Instructions.op_imm, (uint)Operation.andi, p[0],p[1],p[2])},
-        {"SLLI", (p) => TranslateI((uint)Instructions.op_imm, (uint)Operation.slli, p[0],p[1],p[2])},
-        {"SRLI", (p) => TranslateI((uint)Instructions.op_imm, (uint)Operation.srli, p[0],p[1],p[2])},
-        {"SRAI", (p) => TranslateI((uint)Instructions.op_imm, (uint)Operation.srai, p[0],p[1],$"{ToInteger(p[2],0x1F)|0x400}")},
+        {"ADDI", (p) => [TranslateI((uint)Instructions.op_imm, (uint)Operation.addi, p[0],p[1],p[2])]},
+        {"INC",  (p) => [TranslateI((uint)Instructions.op_imm, (uint)Operation.addi, p[0],p[0],p[1])]},
+        {"DEC",  (p) => [TranslateI((uint)Instructions.op_imm, (uint)Operation.addi, p[0],p[0],(-(int)ToInteger(p[1],0xfff)).ToString())]},
+        {"SLTI", (p) => [TranslateI((uint)Instructions.op_imm, (uint)Operation.slti, p[0],p[1],p[2])]},
+        {"SLTIU",(p) => [TranslateI((uint)Instructions.op_imm, (uint)Operation.sltiu, p[0],p[1],p[2])]},
+        {"SGTI", (p) => [TranslateI((uint)Instructions.op_imm, (uint)Operation.slti, p[0],p[2],p[1])]},
+        {"SGTIU",(p) => [TranslateI((uint)Instructions.op_imm, (uint)Operation.sltiu, p[0],p[2],p[1])]},
+        {"SEQZ", (p) => [TranslateI((uint)Instructions.op_imm, (uint)Operation.sltiu, p[0],p[1],"1")]},
+        {"XORI", (p) => [TranslateI((uint)Instructions.op_imm, (uint)Operation.xori, p[0],p[1],p[2])]},
+        {"ORI",  (p) => [TranslateI((uint)Instructions.op_imm, (uint)Operation.ori, p[0],p[1],p[2])]},
+        {"ANDI", (p) => [TranslateI((uint)Instructions.op_imm, (uint)Operation.andi, p[0],p[1],p[2])]},
+        {"SLLI", (p) => [TranslateI((uint)Instructions.op_imm, (uint)Operation.slli, p[0],p[1],p[2])]},
+        {"SRLI", (p) => [TranslateI((uint)Instructions.op_imm, (uint)Operation.srli, p[0],p[1],p[2])]},
+        {"SRAI", (p) => [TranslateI((uint)Instructions.op_imm, (uint)Operation.srai, p[0],p[1],$"{ToInteger(p[2],0x1F)|0x400}")]},
         //ALU-arithmetic
-        {"ADD",  (p) => TranslateR((uint)Instructions.op, (uint)Operation.add, p[0], p[1], p[2])},
-        {"SUB",  (p) => TranslateR((uint)Instructions.op, (uint)Operation.sub, p[0], p[1], p[2])},
-        {"MUL",  (p) => TranslateR((uint)Instructions.op, (uint)Operation.mul, p[0], p[1], p[2])},
-        {"MULH", (p) => TranslateR((uint)Instructions.op, (uint)Operation.mulh, p[0], p[1], p[2])},
-        {"MULHSU",(p) =>TranslateR((uint)Instructions.op, (uint)Operation.mulhsu, p[0], p[1], p[2])},
-        {"MULHU",(p) => TranslateR((uint)Instructions.op, (uint)Operation.mulhu, p[0], p[1], p[2])},
-        {"DIV",  (p) => TranslateR((uint)Instructions.op, (uint)Operation.div, p[0], p[1], p[2])},
-        {"DIVU", (p) => TranslateR((uint)Instructions.op, (uint)Operation.divu, p[0], p[1], p[2])},
-        {"REM",  (p) => TranslateR((uint)Instructions.op, (uint)Operation.rem, p[0], p[1], p[2])},
-        {"REMU", (p) => TranslateR((uint)Instructions.op, (uint)Operation.remu, p[0], p[1], p[2])},
+        {"ADD",  (p) => [TranslateR((uint)Instructions.op, (uint)Operation.add, p[0], p[1], p[2])]},
+        {"SUB",  (p) => [TranslateR((uint)Instructions.op, (uint)Operation.sub, p[0], p[1], p[2])]},
+        {"MUL",  (p) => [TranslateR((uint)Instructions.op, (uint)Operation.mul, p[0], p[1], p[2])]},
+        {"MULH", (p) => [TranslateR((uint)Instructions.op, (uint)Operation.mulh, p[0], p[1], p[2])]},
+        {"MULHSU",(p) =>[TranslateR((uint)Instructions.op, (uint)Operation.mulhsu, p[0], p[1], p[2])]},
+        {"MULHU",(p) => [TranslateR((uint)Instructions.op, (uint)Operation.mulhu, p[0], p[1], p[2])]},
+        {"DIV",  (p) => [TranslateR((uint)Instructions.op, (uint)Operation.div, p[0], p[1], p[2])]},
+        {"DIVU", (p) => [TranslateR((uint)Instructions.op, (uint)Operation.divu, p[0], p[1], p[2])]},
+        {"REM",  (p) => [TranslateR((uint)Instructions.op, (uint)Operation.rem, p[0], p[1], p[2])]},
+        {"REMU", (p) => [TranslateR((uint)Instructions.op, (uint)Operation.remu, p[0], p[1], p[2])]},
         //ALU-logic
-        {"AND",  (p) => TranslateR((uint)Instructions.op, (uint)Operation.and, p[0], p[1], p[2])},
-        {"OR",   (p) => TranslateR((uint)Instructions.op, (uint)Operation.or, p[0], p[1], p[2])},
-        {"XOR",  (p) => TranslateR((uint)Instructions.op, (uint)Operation.xor, p[0], p[1], p[2])},
-        {"NOT",  (p) => TranslateI((uint)Instructions.op_imm, (uint)Operation.xori, p[0], p[1], "-1")},
+        {"AND",  (p) => [TranslateR((uint)Instructions.op, (uint)Operation.and, p[0], p[1], p[2])]},
+        {"OR",   (p) => [TranslateR((uint)Instructions.op, (uint)Operation.or, p[0], p[1], p[2])]},
+        {"XOR",  (p) => [TranslateR((uint)Instructions.op, (uint)Operation.xor, p[0], p[1], p[2])]},
+        {"NOT",  (p) => [TranslateI((uint)Instructions.op_imm, (uint)Operation.xori, p[0], p[1], "-1")]},
         //ALU-comparison
-        {"SLT",  (p) => TranslateR((uint)Instructions.op, (uint)Operation.slt, p[0], p[1], p[2])},
-        {"SLTU", (p) => TranslateR((uint)Instructions.op, (uint)Operation.sltu, p[0], p[1], p[2])},
-        {"SGT",  (p) => TranslateR((uint)Instructions.op, (uint)Operation.slt, p[0], p[2], p[1])},
-        {"SGTU", (p) => TranslateR((uint)Instructions.op, (uint)Operation.sltu, p[0], p[2], p[1])},
+        {"SLT",  (p) => [TranslateR((uint)Instructions.op, (uint)Operation.slt, p[0], p[1], p[2])]},
+        {"SLTU", (p) => [TranslateR((uint)Instructions.op, (uint)Operation.sltu, p[0], p[1], p[2])]},
+        {"SGT",  (p) => [TranslateR((uint)Instructions.op, (uint)Operation.slt, p[0], p[2], p[1])]},
+        {"SGTU", (p) => [TranslateR((uint)Instructions.op, (uint)Operation.sltu, p[0], p[2], p[1])]},
         //SHIFTER
-        {"SLL",  (p) => TranslateR((uint)Instructions.op, (uint)Operation.sll, p[0], p[1], p[2])},
-        {"SRL",  (p) => TranslateR((uint)Instructions.op, (uint)Operation.srl, p[0], p[1], p[2])},
-        {"SRA",  (p) => TranslateR((uint)Instructions.op, (uint)Operation.sra, p[0], p[1], p[2])}
+        {"SLL",  (p) => [TranslateR((uint)Instructions.op, (uint)Operation.sll, p[0], p[1], p[2])]},
+        {"SRL",  (p) => [TranslateR((uint)Instructions.op, (uint)Operation.srl, p[0], p[1], p[2])]},
+        {"SRA",  (p) => [TranslateR((uint)Instructions.op, (uint)Operation.sra, p[0], p[1], p[2])]}
     };
     /// <summary>
     /// Defines the set of instructions that are PC-relative to calculate the value of the labels.
@@ -330,7 +366,7 @@ internal static class Instruction
     /// </summary>
     /// <param name="number"></param>
     /// <returns></returns>
-    public static uint ToInteger(string number, uint mask)
+    public static uint ToInteger(string number, uint mask = 0xffffffff)
     {
         if (number.StartsWith("0x"))
         {

@@ -31,7 +31,7 @@ List<string> fileNames = [];
 string[] files = Directory.GetFiles(configSettings["searchFolder"], "*.*", SearchOption.TopDirectoryOnly);
 foreach (string file in files)
 {
-    if (file.EndsWith(".asm") || file.EndsWith(".txt"))
+    if (file.EndsWith(".dasm") || file.EndsWith(".txt"))
     {
         fileNames.Add(Path.GetFileName(file));
     }
@@ -71,7 +71,7 @@ catch(Exception e)
     Console.WriteLine(e.StackTrace);
 }
 
-var compiledFilePath = $"{configSettings["destination"]}{fileNames[fileNumber]}";
+var compiledFilePath = $"{configSettings["destination"]}{fileNames[fileNumber][..fileNames[fileNumber].LastIndexOf('.')]}.mem";
 var compiledFile = File.CreateText(compiledFilePath);
 compiledFile.Write(output);
 compiledFile.Flush();
