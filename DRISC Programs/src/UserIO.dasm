@@ -1,0 +1,92 @@
+.macro drawPoint videoAddress xReg yReg colorReg resolutionBits yResolutionOffset addressBits 
+	//masking the correct bits
+	andi xReg xReg resolutionBits
+	andi yReg yReg resolutionBits
+	
+	slli yReg yReg yResolutionOffset
+	
+	//generating the pixel address
+	or videoAddress videoAddress xReg
+	or videoAddress videoAddress yReg
+	
+	//writing the pixel
+	sw colorReg videoAddress 0
+	
+	//reset video address and yReg to its original value
+	and videoAddress videoAddress addressBits
+	srli yReg yReg yResolutionOffset
+.endmacro
+	
+.macro beqi reg immediate position auxReg //branches if reg==immediate
+	li auxReg immediate
+	beq reg auxReg position
+.endmacro 
+
+.macro setVector xReg yReg xVal yVal
+	li xReg xVal
+	li yReg yVal
+.endmacro
+
+.macro copyVector xRegTarget yRegTarget xRegSource yRegSource
+	mv xRegTarget xRegSource
+	mv yRegTarget yRegSource
+.endmacro
+
+.macro addVector xRegR yRegR xReg1 yReg1 Xreg2 Yreg2
+	add xRegR xReg1 Xreg2
+	add yRegR yReg1 Yreg2	
+.endmacro
+	li sp 0x00010000	
+	//video address 0x01000000 will be stored at the global pointer 
+	//adicionally, the keyboard is the videoAddress-1, which should save resources.
+	li gp 0x01000000		
+	li s2 0xffffffff //colorReg white	
+	li s3 0xff000000 //address bits
+	setVector s0 s1 0x1f 0x1f //setting starting position to center of the display	
+	
+	//first we set a loop that first test if user has set any input(loaded to t1).
+	//if so we set the point speed, then move the position based on the speed.
+	//the loop ends once the input key is 'q'(t6)
+
+	setVector t4 t5 1 0 //setting initial speed
+
+:loopStart
+	lb t1 gp -1
+	nop
+	
+	blt t1 zero :draw //if there is no input the value will be negative 	
+	
+#REGION "switch"(input)
+	beqi t1 0x77 :w a0
+	beqi t1 0x61 :a a0
+	beqi t1 0x73 :s a0
+	beqi t1 0x64 :d a0
+	beqi t1 0x71 :loopEnd a0
+
+	:w
+	setVector t4 t5 0 -1
+	jump :draw
+	:a
+	setVector t4 t5 -1 0
+	jump :draw
+	:s
+	setVector t4 t5 0 1
+	jump :draw
+	:d
+	setVector t4 t5 1 0
+#ENDREGION
+	
+	:draw
+	copyVector a0 a1 s0 s1				//save old position
+	addVector s0 s1 s0 s1 t4 t5			//apply velocity to position
+	inc s2 0xfff
+	drawPoint gp s0 s1 s2 0x3f 6 s3		//draw new position
+	drawPoint gp a0 a1 zero 0x3f 6 s3	//clear old position
+
+	jump :loopStart
+:loopEnd
+	
+	jump 0
+	
+	
+	
