@@ -1,9 +1,11 @@
 module drisc(
     input clock,
     input reset,
-    inout [31:0] io_bus,
+    input [31:0] data_bus_in,
+    output [31:0] data_bus_out,
+    output data_bus_out_enable,
     output [31:0] address_bus,
-    output [1:0]data_size,
+    output [1:0] data_size,
     output write_address,
     output write,
     output read,
@@ -11,17 +13,13 @@ module drisc(
 );
 
     wire [3:1] phase;
-
-    wire [31:0] data_io_out_io;
-    assign io_bus = data_io_read_io ? data_io_out_io : 32'bz ;
-
+    
     //internal busses
     wire [31:0]a_bus;
     wire [31:0]b_bus;
     wire [31:0]c_bus = 
         data_io_load ? data_io_out_c :
         load_upper_immediate ? immediate :
-        shifter_read ? alu_out :
         pc_read_next ? pc_next_out :
         alu_out;
 
@@ -34,7 +32,6 @@ module drisc(
     //program counter
     wire [31:0] pc_current_out;
     wire [1:0] data_offset;
-    wire [31:0] pc_address_in;
     
     //controller wires
     wire [31:0] immediate;
@@ -52,7 +49,7 @@ module drisc(
     wire pc_read_next;
     wire pc_jump;
     wire pc_use_offset;
-    wire pc_addr_in_to_AD;
+    wire forward_address;
     wire data_io_write_io;
     wire data_io_read_io;
     wire data_io_load;
@@ -70,13 +67,15 @@ module drisc(
         .clock(clock),
         .write(phase[3]),
         .jump(pc_jump),
+        .pc_relative(pc_relative),
         .use_offset(pc_use_offset),
-        .address_in_to_AD(pc_addr_in_to_AD),
-        .address_in(pc_address_in),
+        .forward_address(forward_address),
+        .immediate(immediate),
+        .address_in(a_bus),
         .data_offset(data_offset),
         .next(pc_next_out),
         .current(pc_current_out),
-        .AD_Bus(address_bus)
+        .address_bus(address_bus)
     );
 
     // Instantiate the data io module
@@ -87,9 +86,9 @@ module drisc(
         .data_type(funct_3),
         .data_offset(data_offset),
         .cpu_in(b_bus),
-        .io_in(io_bus),
+        .io_in(data_bus_in),
         .cpu_out(data_io_out_c),
-        .io_out(data_io_out_io)
+        .io_out(data_bus_out)
     );
 
     // Instantiate the operation_controller module
@@ -97,7 +96,7 @@ module drisc(
         .clock(clock),
         .reset(reset),
         .phase(phase),
-        .data_in(io_bus),
+        .data_in(data_bus_in),
         .immediate(immediate),
         .opcode(opcode_debug),
         .funct_3(funct_3),
@@ -106,17 +105,15 @@ module drisc(
         .register_file_write(register_file_write),
         .cnzv(cnzv),
         .op_function(op_function),
-        .alu_read(alu_read),
         .alu_use_pc(alu_use_pc),
         .use_immediate(use_immediate),
-        .shifter_read(shifter_read),
-        .address_alu_use_pc(address_alu_use_pc),
+        .pc_relative(pc_relative),
         .pc_read_next(pc_read_next),
         .pc_jump(pc_jump),
         .pc_use_offset(pc_use_offset),
-        .pc_addr_in_to_AD(pc_addr_in_to_AD),
+        .forward_address(forward_address),
         .data_io_write_io(data_io_write_io),
-        .data_io_read_io(data_io_read_io),
+        .data_io_read_io(data_bus_out_enable),
         .data_io_load(data_io_load),
         .pad_write_address(write_address),
         .pad_read(read),
@@ -139,8 +136,6 @@ module drisc(
 
     // Instantiate the alu module
     alu alu_0 (
-        .clock(clock),
-        .write(phase[1]),
         .use_pc(alu_use_pc),
         .a(a_bus),
         .program_counter(pc_current_out),
@@ -150,16 +145,5 @@ module drisc(
         .operation(op_function),
         .result(alu_out),
         .cnzv(cnzv)
-    );
-
-    // Instantiate the address_alu module
-    address_alu address_alu_0 (
-        .clock(clock),
-        .write(phase[1]),
-        .use_pc(address_alu_use_pc),
-        .a(a_bus),
-        .program_counter(pc_current_out),
-        .immediate(immediate),
-        .result(pc_address_in)
     );
 endmodule

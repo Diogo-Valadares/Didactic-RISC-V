@@ -16,7 +16,6 @@ module ram #(
 
     // Memory array
     reg [7:0] mem [0:MEM_DEPTH-1];
-    reg [31:0] data_out;
     reg [ADDR_WIDTH-1 : 0] stored_address = 32'b0; 
 
     assign data = (read && !write) ? {mem[stored_address+3], mem[stored_address+2], mem[stored_address+1], mem[stored_address]} : 32'bz;

@@ -14,16 +14,14 @@ module operation_controller(
     /////Alu and Shifter/////
     input [3:0] cnzv,
     output [4:0] op_function,
-    output alu_read,
     output alu_use_pc,
     output use_immediate,
-    output shifter_read,
-    output address_alu_use_pc,
     /////Program Counter/////
     output pc_read_next,
     output pc_jump,
+    output pc_relative,
     output pc_use_offset,
-    output pc_addr_in_to_AD,
+    output forward_address,
     /////Data IO/////
     output data_io_write_io,
     output data_io_read_io,
@@ -72,9 +70,8 @@ module operation_controller(
             {current_instruction[31:25], current_instruction[14:12]};
     wire [6:0] funct7 = funct_10[9:3];
     assign funct_3 = funct_10[2:0];  
-    assign op_function = 
-        (~(load_second_part & phase[2]) & operation) ? {funct7[5], funct7[1], funct_3} :
-        branch ? 5'h10 : {~funct_3[2], 4'h5};
+    assign op_function = operation ? {funct7[5], funct7[1], funct_3} :
+                            branch ? 5'h10 : {~funct_3[2], 4'h5};
 
     // immediate decoder
     assign immediate =  
@@ -95,18 +92,11 @@ module operation_controller(
         ((system | load | jump_and_link_register | jump_and_link | operation | add_upp_immediate_pc | is_load_upper_immediate) & phase[3]) | 
         (load_second_part & phase[2]);
     
-    // alu and shifter
-    wire alu = operation & ~(op_function == 5'h01 | op_function == 5'h05 | op_function == 5'h15);
-    wire shifter = operation & (op_function == 5'h01 | op_function == 5'h05 | op_function == 5'h15);
-    
-    assign alu_read = phase[3] & (alu | add_upp_immediate_pc | branch);
     assign alu_use_pc = add_upp_immediate_pc;
 
     assign use_immediate = add_upp_immediate_pc | operation_immediate;
 
-    assign address_alu_use_pc = branch | jump_and_link;
-
-    assign shifter_read = phase[3] & shifter;
+    assign pc_relative = branch | jump_and_link;
 
     // program counter
     assign pc_read_next = phase[3] & (jump_and_link_register | jump_and_link);
@@ -125,7 +115,7 @@ module operation_controller(
 
     assign pc_use_offset = store;
 
-    assign pc_addr_in_to_AD = phase[3] & (load | store);
+    assign forward_address = phase[3] & (load | store);
 
     // data io
     assign data_io_write_io = phase[1] & load_second_part;
@@ -133,7 +123,7 @@ module operation_controller(
     assign data_io_load = phase[2] & load_second_part;
 
     // output interface
-    assign pad_write_address = phase[1] | pc_addr_in_to_AD;
+    assign pad_write_address = phase[1] | forward_address;
     assign pad_read = phase[2] | data_io_write_io;
     assign pad_write = data_io_read_io;
     assign pad_data_size = {funct_3[1], funct_3[1] | funct_3[0]};

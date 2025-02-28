@@ -1,1 +1,1 @@
-verilog test_drisc.sv phase_generator.sv program_counter.sv data_io.sv operation_controller.sv register_file.sv alu.sv address_alu.sv ram.sv drisc.sv
+verilog test_drisc.sv phase_generator.sv program_counter.sv data_io.sv operation_controller.sv register_file.sv alu.sv ram.sv drisc.sv

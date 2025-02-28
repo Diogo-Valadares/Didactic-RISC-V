@@ -1,30 +1,35 @@
 module test_drisc;
-    parameter RAM_DATA = "quicksort.mem";
+    parameter RAM_DATA = "load_store.mem";
     parameter ADDR_WIDTH = 12;
     parameter PROGRAM_SIZE = 512;
 
-    parameter CLOCK_TIME = 5;
-    parameter SIMULATION_TIME = 1500*30;
+    parameter CLOCK_UPDATE_TIME = 1;
+    parameter INSTRUCTION_TIME = 6;
+    parameter INSTRUCTION_COUNT = 10000;
+    parameter SIMULATION_TIME = INSTRUCTION_COUNT * INSTRUCTION_TIME;
 
-    parameter DISPLAY_TOGGLE = 1;
+    parameter DISPLAY_TOGGLE = 1;//simple=1 complex=0
 
-    // Testbench signals
     reg clock;
     reg reset;
-    wire [31:0] io_bus_ram;
-    wire [31:0] io_bus_drisc;
+    wire [31:0] data_bus;
+    wire [31:0] data_bus_drisc;
+    wire data_bus_out_enable;
     wire [1:0] data_size;
     wire write_address;
     wire write;
     wire read;
     wire [6:0] opcode_debug;
-    wire [ADDR_WIDTH-1:0] address_bus;
+    wire [31:0] address_bus;
 
-    // Instantiate the DUT (Device Under Test)
+    assign data_bus = data_bus_out_enable ? data_bus_drisc : 32'hz;
+
     drisc drisc_processor (
         .clock(clock),
         .reset(reset),
-        .io_bus(io_bus_drisc),
+        .data_bus_in(data_bus),
+        .data_bus_out(data_bus_drisc),
+        .data_bus_out_enable(data_bus_out_enable),
         .address_bus(address_bus),
         .data_size(data_size),
         .write_address(write_address),
@@ -33,7 +38,6 @@ module test_drisc;
         .opcode_debug(opcode_debug)
     );
 
-    // Instantiate the RAM
     ram #(
         .MEM_INIT_FILE(RAM_DATA),
         .ADDR_WIDTH(ADDR_WIDTH),
@@ -45,22 +49,24 @@ module test_drisc;
         .write_address(write_address),
         .read(read),
         .data_size(data_size),
-        .address(address_bus),
-        .data(io_bus_drisc)
+        .address(address_bus[ADDR_WIDTH-1:0]),
+        .data(data_bus)
     );
 
+    //clock generation
     initial begin
         clock = 1;
-        forever #CLOCK_TIME clock = ~clock; // 10ns period
+        forever #CLOCK_UPDATE_TIME clock = ~clock;
     end
-
+    // Simplified Debugging display
     initial begin
-        $display("        |            |      | addr             addr            addr  |             |     Instruction    "); 
-        $display("  Time  | Instruction|  PC  | [ AA ]:Reg A    [ BB ]Reg B     [ CC ] |  Immediate  |   Code   Argument  "); 
-        forever #30 begin
+        $display("Clock cicle duration = %0d, Instruction duration = %0d, Simulation max duration = %0d", CLOCK_UPDATE_TIME * 2, INSTRUCTION_TIME, SIMULATION_TIME); 
+        $display("        |            |      | addr             addr            addr  |            |     Instruction    "); 
+        $display("  Time  | Instruction|  PC  | [ AA ]:Reg A    [ BB ]Reg B     [ CC ] |  Immediate |   Code   Argument  "); 
+        forever #INSTRUCTION_TIME begin
             if (DISPLAY_TOGGLE) begin
-                $display("%0s%0d\t|  %h  | %d | [%s]:%h [%s]:%h [%s] |%d | %s %0s  ", 
-                    ($time % 60) < 15 ? "\033[0m" : "\033[1;30m",
+                $display("%0s%0d\t|  %h  | %d | [%s]:%h [%s]:%h [%s] |%d | %s %0s", 
+                    ($time % (2*INSTRUCTION_TIME)) < INSTRUCTION_TIME/4 ? "\033[0m" : "\033[1;30m",
                     $time,
                     drisc_processor.operation_controller_0.current_instruction, 
                     drisc_processor.pc_current_out[11:2], 
@@ -70,17 +76,16 @@ module test_drisc;
                     drisc_processor.b_bus,
                     decode_register(drisc_processor.registers_addresses[4:0]),
                     $signed(drisc_processor.immediate),
-                    decoded_opcode,
-                    decoded_function
+                    decode_opcode(opcode_debug),
+                    decode_op_function(drisc_processor.op_function,drisc_processor.funct_3, opcode_debug)
                 );
             end
         end
-
     end
-
+    // Complex Debugging display
     initial begin
         #1;
-        forever #5 begin
+        forever #CLOCK_UPDATE_TIME begin
             if (!DISPLAY_TOGGLE) begin
                 if(drisc_processor.phase == 3'b001 & clock == 1) begin
                     $display("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
@@ -101,7 +106,7 @@ module test_drisc;
                     drisc_processor.c_bus,
                     drisc_processor.registers_addresses[4:0],
                     drisc_processor.immediate,
-                    io_bus_drisc,
+                    data_bus,
                     address_bus,
                     ram_inst.stored_address,
                     write_address,
@@ -115,17 +120,17 @@ module test_drisc;
             end        
         end
     end
-    
+    // Infinite loop and illegal instruction detection
     initial begin
-        #60
-        forever #30 begin
+        #(INSTRUCTION_TIME*4);
+        forever #(INSTRUCTION_TIME) begin
             if (drisc_processor.pc_current_out == drisc_processor.pc_next_out) begin
                 $display("\33[1;31mInfinite loop detected, exiting simulation");
                 $display("\33[0m");
                 dump_registers();
                 dump_ram();
                 $finish;
-            end else if (decoded_opcode == "UNKNOWN") begin
+            end else if (decode_opcode(opcode_debug) == "UNKNOWN") begin
                 $display("\33[1;31mIllegal instruction detected, exiting simulation");
                 $display("\33[0m");
                 dump_registers();
@@ -149,7 +154,6 @@ module test_drisc;
         $finish;
     end
 
-    // Task to dump register values
     task dump_registers;
         integer i;
         reg [8*4:1] reg_name;
@@ -197,7 +201,10 @@ module test_drisc;
     endtask
 
     task dump_ram;
-        integer i, j;
+        integer i, j, inc;
+        bit print_zero = 1;        
+
+        //inicialize test memory
         logic [7:0] mem [0:(1 << ADDR_WIDTH)-1];
         for (int i = 0; i < (1 << ADDR_WIDTH); i = i + 1) begin
             mem[i] = 8'h00;
@@ -207,13 +214,26 @@ module test_drisc;
         begin
             $display("RAM values:");
             for (i = 0; i < (1 << ADDR_WIDTH)/16 ; i = i + 1) begin
-                $write("\033[0mAddress %h: ", i*16);
-                for (j = 0; j < 16; j = j + 1) begin
-                    $write("%0s%h",(mem[i*16 + j] === ram_inst.mem[i*16 + j])? "\033[0m" : "\033[1;31m", ram_inst.mem[i*16 + j]);
-                    if ( ((j + 1) % 4) == 0 && j < 15) $write(".");
-                    else $write(" ");
+                inc = 0;
+                for(j = 0; j < 16; j = j + 1) begin
+                    inc = mem[i * 16 + j] === ram_inst.mem[i * 16 + j] ? 
+                        inc | ram_inst.mem[i * 16 + j] : 1; 
                 end
-                $display("");
+                if (inc != 0) begin
+                    $write("\033[0mAddress %h: ", i*16);          
+                    for (j = 0; j < 16; j = j + 1) begin
+                        $write("%0s%h",(mem[i*16 + j] === ram_inst.mem[i*16 + j]) ? 
+                            "\033[0m" : "\033[1;31m", ram_inst.mem[i*16 + j]);
+                        if ( ((j + 1) % 4) == 0 && j < 15) $write(".");
+                        else $write(" ");
+                    end
+                    $display("");
+                    print_zero = 1;
+                end
+                else if(print_zero) begin
+                    $display("\033[0m\t\t\t(Zeroes Ommited)");
+                    print_zero = 0;
+                end
             end
         end
     endtask
@@ -256,10 +276,6 @@ module test_drisc;
         endcase        
     endfunction
 
-
-
-    // decodes the opcode for debugging purposes
-    wire [63:0] decoded_opcode = decode_opcode(opcode_debug);
     function bit [63:0] decode_opcode(input [6:0] opcode);
         case (opcode)
             7'h03: decode_opcode = "LOAD";
@@ -279,8 +295,6 @@ module test_drisc;
         endcase
     endfunction
 
-    //decodes the function
-    wire [8*15-1:0] decoded_function = decode_op_function(drisc_processor.op_function,drisc_processor.funct_3, opcode_debug);
     function bit [8*15-1:0] decode_op_function(input [4:0] op_function,input [2:0]funct_3, input [6:0] opcode);
         if(opcode != 7'h13 && opcode != 7'h33 && opcode != 7'h03 && opcode != 7'h23 && opcode != 7'h63) begin
             return "--------";
