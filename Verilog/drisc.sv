@@ -9,7 +9,7 @@ module drisc(
     output write_address,
     output write,
     output read,
-    output [6:0] opcode_debug
+    output [31:0] current_instruction
 );
 
     wire [3:1] phase;
@@ -45,7 +45,7 @@ module drisc(
     wire alu_use_pc;
     wire use_immediate;
     wire shifter_read;
-    wire address_alu_use_pc;
+    wire pc_relative;
     wire pc_read_next;
     wire pc_jump;
     wire pc_use_offset;
@@ -98,7 +98,7 @@ module drisc(
         .phase(phase),
         .data_in(data_bus_in),
         .immediate(immediate),
-        .opcode(opcode_debug),
+        .current_instruction(current_instruction),
         .funct_3(funct_3),
         .load_upper_immediate(load_upper_immediate),
         .registers_addresses(registers_addresses),

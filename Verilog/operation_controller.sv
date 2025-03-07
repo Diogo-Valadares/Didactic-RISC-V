@@ -4,7 +4,7 @@ module operation_controller(
     input [3:1] phase,
     input [31:0] data_in,
     output [31:0] immediate,
-    output [6:0] opcode,
+    output reg [31:0] current_instruction,
     output [2:0] funct_3,
     /////Miscellaneous/////
     output load_upper_immediate,
@@ -33,8 +33,8 @@ module operation_controller(
     output [1:0]pad_data_size
 );
 
+///Registers
     reg [31:0] next_instruction;
-    reg [31:0] current_instruction;
     reg [31:0] last_instruction;
     reg flush_pipeline;
 
@@ -60,17 +60,14 @@ module operation_controller(
             {last_instruction[24:15], last_instruction[11:7]} : 
             {current_instruction[24:15], current_instruction[11:7]};
     
-    // opcode output for debugging
-    assign opcode = current_instruction[6:0];
-
     // instructions function number
     wire [9:0] funct_10 = 
         load_second_part & phase[2] | store_second_part & phase[1] ? 
             {last_instruction[31:25], last_instruction[14:12]} : 
             {current_instruction[31:25], current_instruction[14:12]};
-    wire [6:0] funct7 = funct_10[9:3];
+    wire [6:0] funct_7 = funct_10[9:3];
     assign funct_3 = funct_10[2:0];  
-    assign op_function = operation ? {funct7[5], funct7[1], funct_3} :
+    assign op_function = operation ? {funct_7[5], funct_7[1], funct_3} :
                             branch ? 5'h10 : {~funct_3[2], 4'h5};
 
     // immediate decoder

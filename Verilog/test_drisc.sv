@@ -1,11 +1,11 @@
 module test_drisc;
-    parameter RAM_DATA = "load_store.mem";
+    parameter RAM_DATA = "programs/user_io.mem";
     parameter ADDR_WIDTH = 12;
     parameter PROGRAM_SIZE = 512;
 
-    parameter CLOCK_UPDATE_TIME = 1;
+    parameter CLOCK_UPDATE_TIME = 2;
     parameter INSTRUCTION_TIME = 6;
-    parameter INSTRUCTION_COUNT = 10000;
+    parameter INSTRUCTION_COUNT = 10000000;
     parameter SIMULATION_TIME = INSTRUCTION_COUNT * INSTRUCTION_TIME;
 
     parameter DISPLAY_TOGGLE = 1;//simple=1 complex=0
@@ -19,10 +19,26 @@ module test_drisc;
     wire write_address;
     wire write;
     wire read;
-    wire [6:0] opcode_debug;
+    wire [31:0] current_instruction;
     wire [31:0] address_bus;
+    reg [31:0] address_reg;
+
+    always @(posedge clock) begin
+        if(reset)begin
+            address_reg <= 32'h0;
+        end
+        else if(write_address)begin
+            address_reg <= address_bus;
+        end
+    end
+        
 
     assign data_bus = data_bus_out_enable ? data_bus_drisc : 32'hz;
+
+    wire write_ram = write && (address_reg < 32'h00fffffc);
+    wire read_ram = read && (address_reg < 32'h00fffffc);
+    wire read_user_input = read && (address_reg >= 32'h00fffffc) && (address_reg < 32'h01000000);
+    wire write_video_controller = write && (address_reg >= 32'h01000000);
 
     drisc drisc_processor (
         .clock(clock),
@@ -35,7 +51,7 @@ module test_drisc;
         .write_address(write_address),
         .write(write),
         .read(read),
-        .opcode_debug(opcode_debug)
+        .current_instruction(current_instruction)
     );
 
     ram #(
@@ -44,12 +60,32 @@ module test_drisc;
         .PROGRAM_SIZE(PROGRAM_SIZE)
     ) ram_inst (
         .clock(clock),
-        .reset(reset),
-        .write(write),
-        .write_address(write_address),
-        .read(read),
+        .write(write_ram),
+        .read(read_ram),
         .data_size(data_size),
-        .address(address_bus[ADDR_WIDTH-1:0]),
+        .address(address_reg[ADDR_WIDTH-1:0]),
+        .data(data_bus)
+    );
+
+
+    user_input #(
+        .KEYBOARD_FILE("log.mem")
+    ) user_input_inst (
+        .read(read_user_input),
+        .clock(clock),
+        .reset(reset),
+        .data_out(data_bus)
+    );
+
+    video_controller #(
+        .SCREEN_WIDTH_BIT_WIDTH(6),
+        .SCREEN_HEIGHT_BIT_WIDTH(6),
+        .SCREEN_FILE("screen.mem")
+    ) video_controller_inst (
+        .clock(clock),
+        .reset(reset),
+        .write(write_video_controller),
+        .address(address_reg[11:0]),
         .data(data_bus)
     );
 
@@ -61,11 +97,11 @@ module test_drisc;
     // Simplified Debugging display
     initial begin
         $display("Clock cicle duration = %0d, Instruction duration = %0d, Simulation max duration = %0d", CLOCK_UPDATE_TIME * 2, INSTRUCTION_TIME, SIMULATION_TIME); 
-        $display("        |            |      | addr             addr            addr  |            |     Instruction    "); 
-        $display("  Time  | Instruction|  PC  | [ AA ]:Reg A    [ BB ]Reg B     [ CC ] |  Immediate |   Code   Argument  "); 
+        $display("        |            |      | addr             addr            addr           |            |     Instruction    "); 
+        $display("  Time  | Instruction|  PC  | [ AA ]:Reg A    [ BB ]:Reg B    [ CC ]:Reg C    |  Immediate |   Code   Argument  "); 
         forever #INSTRUCTION_TIME begin
-            if (DISPLAY_TOGGLE) begin
-                $display("%0s%0d\t|  %h  | %d | [%s]:%h [%s]:%h [%s] |%d | %s %0s", 
+            if (DISPLAY_TOGGLE == 1) begin
+                $display("%0s%0d\t|  %h  | %d | [%s]:%h [%s]:%h [%s]:%h |%d | %s %0s %b %b %b %b", 
                     ($time % (2*INSTRUCTION_TIME)) < INSTRUCTION_TIME/4 ? "\033[0m" : "\033[1;30m",
                     $time,
                     drisc_processor.operation_controller_0.current_instruction, 
@@ -75,30 +111,37 @@ module test_drisc;
                     decode_register(drisc_processor.registers_addresses[14:10]),
                     drisc_processor.b_bus,
                     decode_register(drisc_processor.registers_addresses[4:0]),
+                    drisc_processor.c_bus,
                     $signed(drisc_processor.immediate),
-                    decode_opcode(opcode_debug),
-                    decode_op_function(drisc_processor.op_function,drisc_processor.funct_3, opcode_debug)
+                    decode_opcode(current_instruction[6:0]),
+                    decode_op_function(drisc_processor.op_function,drisc_processor.funct_3, current_instruction[6:0]),
+                    write_ram,
+                    read_ram,
+                    read_user_input,
+                    write_video_controller
                 );
             end
         end
     end
     // Complex Debugging display
     initial begin
-        #1;
+        #1;//offsets so signals updated after the clock are displayed correctly
         forever #CLOCK_UPDATE_TIME begin
-            if (!DISPLAY_TOGGLE) begin
+            if (DISPLAY_TOGGLE == 0) begin
                 if(drisc_processor.phase == 3'b001 & clock == 1) begin
                     $display("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
                 end
-                $display("%0sTime %0d | Phi %b clk %b| PC:Addr In %h, Next %h Curr %h| Instruction : Next %h | Bus A: %h (R[%d]), Bus B: %h (R[%d]), Bus C: %h (R[%d]), imm %h| IO bus: %h, Ram Addr %h %h, W_A/W/R %b%b%b | Opcode: %0s | cnzv: %b %b %b", 
+                $display("%0sTime %0d | Phi %b clk %b r %b| PC: N %h C %h| Instruction : N %h C %h L %h| Bus: A %h[%d] B %h[%d] C %h[%d], imm %h| IO bus: %h, Ram Addr %h %h, W_A/W/R %b%b%b | Opcode: %0s | cnzv: %b %b %b", 
                     clock == 1? "\033[0m" : "\033[1;30m",
                     $time,
                     drisc_processor.phase,
                     clock,
-                    drisc_processor.pc_address_in,
+                    reset,
                     drisc_processor.pc_next_out,
                     drisc_processor.pc_current_out,
                     drisc_processor.operation_controller_0.next_instruction,
+                    drisc_processor.operation_controller_0.current_instruction,
+                    drisc_processor.operation_controller_0.last_instruction,
                     drisc_processor.a_bus,
                     drisc_processor.registers_addresses[9:5],
                     drisc_processor.b_bus,
@@ -108,11 +151,11 @@ module test_drisc;
                     drisc_processor.immediate,
                     data_bus,
                     address_bus,
-                    ram_inst.stored_address,
+                    address_reg,
                     write_address,
                     write,
                     read,
-                    decoded_opcode,
+                    decode_opcode(current_instruction[6:0]),
                     drisc_processor.cnzv,
                     drisc_processor.operation_controller_0.decoded_cnzv,
                     drisc_processor.operation_controller_0.pc_jump
@@ -130,7 +173,7 @@ module test_drisc;
                 dump_registers();
                 dump_ram();
                 $finish;
-            end else if (decode_opcode(opcode_debug) == "UNKNOWN") begin
+            end else if (decode_opcode(current_instruction[6:0]) == "UNKNOWN") begin
                 $display("\33[1;31mIllegal instruction detected, exiting simulation");
                 $display("\33[0m");
                 dump_registers();
@@ -202,7 +245,7 @@ module test_drisc;
 
     task dump_ram;
         integer i, j, inc;
-        bit print_zero = 1;        
+        bit print_zero;        
 
         //inicialize test memory
         logic [7:0] mem [0:(1 << ADDR_WIDTH)-1];
@@ -212,6 +255,7 @@ module test_drisc;
         $readmemh(RAM_DATA, mem, 0, PROGRAM_SIZE-1);
 
         begin
+            print_zero = 1;
             $display("RAM values:");
             for (i = 0; i < (1 << ADDR_WIDTH)/16 ; i = i + 1) begin
                 inc = 0;
