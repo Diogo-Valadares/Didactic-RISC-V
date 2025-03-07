@@ -6,27 +6,27 @@ module operation_controller(
     output [31:0] immediate,
     output reg [31:0] current_instruction,
     output [2:0] funct_3,
-    /////Miscellaneous/////
+/////Miscellaneous/////
     output load_upper_immediate,
-    /////Register File/////
+/////Register File/////
     output [14:0] registers_addresses,
     output register_file_write,
-    /////Alu and Shifter/////
+/////Alu and Shifter/////
     input [3:0] cnzv,
     output [4:0] op_function,
     output alu_use_pc,
     output use_immediate,
-    /////Program Counter/////
+/////Program Counter/////
     output pc_read_next,
     output pc_jump,
     output pc_relative,
     output pc_use_offset,
     output forward_address,
-    /////Data IO/////
+/////Data IO/////
     output data_io_write_io,
     output data_io_read_io,
     output data_io_load,
-    /////Output Interface/////
+/////Output Interface/////
     output pad_write_address,
     output pad_read,
     output pad_write,
@@ -38,7 +38,7 @@ module operation_controller(
     reg [31:0] last_instruction;
     reg flush_pipeline;
 
-    // instruction decoder
+// instruction decoder
     wire operation_immediate = current_instruction[6:0] == 7'h13;
     wire load = current_instruction[6:0] == 7'h03;
     wire add_upp_immediate_pc = current_instruction[6:0] == 7'h17;
@@ -50,17 +50,17 @@ module operation_controller(
     wire jump_and_link = current_instruction[6:0] == 7'h6f;
     wire system = current_instruction[6:0] == 7'h73;
 
-    // last instruction decoder
+// last instruction decoder
     wire load_second_part = last_instruction[6:0] == 7'h03;
     wire store_second_part = last_instruction[6:0] == 7'h23;
 
-    // register file addresses
+// register file addresses
     assign registers_addresses = 
         load_second_part & phase[2] ? 
             {last_instruction[24:15], last_instruction[11:7]} : 
             {current_instruction[24:15], current_instruction[11:7]};
     
-    // instructions function number
+// instructions function number
     wire [9:0] funct_10 = 
         load_second_part & phase[2] | store_second_part & phase[1] ? 
             {last_instruction[31:25], last_instruction[14:12]} : 
@@ -70,21 +70,21 @@ module operation_controller(
     assign op_function = operation ? {funct_7[5], funct_7[1], funct_3} :
                             branch ? 5'h10 : {~funct_3[2], 4'h5};
 
-    // immediate decoder
+// immediate decoder
     assign immediate =  
         add_upp_immediate_pc | is_load_upper_immediate ? {current_instruction[31:12], 12'b0} :
         jump_and_link ? {{12{current_instruction[31]}}, current_instruction[19:12], current_instruction[20], current_instruction[30:21], 1'b0} :
         branch ? {{20{current_instruction[31]}}, current_instruction[7], current_instruction[30:25], current_instruction[11:8], 1'b0} :
         store ? {{20{current_instruction[31]}}, current_instruction[31:25], current_instruction[11:7]} : 
-        {{20{current_instruction[31]}}, current_instruction[31:20]}; // immediate for immediate operations
+        {{20{current_instruction[31]}}, current_instruction[31:20]};
+
 
 //********************************************************************************************************************//
-    // control signals decoding
-
-    // miscellaneous
+// control signals decoding
+// miscellaneous
     assign load_upper_immediate = phase[3] & is_load_upper_immediate;
 
-    // register file
+// register file
     assign register_file_write = 
         ((system | load | jump_and_link_register | jump_and_link | operation | add_upp_immediate_pc | is_load_upper_immediate) & phase[3]) | 
         (load_second_part & phase[2]);
@@ -95,7 +95,7 @@ module operation_controller(
 
     assign pc_relative = branch | jump_and_link;
 
-    // program counter
+// program counter
     assign pc_read_next = phase[3] & (jump_and_link_register | jump_and_link);
 
     wire decoded_cnzv = 
@@ -114,43 +114,35 @@ module operation_controller(
 
     assign forward_address = phase[3] & (load | store);
 
-    // data io
+// data io
     assign data_io_write_io = phase[1] & load_second_part;
     assign data_io_read_io = phase[1] & store_second_part;
     assign data_io_load = phase[2] & load_second_part;
 
-    // output interface
+// output interface
     assign pad_write_address = phase[1] | forward_address;
     assign pad_read = phase[2] | data_io_write_io;
     assign pad_write = data_io_read_io;
     assign pad_data_size = {funct_3[1], funct_3[1] | funct_3[0]};
 //********************************************************************************************************************//
-    // registers update
+// registers update
     always @(posedge clock) begin
         if (reset) begin
             next_instruction <= 32'h00000013;
-        end
-        if (phase[2]) begin
-            next_instruction <= data_in;
-        end
-    end
-
-    always @(negedge clock) begin
-        if (reset) begin
             current_instruction <= 32'h00000013;
             last_instruction <= 32'h00000013;
         end
-        else if (phase[1]) begin
+        else if (phase[2]) begin
+            next_instruction <= data_in;
+            flush_pipeline <= 0;
+        end
+        else if (phase[3]) begin
             last_instruction <= current_instruction;
             current_instruction <= flush_pipeline ? 32'h00000013 : next_instruction;
-        end
-        else if (phase[2]) begin
-            flush_pipeline <= 0;
         end
 
         if(jump)begin
             flush_pipeline <= 1;
         end
     end
-
 endmodule

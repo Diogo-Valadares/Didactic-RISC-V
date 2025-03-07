@@ -1,10 +1,10 @@
 module test_drisc;
-    parameter RAM_DATA = "programs/user_io.mem";
+    parameter RAM_DATA = "programs/load_store.mem";
     parameter ADDR_WIDTH = 12;
     parameter PROGRAM_SIZE = 512;
 
     parameter CLOCK_UPDATE_TIME = 2;
-    parameter INSTRUCTION_TIME = 6;
+    parameter INSTRUCTION_TIME = CLOCK_UPDATE_TIME * 6;
     parameter INSTRUCTION_COUNT = 10000000;
     parameter SIMULATION_TIME = INSTRUCTION_COUNT * INSTRUCTION_TIME;
 

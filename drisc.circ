@@ -1957,10 +1957,10 @@
     <comp lib="3" loc="(850,430)" name="Adder">
       <a name="width" val="32"/>
     </comp>
-    <comp lib="8" loc="(428,151)" name="Text">
+    <comp lib="8" loc="(425,150)" name="Text">
       <a name="text" val="if(~(operation == 1 | operation == 5 | operation = 21) &amp; use_immediate) operation[4:3] = 2'b0"/>
     </comp>
-    <comp lib="8" loc="(456,178)" name="Text">
+    <comp lib="8" loc="(455,175)" name="Text">
       <a name="font" val="Monospaced bold 21"/>
       <a name="text" val="\/"/>
     </comp>
@@ -4641,12 +4641,12 @@
     </comp>
     <comp lib="0" loc="(570,850)" name="Tunnel">
       <a name="facing" val="east"/>
-      <a name="label" val="Phase1n"/>
+      <a name="label" val="Phase3n"/>
       <a name="labelfont" val="SansSerif bold 10"/>
     </comp>
     <comp lib="0" loc="(740,850)" name="Tunnel">
       <a name="facing" val="east"/>
-      <a name="label" val="Phase1n"/>
+      <a name="label" val="Phase3n"/>
       <a name="labelfont" val="SansSerif bold 10"/>
     </comp>
     <comp lib="0" loc="(960,1020)" name="Splitter">
@@ -5005,20 +5005,17 @@
     </comp>
     <comp lib="4" loc="(410,680)" name="S-R Flip-Flop">
       <a name="appearance" val="logisim_evolution"/>
-      <a name="trigger" val="falling"/>
     </comp>
     <comp lib="4" loc="(570,800)" name="Register">
       <a name="appearance" val="logisim_evolution"/>
       <a name="label" val="Current_Instruction"/>
       <a name="showInTab" val="true"/>
-      <a name="trigger" val="falling"/>
       <a name="width" val="32"/>
     </comp>
     <comp lib="4" loc="(740,800)" name="Register">
       <a name="appearance" val="logisim_evolution"/>
       <a name="label" val="Last_Instruction"/>
       <a name="showInTab" val="true"/>
-      <a name="trigger" val="falling"/>
       <a name="width" val="32"/>
     </comp>
     <comp lib="8" loc="(1900,1315)" name="Text">
@@ -5036,7 +5033,7 @@
       <a name="font" val="SansSerif bold 30"/>
       <a name="text" val="Misc"/>
     </comp>
-    <comp lib="8" loc="(2918,447)" name="Text">
+    <comp lib="8" loc="(2915,445)" name="Text">
       <a name="font" val="SansSerif bold 30"/>
       <a name="text" val="ALU And Shifter"/>
     </comp>
