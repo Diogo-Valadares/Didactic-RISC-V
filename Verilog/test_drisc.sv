@@ -1,3 +1,7 @@
+`include "drisc.sv"
+`include "ram.sv"
+`include "user_input.sv"
+`include "video_controller.sv"
 module test_drisc;
     parameter RAM_DATA = "programs/load_store.mem";
     parameter ADDR_WIDTH = 12;
@@ -89,19 +93,20 @@ module test_drisc;
         .data(data_bus)
     );
 
-    //clock generation
+//clock generation
     initial begin
         clock = 1;
         forever #CLOCK_UPDATE_TIME clock = ~clock;
     end
-    // Simplified Debugging display
+// Simplified Debugging display
     initial begin
+        #INSTRUCTION_TIME;
         $display("Clock cicle duration = %0d, Instruction duration = %0d, Simulation max duration = %0d", CLOCK_UPDATE_TIME * 2, INSTRUCTION_TIME, SIMULATION_TIME); 
         $display("        |            |      | addr             addr            addr           |            |     Instruction    "); 
         $display("  Time  | Instruction|  PC  | [ AA ]:Reg A    [ BB ]:Reg B    [ CC ]:Reg C    |  Immediate |   Code   Argument  "); 
         forever #INSTRUCTION_TIME begin
             if (DISPLAY_TOGGLE == 1) begin
-                $display("%0s%0d\t|  %h  | %d | [%s]:%h [%s]:%h [%s]:%h |%d | %s %0s %b %b %b %b", 
+                $display("%0s%0d\t|  %h  | %d | [%s]:%h [%s]:%h [%s]:%h |%d | %s %0s", 
                     ($time % (2*INSTRUCTION_TIME)) < INSTRUCTION_TIME/4 ? "\033[0m" : "\033[1;30m",
                     $time,
                     drisc_processor.operation_controller_0.current_instruction, 
@@ -114,17 +119,14 @@ module test_drisc;
                     drisc_processor.c_bus,
                     $signed(drisc_processor.immediate),
                     decode_opcode(current_instruction[6:0]),
-                    decode_op_function(drisc_processor.op_function,drisc_processor.funct_3, current_instruction[6:0]),
-                    write_ram,
-                    read_ram,
-                    read_user_input,
-                    write_video_controller
+                    decode_op_function(drisc_processor.op_function,drisc_processor.funct_3, current_instruction[6:0])
                 );
             end
         end
     end
-    // Complex Debugging display
+// Complex Debugging display
     initial begin
+        #INSTRUCTION_TIME;
         #1;//offsets so signals updated after the clock are displayed correctly
         forever #CLOCK_UPDATE_TIME begin
             if (DISPLAY_TOGGLE == 0) begin
@@ -163,7 +165,7 @@ module test_drisc;
             end        
         end
     end
-    // Infinite loop and illegal instruction detection
+// Infinite loop and illegal instruction detection
     initial begin
         #(INSTRUCTION_TIME*4);
         forever #(INSTRUCTION_TIME) begin
@@ -183,8 +185,11 @@ module test_drisc;
         end
     end
 
-    // Test sequence
-    initial begin
+// Test sequence
+    initial begin    
+        $dumpfile("dump.vcd");
+        $dumpvars(0,test_drisc);
+        #1    
         // Initialize signals
         reset = 1;
         #20;
@@ -192,11 +197,9 @@ module test_drisc;
         #SIMULATION_TIME;
 
         $display("\33[0m");
-        dump_registers();
-        dump_ram();
         $finish;
     end
-
+// Helper tasks and functions
     task dump_registers;
         integer i;
         reg [8*4:1] reg_name;

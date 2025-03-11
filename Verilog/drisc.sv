@@ -1,3 +1,10 @@
+`include "phase_generator.sv"
+`include "program_counter.sv"
+`include "data_io.sv"
+`include "operation_controller.sv"
+`include "register_file.sv"
+`include "alu.sv"
+
 module drisc(
     input clock,
     input reset,
@@ -14,7 +21,7 @@ module drisc(
 
     wire [3:1] phase;
     
-    //internal busses
+//internal busses
     wire [31:0]a_bus;
     wire [31:0]b_bus;
     wire [31:0]c_bus = 
@@ -23,17 +30,17 @@ module drisc(
         pc_read_next ? pc_next_out :
         alu_out;
 
-    //outputs to c bus
+//outputs to c bus
     wire [31:0] pc_next_out;
     wire [31:0] alu_out;
     wire [31:0] shifter_out;
     wire [31:0] data_io_out_c;
     
-    //program counter
+//program counter
     wire [31:0] pc_current_out;
     wire [1:0] data_offset;
     
-    //controller wires
+//controller wires
     wire [31:0] immediate;
     wire [2:0] funct_3;
     wire load_upper_immediate;
@@ -54,14 +61,13 @@ module drisc(
     wire data_io_read_io;
     wire data_io_load;
 
-    // Instantiate the phase_generator module
+//components
     phase_generator phase_generator_0 (
         .clock(clock),
         .reset(reset),
         .phase(phase)
     );
 
-    // Instantiate the program_counter module
     program_counter program_counter_0 (
         .reset(reset),
         .clock(clock),
@@ -78,7 +84,6 @@ module drisc(
         .address_bus(address_bus)
     );
 
-    // Instantiate the data io module
     data_io data_io_0 (
         .clock(clock),
         .store(phase[1]),
@@ -91,7 +96,6 @@ module drisc(
         .io_out(data_bus_out)
     );
 
-    // Instantiate the operation_controller module
     operation_controller operation_controller_0 (
         .clock(clock),
         .reset(reset),
@@ -121,7 +125,6 @@ module drisc(
         .pad_data_size(data_size)
     );
 
-    // Instantiate the register_file module
     register_file register_file_0 (
         .clock(clock),
         .reset(reset),
@@ -134,7 +137,6 @@ module drisc(
         .b_out(b_bus)
     );
 
-    // Instantiate the alu module
     alu alu_0 (
         .use_pc(alu_use_pc),
         .a(a_bus),
