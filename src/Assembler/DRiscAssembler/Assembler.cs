@@ -22,33 +22,42 @@ public class Assembler
             switch (parts[0].ToUpper())
             {
                 case ".WORD":
-                    memory[currentLine] = Instruction.ToInteger(parts[2], 0xffffffff);
-                    Console.Write($"\n[{currentLine}]:\t");
+                    memory[currentLine] = Instruction.ToInteger(parts[parts.Length > 2 ? 2 : 1], 0xffffffff);
+                    #region Debug Print
+                    Console.Write($"[{currentLine}]:\t");
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.Write(Instruction.ToBinary(memory[currentLine]));
                     Console.ForegroundColor = ConsoleColor.Magenta;
                     Console.Write($" {parts[0]}");
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.Write($" {parts[1]}");
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.Write($" {parts[2]}");
+                    if(parts.Length > 2)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.Write($" {parts[1]}");
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.Write($" {parts[2]}");
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.Write($" {parts[1]}");
+                    }
                     Console.ForegroundColor = ConsoleColor.White;
+                    Console.WriteLine();
+                    #endregion
                     continue;
-
             }
 
-            if (!Instruction.instructions.TryGetValue(parts[0].ToUpper(), out var translator))
+            if (!Instruction.instructions.TryGetValue(parts[0].ToUpper(), out var translatorsGenerator))
             {
                 throw new Exception($"Unknown instruction \"{parts[0]}\" at line {currentLine}.");
             }
-            Console.Write($"\n[{currentLine}]:\t");
+            Console.Write($"[{currentLine}]:");
 
-            var instructions = translator(parts[1..]);
-            foreach(var instruction in instructions)
-            {
-                memory[memIndex] = instruction;
-                memIndex++;
-            }
+            var translators = translatorsGenerator(parts[1..]);
+
+            memory[memIndex] = translators[0]();
+            memIndex++;
+
             #region Debug Print
             Console.ForegroundColor = ConsoleColor.Red;
             Console.Write($"  {parts[0]}");
@@ -62,16 +71,17 @@ public class Assembler
 
                 Console.Write($" {parts[i]}");
             }
-
-            if (currentLine > 0 && ((memory[currentLine - 1] & 0x7f) == (uint)Instructions.load) &&
-                (((memory[currentLine - 1] & 0xf80) >> 7) == ((memory[currentLine] & 0x1f00000) >> 20) ||
-                ((memory[currentLine - 1] & 0xf80) >> 7) == ((memory[currentLine] & 0xf8000) >> 15)))
-            {
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.Write($"\n[WARNING] Hazard detected! {parts[0]} at {currentLine} uses a register that won't have time to load from the previous instruction.");
-            }
             Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine();
             #endregion
+
+            //in case it gets translated into more than one line
+            for (int i = 1; i < translators.Length; i++)
+            {
+                memory[memIndex] = translators[i]();
+                memIndex++;
+                Console.WriteLine();
+            }
         }
 
         var output = "v3.0 hex words addressed";
@@ -110,100 +120,6 @@ public class Assembler
             {
                 lines.RemoveAt(currentLine);
             }            
-        }
-    }
-    private static void ExtractLabels(List<string> lines)
-    {
-        Dictionary<string, int> labels = [];
-        for (int currentLine = 0; currentLine < lines.Count; currentLine++)
-        {
-            if (!lines[currentLine].StartsWith(':')) continue;
-            labels.Add(lines[currentLine], (int)currentLine << 2);
-            Console.WriteLine($"[{currentLine}]Added label \"{lines[currentLine]}\" with value {(int)currentLine << 2}");
-            lines.RemoveAt(currentLine);
-            currentLine--;
-        }
-
-        for (int currentLine = 0; currentLine < lines.Count; currentLine++)
-        {
-            var parts = lines[currentLine].Split(' ');
-            for (int i = 0; i < parts.Length; i++)
-            {
-                if (!parts[i].StartsWith(':')) continue;
-                if (!labels.TryGetValue(parts[i], out var value))
-                {
-                    throw new Exception($"[{currentLine}]Unknown label \"{parts[i]}\" at line {currentLine}.");
-                }
-
-                var lineBefore = lines[currentLine];
-                if (Instruction.PCRelativeInstructions.Contains(parts[0].ToUpper()))
-                {
-                    value -= currentLine << 2;
-                }
-                lines[currentLine] = lines[currentLine].Replace(parts[i], value.ToString());
-                #region DebugPrint
-                Console.Write($"[{currentLine}]Translated label at line from ");
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.Write($"\"{lineBefore}\"");
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.Write(" to ");
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine($"\"{lines[currentLine]}\"");
-                Console.ForegroundColor = ConsoleColor.White;
-                #endregion
-            }
-        }
-    }
-    private static void ExtractVariables(List<string> lines)
-    {
-        Dictionary<string, uint> words = [];
-        for (int currentLine = 0; currentLine < lines.Count; currentLine++)
-        {
-            var parts = lines[currentLine].Split(' ');
-            switch (parts[0])
-            {
-                case ".word":
-                    words.Add(parts[1], (uint)currentLine << 2);
-                    break;
-                case ".short":
-                case ".half":
-                case ".byte":
-                    throw new NotImplementedException();
-            }
-        }
-
-        if (words.Count > 0)
-        {
-            Console.WriteLine("\nVariables:");
-            foreach (var word in words)
-            {
-                Console.WriteLine($"{word.Key} = {word.Value}");
-            }
-        }
-
-        for (int currentLine = 0; currentLine < lines.Count; currentLine++)
-        {
-            var parts = lines[currentLine].Split(' ');
-            for (int i = 1; i < parts.Length; i++)
-            {
-                if (!parts[i].StartsWith('.')) continue;
-                if (!words.TryGetValue(parts[i][1..], out var value))
-                {
-                    throw new Exception($"[{currentLine}]Unknown variable \"{parts[i]}\" at line {currentLine}.");
-                }
-                var lineBefore = lines[currentLine];
-                lines[currentLine] = lines[currentLine].Replace(parts[i], value.ToString());
-                #region DebugPrint
-                Console.Write($"[{currentLine}]Translated variable at line from ");
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.Write($"\"{lineBefore}\"");
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.Write(" to ");
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine($"\"{lines[currentLine]}\"");
-                Console.ForegroundColor = ConsoleColor.White;
-                #endregion
-            }
         }
     }
     private static void ExtractMacros(List<string> lines)
@@ -288,6 +204,102 @@ public class Assembler
             Console.Write($"{string.Join(" ",parts[1..])}\n");
             Console.ForegroundColor = ConsoleColor.White;
             #endregion
+        }
+    }
+    private static void ExtractLabels(List<string> lines)
+    {
+        Dictionary<string, int> labels = [];
+        for (int currentLine = 0; currentLine < lines.Count; currentLine++)
+        {
+            if (!lines[currentLine].StartsWith(':')) continue;
+            labels.Add(lines[currentLine], (int)currentLine << 2);
+            Console.WriteLine($"[{currentLine}]Added label \"{lines[currentLine]}\" with value {(int)currentLine << 2}");
+            lines.RemoveAt(currentLine);
+            currentLine--;
+        }
+
+        for (int currentLine = 0; currentLine < lines.Count; currentLine++)
+        {
+            var parts = lines[currentLine].Split(' ');
+            for (int i = 0; i < parts.Length; i++)
+            {
+                if (!parts[i].StartsWith(':')) continue;
+                if (!labels.TryGetValue(parts[i], out var value))
+                {
+                    throw new Exception($"[{currentLine}]Unknown label \"{parts[i]}\" at line {currentLine}.");
+                }
+
+                var lineBefore = lines[currentLine];
+                if (Instruction.PCRelativeInstructions.Contains(parts[0].ToUpper()))
+                {
+                    value -= currentLine << 2;
+                }
+                lines[currentLine] = lines[currentLine].Replace(parts[i], value.ToString());
+                #region DebugPrint
+                Console.Write($"[{currentLine}]Translated label at line from ");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.Write($"\"{lineBefore}\"");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.Write(" to ");
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"\"{lines[currentLine]}\"");
+                Console.ForegroundColor = ConsoleColor.White;
+                #endregion
+            }
+        }
+    }
+    private static void ExtractVariables(List<string> lines)
+    {
+        Dictionary<string, uint> words = [];
+        for (int currentLine = 0; currentLine < lines.Count; currentLine++)
+        {
+            var parts = lines[currentLine].Split(' ');
+            switch (parts[0].ToUpper())
+            {
+                case ".WORD":
+                    if(parts.Length > 2)
+                    {
+                        words.Add(parts[1], (uint)currentLine << 2);
+                    }                    
+                    break;
+                case ".HALF":
+                case ".BYTE":
+                    throw new NotImplementedException();
+            }
+        }
+
+        if (words.Count > 0)
+        {
+            Console.WriteLine("\nVariables:");
+            foreach (var word in words)
+            {
+                Console.WriteLine($"{word.Key} = {word.Value}");
+            }
+        }
+
+        for (int currentLine = 0; currentLine < lines.Count; currentLine++)
+        {
+            var parts = lines[currentLine].Split(' ');
+            for (int i = 1; i < parts.Length; i++)
+            {
+                if (!parts[i].StartsWith('.')) continue;
+                if (!words.TryGetValue(parts[i][1..], out var value))
+                {
+                    throw new Exception($"[{currentLine}]Unknown variable \"{parts[i]}\" at line {currentLine}.");
+                }
+                var lineBefore = lines[currentLine];
+                lines[currentLine] = lines[currentLine].Replace(parts[i], value.ToString());
+                #region DebugPrint
+                Console.Write($"[{currentLine}]Translated variable at line from ");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.Write($"\"{lineBefore}\"");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.Write(" to ");
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"\"{lines[currentLine]}\"");
+                Console.ForegroundColor = ConsoleColor.White;
+                #endregion
+            }
         }
     }
 }

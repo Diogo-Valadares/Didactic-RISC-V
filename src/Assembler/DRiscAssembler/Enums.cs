@@ -139,3 +139,105 @@ public enum Register
     x31 = 0x1f,
     t6 = x31
 }
+public enum SystemFunct20
+{
+    ecall = 0x00000,
+    ebreak = 0x00100,
+    wfi = 0x10500,
+    mret = 0x30200,
+
+    csrrw = 0x1,
+    csrrs = 0x2,
+    csrrc = 0x3,
+    csrrwi = 0x5,
+    csrrsi = 0x6,
+    csrrci = 0x7,
+}
+public enum CSR
+{
+    mvendor = 0xf11,
+    marchid = 0xf12,
+    mimpid = 0xf13,
+    mhartid = 0xf14,
+
+    mstatus = 0x300,
+    misa = 0x301,
+    mie = 0x304,
+    mtvec = 0x305,
+    mstatush = 0x310,
+
+    mscratch = 0x340,
+    mepc = 0x341,
+    mcause = 0x342,
+    mtval = 0x343,
+    mip = 0x344,
+
+    fflags = 0x001,
+    frm = 0x002,
+    fcsr = 0x003,
+    
+    cycle = 0xc00,
+    time = 0xc01,
+    instret = 0xc02,
+    cycleh = 0xc80,
+    timeh = 0xc81,
+    instreth = 0xc82
+}
+
+
+public sealed class EnumConverter(uint value)
+{
+    public uint value = value;
+
+    public static implicit operator uint(EnumConverter instruction)
+    {
+        return instruction.value;
+    }
+    public static implicit operator int(EnumConverter instruction)
+    {
+        return (int)instruction.value;
+    }
+    public static implicit operator Register(EnumConverter instruction)
+    {
+        return (Register)instruction.value;
+    }
+    public static implicit operator CSR(EnumConverter instruction)
+    {
+        return (CSR)instruction.value;
+    }
+    public static implicit operator EnumConverter(Instructions instruction)
+    {
+        return new EnumConverter((uint)instruction);
+    }
+    public static implicit operator EnumConverter(DataSize dataSize)
+    {
+        return new EnumConverter((uint)dataSize);
+    }
+    public static implicit operator EnumConverter(Operation operation)
+    {
+        return new EnumConverter((uint)operation);
+    }
+    public static implicit operator EnumConverter(Branch branch)
+    {
+        return new EnumConverter((uint)branch);
+    }
+    public static implicit operator EnumConverter(Register register)
+    {
+        return new EnumConverter((uint)register);
+    }
+    public static implicit operator EnumConverter(CSR register)
+    {
+        return new EnumConverter((uint)register);
+    }
+    public static implicit operator EnumConverter(SystemFunct20 systemFunct20)
+    {
+        return new EnumConverter((uint)systemFunct20);
+    }
+    public static implicit operator EnumConverter(int integer) {
+        return new EnumConverter((uint)integer);
+    }
+    public static implicit operator EnumConverter(uint integer)
+    {
+        return new EnumConverter(integer);
+    }
+}
