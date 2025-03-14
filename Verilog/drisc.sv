@@ -1,6 +1,6 @@
 `include "phase_generator.sv"
 `include "program_counter.sv"
-`include "data_io.sv"
+`include "input_buffer.sv"
 `include "operation_controller.sv"
 `include "register_file.sv"
 `include "alu.sv"
@@ -10,22 +10,20 @@ module drisc(
     input reset,
     input [31:0] data_bus_in,
     output [31:0] data_bus_out,
-    output data_bus_out_enable,
     output [31:0] address_bus,
     output [1:0] data_size,
-    output write_address,
     output write,
     output read,
     output [31:0] current_instruction
 );
 
-    wire [3:1] phase;
+    wire [2:1] phase;
     
 //internal busses
     wire [31:0]a_bus;
     wire [31:0]b_bus;
     wire [31:0]c_bus = 
-        data_io_load ? data_io_out_c :
+        data_io_read ? data_io_out_c :
         load_upper_immediate ? immediate :
         pc_read_next ? pc_next_out :
         alu_out;
@@ -42,7 +40,7 @@ module drisc(
     
 //controller wires
     wire [31:0] immediate;
-    wire [2:0] funct_3;
+    wire [2:0] data_type;
     wire load_upper_immediate;
     wire [14:0] registers_addresses;
     wire register_file_write;
@@ -57,9 +55,8 @@ module drisc(
     wire pc_jump;
     wire pc_use_offset;
     wire forward_address;
-    wire data_io_write_io;
-    wire data_io_read_io;
-    wire data_io_load;
+    wire data_io_write;
+    wire data_io_read;
 
 //components
     phase_generator phase_generator_0 (
@@ -71,7 +68,7 @@ module drisc(
     program_counter program_counter_0 (
         .reset(reset),
         .clock(clock),
-        .write(phase[3]),
+        .write(phase[2]),
         .jump(pc_jump),
         .pc_relative(pc_relative),
         .use_offset(pc_use_offset),
@@ -84,16 +81,15 @@ module drisc(
         .address_bus(address_bus)
     );
 
-    data_io data_io_0 (
+    assign data_bus_out = b_bus;
+
+    input_buffer input_buffer_0 (
         .clock(clock),
-        .store(phase[1]),
-        .load(data_io_write_io),
-        .data_type(funct_3),
+        .write(data_io_write),
+        .data_type(data_type),
         .data_offset(data_offset),
-        .cpu_in(b_bus),
         .io_in(data_bus_in),
-        .cpu_out(data_io_out_c),
-        .io_out(data_bus_out)
+        .cpu_out(data_io_out_c)
     );
 
     operation_controller operation_controller_0 (
@@ -103,7 +99,6 @@ module drisc(
         .data_in(data_bus_in),
         .immediate(immediate),
         .current_instruction(current_instruction),
-        .funct_3(funct_3),
         .load_upper_immediate(load_upper_immediate),
         .registers_addresses(registers_addresses),
         .register_file_write(register_file_write),
@@ -116,10 +111,9 @@ module drisc(
         .pc_jump(pc_jump),
         .pc_use_offset(pc_use_offset),
         .forward_address(forward_address),
-        .data_io_write_io(data_io_write_io),
-        .data_io_read_io(data_bus_out_enable),
-        .data_io_load(data_io_load),
-        .pad_write_address(write_address),
+        .data_io_write(data_io_write),
+        .data_io_read(data_io_read),
+        .data_type(data_type),
         .pad_read(read),
         .pad_write(write),
         .pad_data_size(data_size)

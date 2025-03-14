@@ -3,56 +3,42 @@
 `include "user_input.sv"
 `include "video_controller.sv"
 module test_drisc;
-    parameter RAM_DATA = "programs/load_store.mem";
+    parameter RAM_DATA = "programs/user_io.mem";
     parameter ADDR_WIDTH = 12;
     parameter PROGRAM_SIZE = 512;
 
-    parameter CLOCK_UPDATE_TIME = 2;
-    parameter INSTRUCTION_TIME = CLOCK_UPDATE_TIME * 6;
-    parameter INSTRUCTION_COUNT = 10000000;
+    parameter CLOCK_UPDATE_TIME = 1;
+    parameter INSTRUCTION_TIME = CLOCK_UPDATE_TIME * 4;
+    parameter INSTRUCTION_COUNT = 1000000;
     parameter SIMULATION_TIME = INSTRUCTION_COUNT * INSTRUCTION_TIME;
 
     parameter DISPLAY_TOGGLE = 1;//simple=1 complex=0
+    parameter ALLOW_ILLEGAL_INSTRUCTIONS = 1;
 
     reg clock;
     reg reset;
     wire [31:0] data_bus;
     wire [31:0] data_bus_drisc;
-    wire data_bus_out_enable;
     wire [1:0] data_size;
-    wire write_address;
     wire write;
     wire read;
     wire [31:0] current_instruction;
-    wire [31:0] address_bus;
-    reg [31:0] address_reg;
+    wire [31:0] address_bus;        
 
-    always @(posedge clock) begin
-        if(reset)begin
-            address_reg <= 32'h0;
-        end
-        else if(write_address)begin
-            address_reg <= address_bus;
-        end
-    end
-        
+    assign data_bus = write ? data_bus_drisc : 32'hz;
 
-    assign data_bus = data_bus_out_enable ? data_bus_drisc : 32'hz;
-
-    wire write_ram = write && (address_reg < 32'h00fffffc);
-    wire read_ram = read && (address_reg < 32'h00fffffc);
-    wire read_user_input = read && (address_reg >= 32'h00fffffc) && (address_reg < 32'h01000000);
-    wire write_video_controller = write && (address_reg >= 32'h01000000);
+    wire write_ram = write && (address_bus < 32'h00fffffc);
+    wire read_ram = read && (address_bus < 32'h00fffffc);
+    wire read_user_input = read && (address_bus >= 32'h00fffffc) && (address_bus < 32'h01000000);
+    wire write_video_controller = write && (address_bus >= 32'h01000000);
 
     drisc drisc_processor (
         .clock(clock),
         .reset(reset),
         .data_bus_in(data_bus),
         .data_bus_out(data_bus_drisc),
-        .data_bus_out_enable(data_bus_out_enable),
         .address_bus(address_bus),
         .data_size(data_size),
-        .write_address(write_address),
         .write(write),
         .read(read),
         .current_instruction(current_instruction)
@@ -67,7 +53,7 @@ module test_drisc;
         .write(write_ram),
         .read(read_ram),
         .data_size(data_size),
-        .address(address_reg[ADDR_WIDTH-1:0]),
+        .address(address_bus[ADDR_WIDTH-1:0]),
         .data(data_bus)
     );
 
@@ -89,7 +75,7 @@ module test_drisc;
         .clock(clock),
         .reset(reset),
         .write(write_video_controller),
-        .address(address_reg[11:0]),
+        .address(address_bus[11:0]),
         .data(data_bus)
     );
 
@@ -119,7 +105,7 @@ module test_drisc;
                     drisc_processor.c_bus,
                     $signed(drisc_processor.immediate),
                     decode_opcode(current_instruction[6:0]),
-                    decode_op_function(drisc_processor.op_function,drisc_processor.funct_3, current_instruction[6:0])
+                    decode_op_function(drisc_processor.op_function,drisc_processor.data_type, current_instruction[6:0])
                 );
             end
         end
@@ -153,7 +139,7 @@ module test_drisc;
                     drisc_processor.immediate,
                     data_bus,
                     address_bus,
-                    address_reg,
+                    address_bus,
                     write_address,
                     write,
                     read,
@@ -175,7 +161,7 @@ module test_drisc;
                 dump_registers();
                 dump_ram();
                 $finish;
-            end else if (decode_opcode(current_instruction[6:0]) == "UNKNOWN") begin
+            end else if (decode_opcode(current_instruction[6:0]) == "UNKNOWN" && !ALLOW_ILLEGAL_INSTRUCTIONS) begin
                 $display("\33[1;31mIllegal instruction detected, exiting simulation");
                 $display("\33[0m");
                 dump_registers();
@@ -192,11 +178,13 @@ module test_drisc;
         #1    
         // Initialize signals
         reset = 1;
-        #20;
+        #INSTRUCTION_TIME;
         reset = 0; 
         #SIMULATION_TIME;
 
         $display("\33[0m");
+        dump_registers();
+        dump_ram();
         $finish;
     end
 // Helper tasks and functions

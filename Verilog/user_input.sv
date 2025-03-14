@@ -38,7 +38,7 @@ function automatic [3:0] hex_to_nibble(input [7:0] c);
     endcase
 endfunction
 
-always @(posedge clock or posedge reset) begin
+always @(posedge clock) begin
     if (reset) begin
         file_ptr = $fopen(KEYBOARD_FILE, "r");
         position = 0;

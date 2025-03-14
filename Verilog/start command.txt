@@ -1,1 +1,0 @@
-verilog test_drisc.sv phase_generator.sv program_counter.sv data_io.sv operation_controller.sv register_file.sv alu.sv ram.sv drisc.sv video_controller.sv user_input.sv
