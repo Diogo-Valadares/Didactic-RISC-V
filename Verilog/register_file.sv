@@ -1,3 +1,4 @@
+`timescale 1s/1s
 module register_file(
     input clock,
     input reset,

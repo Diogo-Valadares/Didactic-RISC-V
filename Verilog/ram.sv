@@ -1,3 +1,4 @@
+`timescale 1s/1s
 module ram #(
     parameter MEM_INIT_FILE = "",
     parameter ADDR_WIDTH = 16,

@@ -1,3 +1,4 @@
+`timescale 1s/1s
 module user_input #(
     parameter KEYBOARD_FILE = "keyboard.mem"
 ) (
@@ -53,8 +54,7 @@ always @(posedge clock) begin
             space = $fgetc(file_ptr);
             
             if (!$feof(file_ptr) && space == " ") begin
-                data_reg <= {
-                    {hex_to_nibble(char1), hex_to_nibble(char2)}, 
+                data_reg <= {{hex_to_nibble(char1), hex_to_nibble(char2)}, 
                     16'h0,
                     random
                 };

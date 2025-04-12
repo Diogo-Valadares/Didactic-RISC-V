@@ -1,3 +1,4 @@
+`timescale 1s/1s
 module video_controller #(
     parameter SCREEN_WIDTH_BIT_WIDTH = 8,
     parameter SCREEN_HEIGHT_BIT_WIDTH = 8,

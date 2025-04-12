@@ -1,0 +1,184 @@
+{
+  "extensionVersion": "1.3.2",
+  "fileName": "c:\\Users\\diogo\\Documents\\GitHub\\Didactic-RISC-I\\Verilog\\dump.vcd",
+  "markerTime": 3584878,
+  "altMarkerTime": null,
+  "selectedSignal": {
+    "name": "test_drisc.drisc_processor.system_jump",
+    "numberFormat": "hexadecimal",
+    "msb": -1,
+    "lsb": -1
+  },
+  "zoomRatio": 0.00005578990176739029,
+  "scrollLeft": 0,
+  "displayedSignals": [
+    {
+      "netlistId": 29,
+      "name": "test_drisc.reset",
+      "numberFormat": "binary",
+      "colorIndex": 3,
+      "renderType": "binary"
+    },
+    {
+      "netlistId": 28,
+      "name": "test_drisc.clock",
+      "numberFormat": "binary",
+      "colorIndex": 3,
+      "renderType": "binary"
+    },
+    {
+      "netlistId": 51,
+      "name": "test_drisc.drisc_processor.phase",
+      "numberFormat": "hexadecimal",
+      "colorIndex": 3,
+      "renderType": "multiBit"
+    },
+    {
+      "netlistId": 229,
+      "name": "test_drisc.drisc_processor.program_counter_0.next",
+      "numberFormat": "hexadecimal",
+      "colorIndex": 2,
+      "renderType": "multiBit"
+    },
+    {
+      "netlistId": 214,
+      "name": "test_drisc.drisc_processor.operation_controller_0.next_instruction",
+      "numberFormat": "hexadecimal",
+      "colorIndex": 2,
+      "renderType": "multiBit"
+    },
+    {
+      "netlistId": 231,
+      "name": "test_drisc.drisc_processor.program_counter_0.current",
+      "numberFormat": "hexadecimal",
+      "colorIndex": 6,
+      "renderType": "multiBit"
+    },
+    {
+      "netlistId": 212,
+      "name": "test_drisc.drisc_processor.operation_controller_0.current_instruction",
+      "numberFormat": "hexadecimal",
+      "colorIndex": 6,
+      "renderType": "multiBit"
+    },
+    {
+      "netlistId": 230,
+      "name": "test_drisc.drisc_processor.program_counter_0.last",
+      "numberFormat": "hexadecimal",
+      "colorIndex": 7,
+      "renderType": "multiBit"
+    },
+    {
+      "netlistId": 213,
+      "name": "test_drisc.drisc_processor.operation_controller_0.last_instruction",
+      "numberFormat": "hexadecimal",
+      "colorIndex": 7,
+      "renderType": "multiBit"
+    },
+    {
+      "netlistId": 204,
+      "name": "test_drisc.drisc_processor.operation_controller_0.immediate",
+      "numberFormat": "hexadecimal",
+      "colorIndex": 5,
+      "renderType": "multiBit"
+    },
+    {
+      "netlistId": 239,
+      "name": "test_drisc.drisc_processor.register_file_0.a_address",
+      "numberFormat": "hexadecimal",
+      "colorIndex": 1,
+      "renderType": "multiBit"
+    },
+    {
+      "netlistId": 80,
+      "name": "test_drisc.drisc_processor.a_bus",
+      "numberFormat": "hexadecimal",
+      "colorIndex": 1,
+      "renderType": "multiBit"
+    },
+    {
+      "netlistId": 240,
+      "name": "test_drisc.drisc_processor.register_file_0.b_address",
+      "numberFormat": "hexadecimal",
+      "colorIndex": 7,
+      "renderType": "multiBit"
+    },
+    {
+      "netlistId": 76,
+      "name": "test_drisc.drisc_processor.b_bus",
+      "numberFormat": "hexadecimal",
+      "colorIndex": 7,
+      "renderType": "multiBit"
+    },
+    {
+      "netlistId": 241,
+      "name": "test_drisc.drisc_processor.register_file_0.c_address",
+      "numberFormat": "hexadecimal",
+      "colorIndex": 6,
+      "renderType": "multiBit"
+    },
+    {
+      "netlistId": 75,
+      "name": "test_drisc.drisc_processor.c_bus",
+      "numberFormat": "hexadecimal",
+      "colorIndex": 6,
+      "renderType": "multiBit"
+    },
+    {
+      "netlistId": 18,
+      "name": "test_drisc.address_bus",
+      "numberFormat": "hexadecimal",
+      "colorIndex": 4,
+      "renderType": "multiBit"
+    },
+    {
+      "netlistId": 0,
+      "name": "test_drisc.data_bus",
+      "numberFormat": "hexadecimal",
+      "colorIndex": 4,
+      "renderType": "multiBit"
+    },
+    {
+      "netlistId": 1,
+      "name": "test_drisc.external_interrupt",
+      "numberFormat": "binary",
+      "colorIndex": 0,
+      "renderType": "binary"
+    },
+    {
+      "netlistId": 11,
+      "name": "test_drisc.timer_interrupt",
+      "numberFormat": "binary",
+      "colorIndex": 0,
+      "renderType": "binary"
+    },
+    {
+      "netlistId": 6,
+      "name": "test_drisc.software_interrupt",
+      "numberFormat": "binary",
+      "colorIndex": 0,
+      "renderType": "binary"
+    },
+    {
+      "netlistId": 154,
+      "name": "test_drisc.drisc_processor.csr_controller_0.privilege",
+      "numberFormat": "binary",
+      "colorIndex": 0,
+      "renderType": "binary"
+    },
+    {
+      "netlistId": 153,
+      "name": "test_drisc.drisc_processor.csr_controller_0.previous_privilege",
+      "numberFormat": "binary",
+      "colorIndex": 0,
+      "renderType": "binary"
+    },
+    {
+      "netlistId": 42,
+      "name": "test_drisc.drisc_processor.system_jump",
+      "numberFormat": "binary",
+      "colorIndex": 0,
+      "renderType": "binary"
+    }
+  ]
+}

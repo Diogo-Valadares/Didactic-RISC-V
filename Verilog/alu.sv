@@ -1,3 +1,4 @@
+`timescale 1s/1s
 module alu(
     input use_pc,
     input [31:0] a,

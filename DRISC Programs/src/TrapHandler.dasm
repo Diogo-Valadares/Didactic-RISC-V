@@ -1,0 +1,4 @@
+li sp 0x0fffffff
+:label
+li sp 0x0fffffff
+jump :label

@@ -1,0 +1,233 @@
+{
+  "extensionVersion": "1.3.2",
+  "fileName": "c:\\Users\\diogo\\Documents\\GitHub\\Didactic-RISC-I\\Verilog\\tb_csr_controller.vcd",
+  "markerTime": 444,
+  "altMarkerTime": null,
+  "selectedSignal": {
+    "name": "tb_csr_controller.dut.interrupt_enabled",
+    "numberFormat": "binary",
+    "msb": -1,
+    "lsb": -1
+  },
+  "zoomRatio": 140.8421052631579,
+  "scrollLeft": 61669.63157894737,
+  "displayedSignals": [
+    {
+      "netlistId": 18,
+      "name": "tb_csr_controller.reset",
+      "numberFormat": "binary",
+      "colorIndex": 0,
+      "renderType": "binary"
+    },
+    {
+      "netlistId": 41,
+      "name": "tb_csr_controller.dut.write_read_csr",
+      "numberFormat": "binary",
+      "colorIndex": 0,
+      "renderType": "binary"
+    },
+    {
+      "netlistId": 8,
+      "name": "tb_csr_controller.clock",
+      "numberFormat": "binary",
+      "colorIndex": 0,
+      "renderType": "binary"
+    },
+    {
+      "netlistId": 17,
+      "name": "tb_csr_controller.phase",
+      "numberFormat": "hexadecimal",
+      "colorIndex": 0,
+      "renderType": "multiBit"
+    },
+    {
+      "netlistId": 60,
+      "name": "tb_csr_controller.dut.interrupt",
+      "numberFormat": "binary",
+      "colorIndex": 0,
+      "renderType": "binary"
+    },
+    {
+      "netlistId": 55,
+      "name": "tb_csr_controller.dut.exception",
+      "numberFormat": "binary",
+      "colorIndex": 0,
+      "renderType": "binary"
+    },
+    {
+      "netlistId": 84,
+      "name": "tb_csr_controller.dut.trap_cause",
+      "numberFormat": "hexadecimal",
+      "colorIndex": 0,
+      "renderType": "multiBit"
+    },
+    {
+      "netlistId": 66,
+      "name": "tb_csr_controller.dut.mcause_reg",
+      "numberFormat": "hexadecimal",
+      "colorIndex": 0,
+      "renderType": "multiBit"
+    },
+    {
+      "netlistId": 65,
+      "name": "tb_csr_controller.dut.mcause_interrupt",
+      "numberFormat": "binary",
+      "colorIndex": 0,
+      "renderType": "binary"
+    },
+    {
+      "netlistId": 44,
+      "name": "tb_csr_controller.dut.mstatus_reg",
+      "numberFormat": "hexadecimal",
+      "colorIndex": 0,
+      "renderType": "multiBit"
+    },
+    {
+      "netlistId": 85,
+      "name": "tb_csr_controller.dut.trap_value",
+      "numberFormat": "hexadecimal",
+      "colorIndex": 0,
+      "renderType": "multiBit"
+    },
+    {
+      "netlistId": 73,
+      "name": "tb_csr_controller.dut.mtval_reg",
+      "numberFormat": "hexadecimal",
+      "colorIndex": 0,
+      "renderType": "multiBit"
+    },
+    {
+      "netlistId": 68,
+      "name": "tb_csr_controller.dut.mepc_reg",
+      "numberFormat": "hexadecimal",
+      "colorIndex": 0,
+      "renderType": "multiBit"
+    },
+    {
+      "netlistId": 70,
+      "name": "tb_csr_controller.dut.misa_reg",
+      "numberFormat": "hexadecimal",
+      "colorIndex": 0,
+      "renderType": "multiBit"
+    },
+    {
+      "netlistId": 45,
+      "name": "tb_csr_controller.dut.mip_reg",
+      "numberFormat": "hexadecimal",
+      "colorIndex": 0,
+      "renderType": "multiBit"
+    },
+    {
+      "netlistId": 46,
+      "name": "tb_csr_controller.dut.mie_reg",
+      "numberFormat": "hexadecimal",
+      "colorIndex": 0,
+      "renderType": "multiBit"
+    },
+    {
+      "netlistId": 72,
+      "name": "tb_csr_controller.dut.mscratch_reg",
+      "numberFormat": "hexadecimal",
+      "colorIndex": 0,
+      "renderType": "multiBit"
+    },
+    {
+      "netlistId": 75,
+      "name": "tb_csr_controller.dut.mtvec_reg",
+      "numberFormat": "hexadecimal",
+      "colorIndex": 0,
+      "renderType": "multiBit"
+    },
+    {
+      "netlistId": 74,
+      "name": "tb_csr_controller.dut.mtvec_mode",
+      "numberFormat": "hexadecimal",
+      "colorIndex": 0,
+      "renderType": "multiBit"
+    },
+    {
+      "netlistId": 81,
+      "name": "tb_csr_controller.dut.target_pc",
+      "numberFormat": "hexadecimal",
+      "colorIndex": 0,
+      "renderType": "multiBit"
+    },
+    {
+      "netlistId": 7,
+      "name": "tb_csr_controller.calculated_address",
+      "numberFormat": "hexadecimal",
+      "colorIndex": 0,
+      "renderType": "multiBit"
+    },
+    {
+      "netlistId": 9,
+      "name": "tb_csr_controller.current_decoded_instruction",
+      "numberFormat": "binary",
+      "colorIndex": 3,
+      "renderType": "multiBit"
+    },
+    {
+      "netlistId": 10,
+      "name": "tb_csr_controller.current_instruction",
+      "numberFormat": "hexadecimal",
+      "colorIndex": 0,
+      "renderType": "multiBit"
+    },
+    {
+      "netlistId": 11,
+      "name": "tb_csr_controller.current_pc",
+      "numberFormat": "hexadecimal",
+      "colorIndex": 3,
+      "renderType": "multiBit"
+    },
+    {
+      "netlistId": 6,
+      "name": "tb_csr_controller.a_bus",
+      "numberFormat": "hexadecimal",
+      "colorIndex": 0,
+      "renderType": "multiBit"
+    },
+    {
+      "netlistId": 5,
+      "name": "tb_csr_controller.c_bus",
+      "numberFormat": "binary",
+      "colorIndex": 0,
+      "renderType": "multiBit"
+    },
+    {
+      "netlistId": 1,
+      "name": "tb_csr_controller.target_pc",
+      "numberFormat": "hexadecimal",
+      "colorIndex": 0,
+      "renderType": "multiBit"
+    },
+    {
+      "netlistId": 61,
+      "name": "tb_csr_controller.dut.interrupt_enabled",
+      "numberFormat": "binary",
+      "colorIndex": 0,
+      "renderType": "binary"
+    },
+    {
+      "netlistId": 76,
+      "name": "tb_csr_controller.dut.previous_interrupt_enabled",
+      "numberFormat": "binary",
+      "colorIndex": 0,
+      "renderType": "binary"
+    },
+    {
+      "netlistId": 78,
+      "name": "tb_csr_controller.dut.privilege",
+      "numberFormat": "binary",
+      "colorIndex": 0,
+      "renderType": "binary"
+    },
+    {
+      "netlistId": 77,
+      "name": "tb_csr_controller.dut.previous_privilege",
+      "numberFormat": "binary",
+      "colorIndex": 0,
+      "renderType": "binary"
+    }
+  ]
+}

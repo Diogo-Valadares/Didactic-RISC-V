@@ -1,3 +1,4 @@
+`timescale 1s/1s
 module phase_generator(
     input clock,
     input reset,

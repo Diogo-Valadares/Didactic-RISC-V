@@ -1,0 +1,23 @@
+nop
+li a1 0xffffffff
+csrrw a1 mscratch a1
+csrr a2 mscratch
+
+csrr s0 mvendor
+csrr s1 mhartid
+csrr s2 mimpid
+csrr s3 mstatus
+csrr s4 misa
+csrr s5 mie
+csrr s6 mip
+csrr s7 mtvec
+csrr s8 mepc 
+csrr s9 cycle
+li t0 0x81000004
+sw t0 t0 0 
+csrr s10 time
+csrr s11 timeh
+csrr a0 instret
+
+:here
+j :here

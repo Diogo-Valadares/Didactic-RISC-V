@@ -32,23 +32,31 @@
 	mv yRegTarget yRegSource
 .endmacro
 
+.macro storeVector address xRegSource yRegSource
+	sh xRegSource address 0
+	sh yRegSource address 2
+.endmacro
+
 .macro addVector xRegR yRegR xReg1 yReg1 Xreg2 Yreg2
 	add xRegR xReg1 Xreg2
 	add yRegR yReg1 Yreg2	
 .endmacro
+	nop
 	li sp 0x00010000	
 	//video address 0x01000000 will be stored at the global pointer 
 	//adicionally, the keyboard is the videoAddress-1, which should save resources.
 	li gp 0x01000000		
 	li s2 0xffffffff //colorReg white	
 	li s3 0xff000000 //address bits
+	li s4 1 //snake size
+	li s5 0 //current head offset
 	setVector s0 s1 0x1f 0x1f //setting starting position to center of the display	
 	
 	//first we set a loop that first test if user has set any input(loaded to t1).
 	//if so we set the point speed, then move the position based on the speed.
 	//the loop ends once the input key is 'q'(t6)
 
-	setVector t4 t5 1 0 //setting initial speed
+	setVector t2 t3 1 0 //setting initial speed
 
 :loopStart
 	lb t1 gp -1
@@ -64,24 +72,29 @@
 	beqi t1 0x71 :loopEnd a0
 
 	:w
-	setVector t4 t5 0 -1
+	setVector t2 t3 0 -1
 	jump :draw
 	:a
-	setVector t4 t5 -1 0
+	setVector t2 t3 -1 0
 	jump :draw
 	:s
-	setVector t4 t5 0 1
+	setVector t2 t3 0 1
 	jump :draw
 	:d
-	setVector t4 t5 1 0
+	setVector t2 t3 1 0
 #ENDREGION
 	
 	:draw
 	copyVector a0 a1 s0 s1				//save old position
-	addVector s0 s1 s0 s1 t4 t5			//apply velocity to position
-	inc s2 0xfff
-	drawPoint gp s0 s1 s2 0x3f 6 s3		//draw new position
-	drawPoint gp a0 a1 zero 0x3f 6 s3	//clear old position
+	
+	addVector s0 s1 s0 s1 t2 t3			//apply velocity to position
+	
+	inc s2 0x010203	//update color
+	
+	drawPoint gp s0 s1 s2 0x3f 6 s3		//draw head
+	
+	
+	drawPoint gp a0 a1 zero 0x3f 6 s3	//erase tail
 
 	jump :loopStart
 :loopEnd
