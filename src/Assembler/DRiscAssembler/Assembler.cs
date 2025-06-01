@@ -1,59 +1,72 @@
 ﻿namespace DRiscAssembler;
 public class Assembler
 {
+    public static int textPosition => 12;
     private static readonly string[] separator = ["\r\n", "\r", "\n"];
 
     public static string Assemble(string input, int bitWidth, int addressWidth)
     {
-        var lines = input.Replace("\t", "").Split(separator, StringSplitOptions.None);
+        var lines = input.Replace('\t', ' ').Replace(',', ' ').Split(separator, StringSplitOptions.None);
         var memory = new uint[2 << addressWidth];
         var linesList = lines.ToList();
         RemoveCommentsAndBlankLines(linesList);
         ExtractMacros(linesList);
-        ExtractLabels(linesList);
-        ExtractVariables(linesList);
+        ExtractLabelsAndVariables(linesList);
         lines = [.. linesList];
-
+        Console.Write($"[Line][Memory_Address] Translated_Binary Original_Code\n");
         int memIndex = 0;
         for (uint currentLine = 0; currentLine < lines.Length; currentLine++)
         {            
-            var parts = lines[currentLine].Split(' ');
+            var parts = splitLine(lines[currentLine]);
 
-            switch (parts[0].ToUpper())
+            /*switch (parts[0].ToUpper())
             {
                 case ".WORD":
-                    memory[currentLine] = Instruction.ToInteger(parts[parts.Length > 2 ? 2 : 1], 0xffffffff);
-                    #region Debug Print
-                    Console.Write($"[{currentLine}]:\t");
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.Write(Instruction.ToBinary(memory[currentLine]));
-                    Console.ForegroundColor = ConsoleColor.Magenta;
-                    Console.Write($" {parts[0]}");
-                    if(parts.Length > 2)
+                    bool hasLabel = !int.TryParse(parts[1][0].ToString(), out var _);
+
+                    for(int i = hasLabel ? 2 : 1; i < parts.Length; i++)
                     {
-                        Console.ForegroundColor = ConsoleColor.Yellow;
-                        Console.Write($" {parts[1]}");
+                        memory[memIndex] = Instruction.ToInteger(parts[i], 0xffffffff);
+                        memIndex++;
+                        #region Debug Print
+                        Console.Write($"[{currentLine}]:\t");
                         Console.ForegroundColor = ConsoleColor.Green;
-                        Console.Write($" {parts[2]}");
+                        Console.Write(Instruction.ToBinary(memory[memIndex]));
+                        Console.ForegroundColor = ConsoleColor.Magenta;
+                        Console.Write($" {parts[0]}");
+                        if (hasLabel)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            Console.Write($" {parts[1]}");
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.Write($" {parts[i]}");
+                        }
+                        else
+                        {
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.Write($" {parts[i]}");
+                        }
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.WriteLine();
+                        #endregion
                     }
-                    else
-                    {
-                        Console.ForegroundColor = ConsoleColor.Green;
-                        Console.Write($" {parts[1]}");
-                    }
-                    Console.ForegroundColor = ConsoleColor.White;
-                    Console.WriteLine();
-                    #endregion
                     continue;
+            }*/
+
+            if (!Instruction.instructions.TryGetValue(parts[0].ToUpper(), out var translatorsGenerator) &&
+                !Instruction.pseudoOps.TryGetValue(parts[0].ToUpper(), out translatorsGenerator))
+            {
+                //probably already gets filtered on labels and words extraction
+                throw new InvalidOperationException($"Unknown instruction \"{parts[0]}\" at line {currentLine}.");
             }
 
-            if (!Instruction.instructions.TryGetValue(parts[0].ToUpper(), out var translatorsGenerator))
-            {
-                throw new Exception($"Unknown instruction \"{parts[0]}\" at line {currentLine}.");
-            }
-            Console.Write($"[{currentLine}]:");
+            Console.Write($"[{currentLine}]");
 
             var translators = translatorsGenerator(parts[1..]);
+            if (translators.Length == 0) continue;
+
+            Console.Write($"[{memIndex}]");
+            Console.SetCursorPosition(textPosition, Console.CursorTop);
 
             memory[memIndex] = translators[0]();
             memIndex++;
@@ -78,6 +91,9 @@ public class Assembler
             //in case it gets translated into more than one line
             for (int i = 1; i < translators.Length; i++)
             {
+                Console.SetCursorPosition($"[{currentLine}]".Length, Console.CursorTop);
+                Console.Write($"[{memIndex}]");
+                Console.SetCursorPosition(textPosition, Console.CursorTop);
                 memory[memIndex] = translators[i]();
                 memIndex++;
                 Console.WriteLine();
@@ -127,7 +143,7 @@ public class Assembler
         Dictionary<string, (string[] arguments, string[] macro)> macros = [];
         for (int currentLine = 0; currentLine < lines.Count; currentLine++)
         {
-            var parts = lines[currentLine].Split(' ');
+            var parts = splitLine(lines[currentLine]);
             if (parts[0] != ".macro") continue;;
             var macroName = parts[1];
             var macroArgs = parts[2..];
@@ -172,7 +188,7 @@ public class Assembler
 
         for (int currentLine = 0; currentLine < lines.Count; currentLine++)
         {
-            var parts = lines[currentLine].Split(' ');
+            var parts = splitLine(lines[currentLine]);
             if (!macros.TryGetValue(parts[0], out (string[] arguments, string[] macroLines) value)) continue;
             
             if(parts.Length - 1 != value.arguments.Length)
@@ -206,21 +222,52 @@ public class Assembler
             #endregion
         }
     }
-    private static void ExtractLabels(List<string> lines)
+    private static void ExtractLabelsAndVariables(List<string> lines)
     {
         Dictionary<string, int> labels = [];
+        Dictionary<string, uint> words = [];
+
+        string[] variablesTypes = [".byte", ".half", ".word", ".float", ".string"];
+
+        int currentAddress = 0;     
+        //indexing labels and variables
         for (int currentLine = 0; currentLine < lines.Count; currentLine++)
         {
+            var parts = splitLine(lines[currentLine]);
+            var (opSize, hasLabel) = getOperationInfo(parts, currentLine);
+            if (variablesTypes.Contains(parts[0]) && hasLabel)
+            {
+                words.Add(parts[1], (uint)currentAddress << 2);
+            }
+            currentAddress += opSize;
             if (!lines[currentLine].StartsWith(':')) continue;
-            labels.Add(lines[currentLine], (int)currentLine << 2);
-            Console.WriteLine($"[{currentLine}]Added label \"{lines[currentLine]}\" with value {(int)currentLine << 2}");
+            
+            labels.Add(lines[currentLine], currentAddress << 2);
+
+            Console.WriteLine($"[{currentLine}]Added label \"{lines[currentLine]}\" with value {currentAddress << 2}");
+            
             lines.RemoveAt(currentLine);
             currentLine--;
+            currentAddress--;
         }
 
+        //debug print
+        if (words.Count > 0)
+        {
+            Console.WriteLine("\nVariables:");
+            foreach (var word in words)
+            {
+                Console.WriteLine($"{word.Key} = {word.Value}");
+            }
+        }
+
+        //swapping references for values
+        currentAddress = 0;
         for (int currentLine = 0; currentLine < lines.Count; currentLine++)
         {
-            var parts = lines[currentLine].Split(' ');
+            var parts = splitLine(lines[currentLine]);            
+
+            //label
             for (int i = 0; i < parts.Length; i++)
             {
                 if (!parts[i].StartsWith(':')) continue;
@@ -229,10 +276,11 @@ public class Assembler
                     throw new Exception($"[{currentLine}]Unknown label \"{parts[i]}\" at line {currentLine}.");
                 }
 
-                var lineBefore = lines[currentLine];
+                var lineBefore = lines[currentLine];// for the debug print
+
                 if (Instruction.PCRelativeInstructions.Contains(parts[0].ToUpper()))
                 {
-                    value -= currentLine << 2;
+                    value -= currentAddress << 2;
                 }
                 lines[currentLine] = lines[currentLine].Replace(parts[i], value.ToString());
                 #region DebugPrint
@@ -246,40 +294,7 @@ public class Assembler
                 Console.ForegroundColor = ConsoleColor.White;
                 #endregion
             }
-        }
-    }
-    private static void ExtractVariables(List<string> lines)
-    {
-        Dictionary<string, uint> words = [];
-        for (int currentLine = 0; currentLine < lines.Count; currentLine++)
-        {
-            var parts = lines[currentLine].Split(' ');
-            switch (parts[0].ToUpper())
-            {
-                case ".WORD":
-                    if(parts.Length > 2)
-                    {
-                        words.Add(parts[1], (uint)currentLine << 2);
-                    }                    
-                    break;
-                case ".HALF":
-                case ".BYTE":
-                    throw new NotImplementedException();
-            }
-        }
-
-        if (words.Count > 0)
-        {
-            Console.WriteLine("\nVariables:");
-            foreach (var word in words)
-            {
-                Console.WriteLine($"{word.Key} = {word.Value}");
-            }
-        }
-
-        for (int currentLine = 0; currentLine < lines.Count; currentLine++)
-        {
-            var parts = lines[currentLine].Split(' ');
+            //variables
             for (int i = 1; i < parts.Length; i++)
             {
                 if (!parts[i].StartsWith('.')) continue;
@@ -287,7 +302,7 @@ public class Assembler
                 {
                     throw new Exception($"[{currentLine}]Unknown variable \"{parts[i]}\" at line {currentLine}.");
                 }
-                var lineBefore = lines[currentLine];
+                var lineBefore = lines[currentLine];//for the DebugPrint
                 lines[currentLine] = lines[currentLine].Replace(parts[i], value.ToString());
                 #region DebugPrint
                 Console.Write($"[{currentLine}]Translated variable at line from ");
@@ -300,6 +315,55 @@ public class Assembler
                 Console.ForegroundColor = ConsoleColor.White;
                 #endregion
             }
+
+            var (size, _) = getOperationInfo(parts, currentLine);
+            currentAddress += size;
+        }   
+    }
+    private static string[] splitLine(string line) => line.Split(' ').Where((s) => s != string.Empty).ToArray();
+
+    /// <summary>
+    /// Used to extract Labels and the amount of 32 memory addresses that will be written by the operation;
+    /// </summary>
+    /// <param name="parts"></param>
+    /// <param name="currentLine"></param>
+    /// <returns></returns>
+    /// <exception cref="InvalidOperationException"></exception>
+    private static (int size, bool hasLabel) getOperationInfo(string[] parts, int currentLine)
+    {
+        bool hasLabel = false;
+        int size = 0;
+        switch (parts[0])
+        {
+            case ".byte":
+                hasLabel = !char.IsDigit(parts[1][0]);
+                size = (int)Math.Ceiling(parts.Length - (hasLabel ? 2 : 1) / 4f);
+                break;
+            case ".half":
+                hasLabel = !char.IsDigit(parts[1][0]);                
+                size = (int)Math.Ceiling(parts.Length - (hasLabel ? 2 : 1) / 2f);
+                break;
+            case ".word":
+            case ".float":
+                hasLabel = !char.IsDigit(parts[1][0]);  
+                size = parts.Length - (hasLabel ? 2 : 1);
+                break;
+            case ".string":
+                hasLabel = parts[1][0] != '"';
+                size = parts[hasLabel ? 2 : 1].Length - 2;
+                break;
+            default:                
+                if (!parts[0].StartsWith('.') && !parts[0].StartsWith(':')) {
+                    //regular instructions
+                    if(!Instruction.instructions.TryGetValue(parts[0].ToUpper(), out var translators))
+                    {
+                        throw new InvalidOperationException($"Unknown instruction \"{parts[0]}\" at line {currentLine}.");
+                    }
+                    size = translators(parts[1..]).Length;
+                }
+                //Operations that aren't variables shouldn't have size. 
+                break;
         }
+        return (size, hasLabel);
     }
 }

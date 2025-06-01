@@ -9,7 +9,7 @@ internal static class Instruction
     /// PseudoInstructions have been commented to make them easier to track.
     public static readonly Dictionary<string, Func<string[], Func<uint>[]>> instructions = new()
     {
-        {"LUI",  (p) => [() => TranslateU(Instructions.lui, p[0], p[1])]},
+        {"LUI",   (p) => [() => TranslateU(Instructions.lui, p[0], p[1])]},
         {"AUIPC", (p) => [() => TranslateU(Instructions.auipc, p[0], p[1])]},
         {"J",     (p) => [() => TranslateJ(Instructions.jal, "x0", p[0])]},//jump (to pc+imm)
         {"JUMP",  (p) => [() => TranslateJ(Instructions.jal, "x0", p[0])]},//same as above
@@ -54,7 +54,7 @@ internal static class Instruction
         {"NEG",   (p) => [() => TranslateR(Instructions.op, Operation.sub, p[0], "x0", p[1])]},//negate
         {"MUL",   (p) => [() => TranslateR(Instructions.op, Operation.mul, p[0], p[1], p[2])]},
         {"MULH",  (p) => [() => TranslateR(Instructions.op, Operation.mulh, p[0], p[1], p[2])]},
-        {"MULHSU",(p) => [()=> TranslateR(Instructions.op, Operation.mulhsu, p[0], p[1], p[2])]},
+        {"MULHSU",(p) => [() => TranslateR(Instructions.op, Operation.mulhsu, p[0], p[1], p[2])]},
         {"MULHU", (p) => [() => TranslateR(Instructions.op, Operation.mulhu, p[0], p[1], p[2])]},
         {"DIV",   (p) => [() => TranslateR(Instructions.op, Operation.div, p[0], p[1], p[2])]},
         {"DIVU",  (p) => [() => TranslateR(Instructions.op, Operation.divu, p[0], p[1], p[2])]},
@@ -117,17 +117,21 @@ internal static class Instruction
         {"CSRRCI",(p) => [() => TranslateI(Instructions.system, SystemFunct20.csrrci, p[0], "x" + ToInteger(p[2],0x1f), TryParseCSR(p[1]))]},
         //special pseudoinstructions
         {"LI",   (p) => { //Load Immediate
+            if (IsAddress(p[1]))
+            {
+                throw new NotImplementedException("Variable addresses cannot be used with LI due to its variable size nature.");
+            }
             int immediate = (int)ToInteger(p[1]);
             if (Math.Abs(immediate) <= 0x800)
                 return [() => TranslateI(Instructions.op_imm, Operation.addi, p[0], "x0", p[1])];
             else if ((immediate & 0xfff) != 0)
                 return [() => TranslateU(Instructions.lui, p[0], Upper(immediate)),
-                        () => TranslateI(Instructions.op_imm, Operation.addi, p[0], "x0", p[1])];
+                        () => TranslateI(Instructions.op_imm, Operation.addi, p[0], p[0], p[1])];
             else
                 return [() => TranslateU(Instructions.lui, p[0], Upper(immediate))];
         }},
         {"LA",   (p) => { //Load Address
-            int immediate = (int)ToInteger(p[1]);
+            int immediate = IsAddress(p[1]) ? 0 : (int)ToInteger(p[1]);
             if (IsPositionIndependentCode)
             {
                 return [() => TranslateU(Instructions.auipc, p[0], Upper(immediate)),
@@ -140,6 +144,10 @@ internal static class Instruction
             }
         }},
         {"CALL",  (p) => {//Call Far-Away subroutine
+            if (IsAddress(p[0]))
+            {
+                throw new NotImplementedException("Variable addresses cannot be used with CALL due to its variable size nature.");
+            }
             int immediate = (int)ToInteger(p[0]);
                 if (Math.Abs(immediate) < 0x200000)
                     return [() => TranslateJ(Instructions.jal, "ra", p[0])];
@@ -148,6 +156,120 @@ internal static class Instruction
                             () => TranslateI(Instructions.jalr, 0, "ra", "ra", p[0])];
         }},
     };
+    public static readonly Dictionary<string, Func<string[], Func<uint>[]>> pseudoOps = new()
+    {
+        {".BYTE", (p) =>
+        {
+            List<Func<uint>> generators = [];
+            bool hasLabel = !char.IsDigit(p[0][0]);
+            int i;
+            for(i = hasLabel ? 1 : 0; i + 3 < p.Length; i += 4)
+            {
+                var word = ToInteger(p[i],0xff) |
+                            (ToInteger(p[i+1],0xff) << 8) |
+                            (ToInteger(p[i+2],0xff) << 16) |
+                            (ToInteger(p[i+3],0xff) << 24);
+                generators.Add(() => {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write(ToBinary(word));
+                    Console.ForegroundColor = ConsoleColor.White;
+                    return word;
+                });
+            }
+
+            if(i < p.Length)
+            {
+                var word = ToInteger(p[i],0xff) |
+                       (i + 1 < p.Length ? (ToInteger(p[i+1],0xff) << 8) : 0) |
+                       (i + 2 < p.Length ? (ToInteger(p[i+2],0xff) << 16) : 0);
+                generators.Add(() => {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write(ToBinary(word));
+                    Console.ForegroundColor = ConsoleColor.White;
+                    return word;
+                });
+            }
+            return [.. generators];
+        }},
+        {".HALF", (p) => {
+            List<Func<uint>> generators = [];
+            bool hasLabel = !char.IsDigit(p[0][0]);
+            int i;
+            for(i = hasLabel ? 1 : 0; i + 1 < p.Length; i += 2)
+            {
+                var word = ToInteger(p[i],0xffff) | (ToInteger(p[i+1]) << 16);
+                generators.Add(() => {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write(ToBinary(word));
+                    Console.ForegroundColor = ConsoleColor.White;
+                    return word;
+                });
+            }
+
+            if(i < p.Length)
+            {
+                var word = ToInteger(p[i],0xffff);
+                generators.Add(() => {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write(ToBinary(word));
+                    Console.ForegroundColor = ConsoleColor.White;
+                    return word;
+                });
+            }
+            return [.. generators];
+        }},
+        {".WORD", (p) => {
+            List<Func<uint>> generators = [];
+            bool hasLabel = !char.IsDigit(p[0][0]);
+            for(int i = hasLabel ? 1 : 0; i < p.Length; i++)
+            {
+                uint word = ToInteger(p[i]);
+                generators.Add(() => {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write(ToBinary(word));
+                    Console.ForegroundColor = ConsoleColor.White;
+                    return word;
+                });
+            }
+            return [.. generators];
+        }},
+        {".FLOAT", (p) => []},
+        {".STRING", (p) => {
+            List<Func<uint>> generators = [];
+            bool hasLabel = p[0][0] != '"';
+            var str = string.Join(' ', p[(hasLabel ? 1 : 0)..^0])[1..^1];
+            for(int i = 0; i < str.Length; i++)
+            {
+                int currentChar = i;
+                generators.Add(() => {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write(ToBinary(str[currentChar]));
+                    Console.ForegroundColor = ConsoleColor.White;
+                    return str[currentChar];
+                });
+            }
+            return [.. generators];
+        }},
+        {".OPTION", (p) => {
+            Console.SetCursorPosition(Assembler.textPosition, Console.CursorTop);
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            switch (p[0].ToUpper())
+            {
+                case "PIC":
+                    Console.Write("(INFO)Activating Position Independent Code Mode (.option pic)\n");
+
+                    IsPositionIndependentCode = true;
+                    break;
+                case "NOPIC":
+                    Console.Write("(INFO)Disabling Position Independent Code Mode (.option nopic)\n");
+                    IsPositionIndependentCode = false;
+                    break;
+            }
+            Console.ForegroundColor = ConsoleColor.White;
+            return [];
+        }},
+    };
+
     /// <summary>
     /// Defines the set of instructions that are PC-relative to calculate the value of the labels.
     /// </summary>
@@ -203,7 +325,6 @@ internal static class Instruction
         result |= (funct10 & ~(uint)0x7) << 22;
 
         #region print
-        Console.Write("\t");
         var resBin = ToBinary(result);
         Console.ForegroundColor = ConsoleColor.White;
         Console.Write(resBin[0..7]);
@@ -244,7 +365,6 @@ internal static class Instruction
         result |= ToInteger(imm12, 0xFFF) << 20;
 
         #region print
-        Console.Write("\t");
         var resBin = ToBinary(result);
         Console.ForegroundColor = ConsoleColor.Green;
         Console.Write(resBin[0..12]);
@@ -296,7 +416,6 @@ internal static class Instruction
         result |= (immediate & ~(uint)0x1F) << 20;
 
         #region print
-        Console.Write("\t");
         var resBin = ToBinary(result);
         Console.ForegroundColor = ConsoleColor.Green;
         Console.Write(resBin[0..7]);
@@ -341,7 +460,6 @@ internal static class Instruction
         result |= (immediate & 0x1000) << 19;
 
         #region print
-        Console.Write("\t");
         var resBin = ToBinary(result);
         Console.ForegroundColor = ConsoleColor.Green;
         Console.Write(resBin[0..7]);
@@ -376,7 +494,6 @@ internal static class Instruction
         result |= ToInteger(imm20, 0xFFFFF) << 12;
 
         #region print
-        Console.Write("\t");
         var resBin = ToBinary(result);
         Console.ForegroundColor = ConsoleColor.Green;
         Console.Write(resBin[0..20]);
@@ -406,7 +523,6 @@ internal static class Instruction
         result |= (imm & 0x7F800) << 1 | (imm & 0x400) << 10 | (imm & 0x3FF) << 21 | (imm & 0x80000) << 12;
 
         #region print
-        Console.Write("\t");
         var resBin = ToBinary(result);
         Console.ForegroundColor = ConsoleColor.Green;
         Console.Write(resBin[0..20]);
@@ -419,6 +535,8 @@ internal static class Instruction
 
         return result;
     }
+
+    private static bool IsAddress(string text) => text.StartsWith(':') || text.StartsWith('.');
 
     /// <summary>
     /// Translates a string number to an integer.
@@ -462,5 +580,10 @@ internal static class Instruction
 
     public static string ToBinary(uint value) => Convert.ToString(value, 2).PadLeft(32, '0');
 
+    /// <summary>
+    /// Extracts the upper 20 bits of an immediate value while accounting for sign extension.
+    /// </summary>
+    /// <param name="immediate">The immediate integer value to be processed.</param>
+    /// <returns>A string representing the upper portion of the immediate value, adjusted for sign extension.</returns>
     private static string Upper(int immediate) => ((immediate >> 12) + ((immediate & 0x800) >> 11)).ToString();
 }

@@ -1,4 +1,5 @@
-﻿string configFilePath = Path.Combine(Directory.GetCurrentDirectory(), "config.cfg");
+﻿//compile with "dotnet publish -r win-x64 -c Release"
+string configFilePath = Path.Combine(Directory.GetCurrentDirectory(), "config.cfg");
 Dictionary<string, string> configSettings = [];
 
 if (File.Exists(configFilePath))
