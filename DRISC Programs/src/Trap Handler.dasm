@@ -1,0 +1,137 @@
+.address 0x80000000
+.define terminal_address 0x1100000
+
+	jump :machine_exception
+.word 0 0
+	jump :machine_software_interrupt
+.word 0 0 0
+	jump :machine_timer_interrupt
+.word 0 0 0
+	jump :machine_external_interrupt
+.word 0 0 0 0
+:machine_exception
+	csrw mscratch sp
+	li sp -64	
+	sw ra sp 0
+	sw a0 sp 4
+	sw a4 sp 8
+	sw a5 sp 16
+	
+	sw t0 sp 24
+	sw t1 sp 28
+	sw t2 sp 32
+	
+	csrr a5 mcause //load mcause to a5
+	andi a5 a5 0x7ff //removes the interrupt bit
+	li a4 11 //load biggest option
+	
+	bgtu a5 a4 :cause_unknown //if mcause > biggest option
+	
+	slli a4 a5 2 //adjust option number to word addresses.
+	la a5 :switch_table //load the table address
+	add a5 a5 a4 //add option offset to the table address
+	
+	lw a5 a5 0 //load address from table
+	jr a5 //jump to loaded address
+:switch_table
+    .word :cause_instruction_address_misaligned
+    .word :cause_unknown
+    .word :cause_illegal_instruction
+    .word :cause_breakpoint
+    .word :cause_load_address_misaligned
+    .word :cause_unknown
+    .word :cause_store_address_misaligned
+    .word :cause_unknown
+    .word :cause_ecall_from_user_mode
+    .word :cause_unknown
+    .word :cause_unknown
+    .word :cause_ecall_from_machine_mode
+:cause_unknown
+	la a0 .cause_unknown_message
+	j 0 //unknown causes halt the system;
+:cause_instruction_address_misaligned
+	la a0 .cause_inst_addr_misaligned
+	jump :switch_end
+:cause_illegal_instruction
+	la a0 .cause_illegal_inst
+	jump :switch_end
+:cause_breakpoint
+	la a0 .cause_breakpoint
+	call :load_text
+	//imprimir registradores talvez?
+	jump :switch_end
+:cause_load_address_misaligned
+	la a0 .cause_load_addr_misaligned
+	jump :switch_end
+:cause_store_address_misaligned
+	la a0 .cause_store_addr_misaligned
+	jump :switch_end	
+:cause_ecall_from_user_mode
+	la a0 .cause_ecall_from_user_mode
+	call :load_text
+	csrr t6 mepc
+	jump :no_mret_return
+:cause_ecall_from_machine_mode
+	la a0 .cause_ecall_from_machine_mode
+	csrr t6 mepc 
+	jump :no_mret_return
+	
+:switch_end
+	call :load_text
+	
+	//incrementing the mepc so we don't return to the broken instruction
+	csrr t0 mepc
+	inc t0 4
+	csrw mepc t0
+	
+	lw ra sp 0
+	lw a0 sp 4
+	lw a4 sp 8
+	lw a5 sp 16
+	
+	lw t0 sp 24
+	lw t1 sp 28
+	lw t2 sp 32
+	csrr sp mscratch
+	mret
+	
+:no_mret_return
+	lw ra sp 0
+	lw a0 sp 4
+	lw a4 sp 8
+	lw a5 sp 16
+	
+	lw t0 sp 24
+	lw t1 sp 28
+	lw t2 sp 32
+	csrr sp mscratch
+	jr t6 0
+	
+	
+//print(char[a0])
+:load_text 
+	mv t0 a0 //t0 = string address
+	la t2 terminal_address //t2 = terminal address
+:load_text_loop
+	lb t1 t0 0 //t1 = value[string address]
+ 	sb t1 t2 0 //[terminal address] <= value
+	beq t1 zero :load_text_end
+	inc t0 1 //endereço string ++
+	jump :load_text_loop
+:load_text_end
+	jr ra
+	
+:machine_software_interrupt
+:machine_timer_interrupt
+:machine_external_interrupt
+
+	.string cause_unknown_message "error: cause unknown"
+	.string cause_inst_addr_misaligned "error: instruction address misaligned"
+	.string cause_illegal_inst "error: illegal instruction"
+	.string cause_breakpoint "breakpoint triggered"
+	.string cause_load_addr_misaligned "error: load address misaligned"
+	.string cause_store_addr_misaligned "error: store address misaligned"
+	.string cause_ecall_from_user_mode "Environment call from user"
+	.string cause_ecall_from_machine_mode "Environment call from machine"
+
+	

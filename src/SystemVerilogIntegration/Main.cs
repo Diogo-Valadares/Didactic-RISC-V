@@ -1,4 +1,5 @@
 using System.Drawing.Drawing2D;
+using System.Globalization;
 
 namespace SystemVerilogIntegration
 {
@@ -6,12 +7,21 @@ namespace SystemVerilogIntegration
     {
         private string keyboardPathString = ".\\log.mem";
         private string screenPathString = ".\\screen.mem";
+        private string terminalPathString = ".\\terminal.mem";
         private int width = 64;
         private int height = 64;
         private int screenUpdateDelay = 100;
+
+        private double outputPanelsAspectRatio = 1.0;
+        private bool resizing = false;
+        private bool returningFromMinimize = false;
+        private int absoluteHeight;
+        private static readonly string[] separator = ["\r\n", "\n"];
+
         public MainWindow()
         {
             InitializeComponent();
+            outputPanelsAspectRatio = (double)outputPanels.Width / outputPanels.Height;
             try
             {
                 Thread imageUpdate = new(async () =>
@@ -22,7 +32,16 @@ namespace SystemVerilogIntegration
                         await Task.Delay(screenUpdateDelay);
                     }
                 });
+                Thread textUpdate = new(async () =>
+                {
+                    while (true)
+                    {
+                        GetTerminalText();
+                        await Task.Delay(screenUpdateDelay);
+                    }
+                });
                 imageUpdate.Start();
+                textUpdate.Start();
                 File.WriteAllText(keyboardPathString, string.Empty);
             }
             catch (Exception ex)
@@ -31,9 +50,11 @@ namespace SystemVerilogIntegration
             }
             screenPath.Text = screenPathString.ToString();
             keyboardPath.Text = keyboardPathString.ToString();
+            terminalPath.Text = terminalPathString.ToString();
             screenRefreshDelay.Text = screenUpdateDelay.ToString();
             screenSizeX.Text = width.ToString();
             screenSizeY.Text = height.ToString();
+            absoluteHeight = mainLayoutTable.Height - outputPanels.Height;
         }
 
         private void GetImage()
@@ -81,6 +102,32 @@ namespace SystemVerilogIntegration
                 Console.WriteLine($"Erro ao atualizar a imagem: {ex.Message}");
             }
         }
+
+        private void GetTerminalText()
+        {
+            string rawText;
+            try
+            {
+                string[] lines = File.ReadAllText(terminalPathString, System.Text.Encoding.UTF8)
+                       .Split(separator, StringSplitOptions.RemoveEmptyEntries);
+
+                lines = lines
+                    .Select(t => t.Trim())
+                    .Where(t => !t.Equals("00", StringComparison.OrdinalIgnoreCase))
+                    .ToArray();
+
+                rawText = new string(new string(Array.ConvertAll(lines, t =>
+                    (char)byte.Parse(t, NumberStyles.HexNumber))).Reverse().ToArray());
+
+            }
+            catch
+            {
+                return;
+            }
+            if (!terminal.Text.Equals(rawText))
+                terminal.Text = rawText;
+        }
+
         private void SendText(object sender, EventArgs e)
         {
             if (keyboard.Text == string.Empty) return;
@@ -112,6 +159,11 @@ namespace SystemVerilogIntegration
             screenPathString = screenPath.Text;
         }
 
+        private void terminalPath_TextChanged(object sender, EventArgs e)
+        {
+            terminalPathString = terminalPath.Text;
+        }
+
         private void screenSizeX_TextChanged(object sender, EventArgs e)
         {
             if (!int.TryParse(screenSizeX.Text, out var val)) return;
@@ -127,6 +179,28 @@ namespace SystemVerilogIntegration
         private void resetInput_Click(object sender, EventArgs e)
         {
             File.WriteAllText(keyboardPathString, string.Empty);
+        }
+
+        private void MainWindow_SizeChanged(object sender, EventArgs e)
+        {
+            if (returningFromMinimize)
+            {
+                returningFromMinimize = false;
+                return;
+            }
+            if (resizing) return;
+            resizing = true;
+
+            int newWidth = this.Width;
+            int outputPanelsHeight = (int)(newWidth / outputPanelsAspectRatio);
+            int newHeight = outputPanelsHeight + absoluteHeight;
+
+            this.Height = newHeight;
+            resizing = false;
+        }
+
+        private void MainWindow_Activated(object sender, EventArgs e){
+            returningFromMinimize = true;
         }
     }
 }

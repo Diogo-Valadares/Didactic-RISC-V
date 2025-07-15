@@ -3,6 +3,7 @@
 `include "user_input.sv"
 `include "video_controller.sv"
 `include "real_time_clock.sv"
+`include "terminal.sv"
 `timescale 1s/1s
 
 module test_drisc;
@@ -70,7 +71,7 @@ module test_drisc;
 
     wire read_user_input = read && (address_bus == 32'h00fffffc);
     user_input #(
-        .KEYBOARD_FILE("log.mem")
+        .KEYBOARD_FILE("interface/log.mem")
     ) user_input_inst (
         .read(read_user_input),
         .clock(clock),
@@ -82,13 +83,24 @@ module test_drisc;
     video_controller #(
         .SCREEN_WIDTH_BIT_WIDTH(6),
         .SCREEN_HEIGHT_BIT_WIDTH(6),
-        .SCREEN_FILE("screen.mem")
+        .SCREEN_FILE("interface/screen.mem")
     ) video_controller_inst (
         .clock(clock),
         .reset(reset),
         .write(write_video_controller),
         .address(address_bus[11:0]),
         .data(data_bus)
+    );
+
+    wire write_terminal = write && (address_bus == 32'h01100000);
+    wire clear_terminal = reset || (write && (address_bus == 32'h01100001));
+    terminal #(
+        .TERMINAL_FILE("interface/terminal.mem")
+    ) terminal_inst (
+        .clock(clock),
+        .reset(clear_terminal),
+        .write(write_terminal),
+        .data(data_bus[7:0])
     );
 
     wire is_timer_address = (address_bus >= 32'h81000000 && address_bus < 32'h81000010);
@@ -158,7 +170,7 @@ module test_drisc;
                 if(drisc_processor.phase == 3'b001 & clock == 1) begin
                     $display("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
                 end
-                $display("%0sTime %0d | Phi %b clk %b r %b| PC: N %h C %h| Instruction : N %h C %h L %h| Bus: A %h[%d] B %h[%d] C %h[%d], imm %h| IO bus: %h, Ram Addr %h %h, W_A/W/R %b%b%b | Opcode: %0s | cnzv: %b %b %b", 
+                $display("%0sTime %0d | Phi %b clk %b r %b| PC: N %h C %h| Instruction : N %h C %h| Bus: A %h[%d] B %h[%d] C %h[%d], imm %h| IO bus: %h, Ram Addr %h %h, W/R %b%b | Opcode: %0s | cnzv: %b %b %b", 
                     clock == 1? "\033[0m" : "\033[1;30m",
                     $time,
                     drisc_processor.phase,
@@ -168,7 +180,6 @@ module test_drisc;
                     drisc_processor.pc_current_out,
                     drisc_processor.operation_controller_0.next_instruction,
                     drisc_processor.operation_controller_0.current_instruction,
-                    drisc_processor.operation_controller_0.last_instruction,
                     drisc_processor.a_bus,
                     drisc_processor.registers_addresses[9:5],
                     drisc_processor.b_bus,
@@ -179,7 +190,6 @@ module test_drisc;
                     data_bus,
                     address_bus,
                     address_bus,
-                    write_address,
                     write,
                     read,
                     decode_opcode(current_instruction[6:0]),
@@ -471,32 +481,32 @@ module test_drisc;
         if(current_instruction == 32'h00000013) return "No Operation\t\t\t\t---------------------------------";
         
         case(current_instruction[6:0])
-            7'h13,7'h33: begin
+            7'h13,7'h33: begin //alu operations
                 case (drisc_processor.alu_0.op)
                     0: op = "+";
                     1: op = "<<";
                     2: op = "<";
-                    3: op = "<(u)";
+                    3: op = "<u";
                     4: op = "^";
                     5: op = ">>";
                     6: op = "|";
                     7: op = "&";
                     8: op = "*";
-                    9: op = "*h";
-                    10: op = "(s*hu)";
-                    11: op = "*h(u)";
+                    9: op = "*H";
+                    10: op = "*H_su";
+                    11: op = "*H_u";
                     12: op = "/";
-                    13: op = "/(u)";
+                    13: op = "/u";
                     14: op = "\%";
-                    15: op = "\%(u)";
+                    15: op = "\%u";
                     16: op = "-";
                     21: op = ">>>";
                     default: op = "UNK";
-                endcase
-                if(current_instruction[6:0] == 7'h13)                        
-                    if(is_shift) return $sformatf("%s <= %s %s immediate\t\t\t%s <= %0d %s %0d = %0d (0x%h)", 
+                endcase                
+                if(current_instruction[6:0] == 7'h13)//if is immediate instructions                  
+                    if(is_shift) return $sformatf("%s <= %s %s immediate  \t\t%s <= %0d %s %0d = %0d (0x%h)", 
                                 trim(c_address), trim(a_address), op, trim(c_address), a_bus, op, immediate[4:0], c_bus, c_bus);
-                    else return $sformatf("%s <= %s %s immediate\t\t\t%s <= %0d %s %0d = %0d (0x%h)", 
+                    else return $sformatf("%s <= %s %s immediate  \t\t%s <= %0d %s %0d = %0d (0x%h)", 
                                 trim(c_address), trim(a_address), op, trim(c_address), a_bus, op, immediate, c_bus, c_bus);
                 else return $sformatf("%s <= %s %s %s \t\t\t%s <= %0d %s %0d = %0d (0x%h)", 
                         trim(c_address), trim(a_address), op, trim(b_address),trim(c_address), a_bus, op, b_bus, c_bus, c_bus);
@@ -552,8 +562,8 @@ module test_drisc;
                     trim(c_address), immediate, immediate);
             end
             7'h17: begin
-                return $sformatf("%s <= PC + immediate high\t\t\tPC + immediate high = %0d (0x%h)", 
-                    trim(c_address), drisc_processor.alu_out, drisc_processor.alu_out);
+                return $sformatf("%s <= PC + immediate high\t\t%s <= %0d + %0d = %0d (0x%h)", 
+                    trim(c_address),trim(c_address),drisc_processor.pc_current_out, immediate, drisc_processor.alu_out, drisc_processor.alu_out);
             end
             7'h73: begin
                 if(current_instruction[14:12] == 3'b0) begin
@@ -605,7 +615,7 @@ module test_drisc;
             end
         endcase        
         
-        return "NOT IMPLEMENTED YET";   
+        return $sformatf("NOT IMPLEMENTED YET (0x%8h)", current_instruction);   
     endfunction
 
     function automatic string trim(input string str);

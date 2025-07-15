@@ -1,0 +1,15 @@
+.define terminal_address 0x1100000
+nop
+:load_text //print(char[])
+	la t0 .text //t0 = endereço string
+	la t2 terminal_address //t2 = endereço terminal
+:load_text_loop
+	lb t1 t0 0 //t1 = valor[endereço string]
+ 	sb t1 t2 0 //[endereço terminal] <= valor
+	beq t1 zero :load_text_end
+	inc t0 1 //endereço string ++
+	jump :load_text_loop
+:load_text_end
+	j 0
+	
+	.string text "This is a test string !@$%¨&*()_{}[]"
