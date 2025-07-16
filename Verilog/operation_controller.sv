@@ -8,6 +8,7 @@ module operation_controller(
     output reg [31:0] current_instruction,
 /////CSR Controller
     output [9:0] current_decoded_instruction,
+    input exception,
     input system_jump,
     input system_load,
 /////Miscellaneous/////

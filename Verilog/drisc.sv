@@ -72,8 +72,7 @@ module drisc(
     wire [9:0] current_decoded_instruction;
 
 //csr controller
-    //wire [31:0] current_decoded_instruction;
-    //wire [31:0] calculated_address;
+    wire exception;
     wire system_load;
     //for csr read/write instructions
     wire read_csr;
@@ -128,6 +127,7 @@ module drisc(
         .immediate(immediate),
         .current_instruction(current_instruction),
         .current_decoded_instruction(current_decoded_instruction),
+        .exception(exception),
         .system_load(system_load),
         .system_jump(system_jump),
         .load_upper_immediate(load_upper_immediate),
@@ -165,6 +165,7 @@ module drisc(
         .pc_jump(pc_jump),
         .read_csr(read_csr),
         .c_bus(csr_out),
+        .exception(exception),
         .system_load(system_load),
         .system_jump(system_jump),
         .system_address_target(system_address_target)
