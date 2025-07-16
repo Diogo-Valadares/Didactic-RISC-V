@@ -1,4 +1,6 @@
-﻿namespace DRiscAssembler;
+﻿using System.Diagnostics;
+
+namespace DRiscAssembler;
 
 internal static class Instruction
 {
@@ -122,7 +124,7 @@ internal static class Instruction
                 throw new NotImplementedException("Variable addresses cannot be used with LI due to its variable size nature.");
             }
             int immediate = (int)ToInteger(p[1]);
-            if (Math.Abs(immediate) <= 0x800)
+            if (Math.Abs(Math.Clamp(immediate,-0x8000,0x8000)) <= 0x800)
                 return [() => TranslateI(Instructions.op_imm, Operation.addi, p[0], "x0", p[1])];
             else if ((immediate & 0xfff) != 0)
                 return [() => TranslateU(Instructions.lui, p[0], Upper(immediate)),
@@ -135,25 +137,28 @@ internal static class Instruction
             if (IsPositionIndependentCode)
             {
                 return [() => TranslateU(Instructions.auipc, p[0], Upper(immediate)),
-                        () => TranslateI(Instructions.op_imm, Operation.addi, p[0], p[0], p[1])];
+                        () => TranslateI(Instructions.load, DataSize.word, p[0], p[0], p[1])];
             }
             else
             {
                 return [() => TranslateU(Instructions.auipc, p[0], Upper(immediate)),
-                        () => TranslateI(Instructions.load, DataSize.word, p[0], p[0], p[1])];
+                        () => TranslateI(Instructions.op_imm, Operation.addi, p[0], p[0], p[1])];                
             }
         }},
         {"CALL",  (p) => {//Call Far-Away subroutine
             if (IsAddress(p[0]))
             {
-                throw new NotImplementedException("Variable addresses cannot be used with CALL due to its variable size nature.");
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("(WARNING): Label used on CALL Instruction detect; this should be avoided for jumps further than 200000 addresses long due to CALL variable address length.");
+                Console.ForegroundColor = ConsoleColor.White;
+                p[0] = "0";
             }
             int immediate = (int)ToInteger(p[0]);
-                if (Math.Abs(immediate) < 0x200000)
-                    return [() => TranslateJ(Instructions.jal, "ra", p[0])];
-                else
-                    return [() => TranslateU(Instructions.auipc, "ra", Upper(immediate)),
-                            () => TranslateI(Instructions.jalr, 0, "ra", "ra", p[0])];
+            if (Math.Abs(Math.Clamp(immediate,-0x8000,0x8000)) < 0x200000)
+                return [() => TranslateJ(Instructions.jal, "ra", p[0])];
+            else
+                return [() => TranslateU(Instructions.auipc, "ra", Upper(immediate)),
+                        () => TranslateI(Instructions.jalr, 0, "ra", "ra", p[0])];
         }},
     };
     public static readonly Dictionary<string, Func<string[], Func<uint>[]>> pseudoOps = new()
@@ -161,7 +166,7 @@ internal static class Instruction
         {".BYTE", (p) =>
         {
             List<Func<uint>> generators = [];
-            bool hasLabel = !char.IsDigit(p[0][0]);
+            bool hasLabel = !(char.IsDigit(p[0][0]) || p[0][0] == '-');
             int i;
             for(i = hasLabel ? 1 : 0; i + 3 < p.Length; i += 4)
             {
@@ -193,7 +198,7 @@ internal static class Instruction
         }},
         {".HALF", (p) => {
             List<Func<uint>> generators = [];
-            bool hasLabel = !char.IsDigit(p[0][0]);
+            bool hasLabel = !(char.IsDigit(p[0][0]) || p[0][0] == '-');
             int i;
             for(i = hasLabel ? 1 : 0; i + 1 < p.Length; i += 2)
             {
@@ -220,7 +225,7 @@ internal static class Instruction
         }},
         {".WORD", (p) => {
             List<Func<uint>> generators = [];
-            bool hasLabel = !char.IsDigit(p[0][0]);
+            bool hasLabel = !(char.IsDigit(p[0][0]) || p[0][0] == '-');
             for(int i = hasLabel ? 1 : 0; i < p.Length; i++)
             {
                 uint word = ToInteger(p[i]);
@@ -238,14 +243,40 @@ internal static class Instruction
             List<Func<uint>> generators = [];
             bool hasLabel = p[0][0] != '"';
             var str = string.Join(' ', p[(hasLabel ? 1 : 0)..^0])[1..^1];
-            for(int i = 0; i < str.Length; i++)
+            int i;
+            for(i = 0; i + 3 < str.Length; i += 4)
             {
-                int currentChar = i;
+                var word = str[i] |
+                           (uint)str[i+1] << 8 |
+                           (uint)str[i+2] << 16 |
+                           (uint)str[i+3] << 24;
                 generators.Add(() => {
                     Console.ForegroundColor = ConsoleColor.Green;
-                    Console.Write(ToBinary(str[currentChar]));
+                    Console.Write(ToBinary(word));
                     Console.ForegroundColor = ConsoleColor.White;
-                    return str[currentChar];
+                    return word;
+                });
+            }
+
+            if(i < str.Length)
+            {
+                var word = str[i] |
+                       (i + 1 < str.Length ? (uint)str[i+1] << 8 : 0) |
+                       (i + 2 < str.Length ? (uint)str[i+2] << 16 : 0);
+                generators.Add(() => {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write(ToBinary(word));
+                    Console.ForegroundColor = ConsoleColor.White;
+                    return word;
+                });
+            }
+            else
+            {
+                generators.Add(() => {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write(ToBinary(0));
+                    Console.ForegroundColor = ConsoleColor.White;
+                    return 0;
                 });
             }
             return [.. generators];
@@ -256,12 +287,12 @@ internal static class Instruction
             switch (p[0].ToUpper())
             {
                 case "PIC":
-                    Console.Write("(INFO)Activating Position Independent Code Mode (.option pic)\n");
+                    Console.WriteLine("(INFO)Activating Position Independent Code Mode (.option pic)");
 
                     IsPositionIndependentCode = true;
                     break;
                 case "NOPIC":
-                    Console.Write("(INFO)Disabling Position Independent Code Mode (.option nopic)\n");
+                    Console.WriteLine("(INFO)Disabling Position Independent Code Mode (.option nopic)");
                     IsPositionIndependentCode = false;
                     break;
             }
@@ -273,16 +304,7 @@ internal static class Instruction
     /// <summary>
     /// Defines the set of instructions that are PC-relative to calculate the value of the labels.
     /// </summary>
-    public static HashSet<string> PCRelativeInstructions => IsPositionIndependentCode ?
-        alwaysPCRelativeInstructions.Union(pcRelativeInstructionsWithPIC).ToHashSet() :
-        alwaysPCRelativeInstructions;
-
-    private static readonly HashSet<string> pcRelativeInstructionsWithPIC =
-    [
-        "LA"
-    ];
-
-    private static readonly HashSet<string> alwaysPCRelativeInstructions =
+    public static HashSet<string> PCRelativeInstructions =>
     [
         "BEQ",
         "BNE",
@@ -298,7 +320,8 @@ internal static class Instruction
         "JUMP",
         "JAL",
         "CALL",
-        "LGA"
+        "LGA",
+        "LA"
     ];
 
     /// <summary>
@@ -547,9 +570,13 @@ internal static class Instruction
     {
         if (number.StartsWith("0x"))
         {
-            return (uint)int.Parse(number[2..], System.Globalization.NumberStyles.AllowHexSpecifier) & mask;
+            return uint.Parse(number[2..], System.Globalization.NumberStyles.AllowHexSpecifier) & mask;
         }
-        return (uint)int.Parse(number, System.Globalization.NumberStyles.Integer) & mask;
+        if(int.TryParse(number, out int result))
+        {
+            return (uint)result;
+        }
+        return uint.Parse(number, System.Globalization.NumberStyles.Integer) & mask;
     }
 
     public static uint TryParseRegister(string register)
