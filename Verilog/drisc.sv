@@ -7,7 +7,9 @@
 `include "csr_controller.sv"
 `timescale 1s/1s
 
-module drisc(
+module drisc #(
+    parameter GENERATE_CSR_CONTROLLER = 1
+) (
     input clock,
     input reset,
     input [31:0] data_bus_in,
@@ -18,8 +20,7 @@ module drisc(
     output [31:0] address_bus,
     output [1:0] data_size,
     output write,
-    output read,
-    output [31:0] current_instruction
+    output read
 );
 
     wire [2:1] phase;
@@ -46,6 +47,7 @@ module drisc(
     wire [1:0] data_offset;
     
 //controller wires
+    wire [31:0] next_instruction;
     //immediate
     wire [31:0] immediate;
     wire load_upper_immediate;
@@ -69,7 +71,11 @@ module drisc(
     wire input_buffer_read;
     wire [2:0] data_type;
     //csr controller
-    wire [9:0] current_decoded_instruction;
+    wire [9:0] next_decoded_instruction;
+    wire [31:0] current_instruction;
+    wire store;
+    wire load;
+    wire jump;
 
 //csr controller
     wire exception;
@@ -82,13 +88,13 @@ module drisc(
     wire [31:0] system_address_target;
 
 //components
-    phase_generator phase_generator_0 (
+    phase_generator phase_generator (
         .clock(clock),
         .reset(reset),
         .phase(phase)
     );
 
-    program_counter program_counter_0 (
+    program_counter program_counter (
         .reset(reset),
         .clock(clock),
         .write(phase[2]),
@@ -110,7 +116,7 @@ module drisc(
 
     assign data_bus_out = b_bus;
 
-    input_buffer input_buffer_0 (
+    input_buffer input_buffer (
         .clock(clock),
         .write(input_buffer_write),
         .data_type(data_type),
@@ -119,21 +125,25 @@ module drisc(
         .cpu_out(input_buffer_out)
     );
 
-    operation_controller operation_controller_0 (
+    operation_controller operation_controller (
         .clock(clock),
         .reset(reset),
         .phase(phase),
         .data_in(data_bus_in),
-        .immediate(immediate),
+        .cnzv(cnzv),
+        .immediate(immediate),        
+        .next_instruction(next_instruction),
         .current_instruction(current_instruction),
-        .current_decoded_instruction(current_decoded_instruction),
+        .next_decoded_instruction(next_decoded_instruction),
+        .load(load),
+        .store(store),
+        .jump(jump),
         .exception(exception),
         .system_load(system_load),
         .system_jump(system_jump),
-        .load_upper_immediate(load_upper_immediate),
         .registers_addresses(registers_addresses),
+        .load_upper_immediate(load_upper_immediate),    
         .register_file_write(register_file_write),
-        .cnzv(cnzv),
         .op_function(op_function),
         .alu_use_pc(alu_use_pc),
         .use_immediate(use_immediate),
@@ -149,29 +159,54 @@ module drisc(
         .pad_write(write),
         .pad_data_size(data_size)
     );
+    generate
+        if (GENERATE_CSR_CONTROLLER) begin : csr
+            wire current_immediate = current_instruction[6:0] == 7'h13;
+            wire current_load = current_instruction[6:0] == 7'h03;
+            wire current_add_upper_immediate_pc = current_instruction[6:0] == 7'h17;
+            wire current_store = current_instruction[6:0] == 7'h23;
+            wire current_operation = current_instruction[6:0] == 7'h33 | current_immediate;
+            wire current_load_upper_immediate = current_instruction[6:0] == 7'h37;
+            wire current_branch = current_instruction[6:0] == 7'h63;
+            wire current_jump_and_link_register = current_instruction[6:0] == 7'h67;
+            wire current_jump_and_link = current_instruction[6:0] == 7'h6f;
+            wire current_system = current_instruction[6:0] == 7'h73;
 
-    csr_controller csr_controller_0 (
-        .clock(clock),
-        .reset(reset),
-        .phase(phase),
-        .pad_external_interrupt(external_interrupt),
-        .pad_timer_interrupt(timer_interrupt),
-        .pad_software_interrupt(software_interrupt),
-        .current_decoded_instruction(current_decoded_instruction),
-        .current_instruction(current_instruction),
-        .a_bus(a_bus),
-        .current_pc(pc_current_out),
-        .calculated_address(pc_calculated_address),
-        .pc_jump(pc_jump),
-        .read_csr(read_csr),
-        .c_bus(csr_out),
-        .exception(exception),
-        .system_load(system_load),
-        .system_jump(system_jump),
-        .system_address_target(system_address_target)
-    );
+            wire [9:0]current_decoded_instruction = {
+                current_system, current_jump_and_link, current_jump_and_link_register, current_branch, current_load_upper_immediate, 
+                current_operation, current_store, current_add_upper_immediate_pc, current_immediate, current_load
+            };
+            csr_controller csr_controller (
+                .clock(clock),
+                .reset(reset),
+                .phase(phase),
+                .pad_external_interrupt(external_interrupt),
+                .pad_timer_interrupt(timer_interrupt),
+                .pad_software_interrupt(software_interrupt),
+                .current_decoded_instruction(current_decoded_instruction),
+                .current_instruction(current_instruction),
+                .a_bus(a_bus),
+                .current_pc(pc_current_out),
+                .calculated_address(pc_calculated_address),
+                .pc_jump(pc_jump),
+                .read_csr(read_csr),
+                .c_bus(csr_out),
+                .system_load(system_load),
+                .system_jump(system_jump),
+                .system_address_target(system_address_target)
+            );
+        end else begin : no_csr
+            assign csr_out = 0;
+            assign exception = 0;
+            assign system_load = 0;
+            assign system_jump = 0;
+            assign system_address_target = 0;
+            assign read_csr = 0;
+        end
+    endgenerate
 
-    register_file register_file_0 (
+
+    register_file register_file (
         .clock(clock),
         .reset(reset),
         .write(register_file_write),
@@ -183,7 +218,7 @@ module drisc(
         .b_out(b_bus)
     );
 
-    alu alu_0 (
+    alu alu (
         .use_pc(alu_use_pc),
         .a(a_bus),
         .program_counter(pc_current_out),

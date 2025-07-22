@@ -50,10 +50,10 @@
 `define MISA_32BIT_MXL 32'h40000000
 `define MISA_MASK 32'h40101110
 
-`define F_OFF 2'b00
-`define F_INITIAL 2'b01
-`define F_DIRTY 2'b10
-`define F_CLEAN 2'b11
+//`define F_OFF 2'b00
+//`define F_INITIAL 2'b01
+//`define F_DIRTY 2'b10
+//`define F_CLEAN 2'b11
 
 `define M_T_VEC_BASE 30'h20000000
 `define M_T_VEC_VECTORED 2'b01

@@ -11,7 +11,9 @@ module alu(
     output logic [3:0] cnzv
     );   
     
-    wire [4:0]op = (use_immediate & ~(operation == 1 | operation == 5 | operation == 21)) ? {2'b0, operation[2:0]} : operation;
+    wire [4:0]op = (use_immediate & ~(operation == 1 | operation == 5 | operation == 21)) ? 
+                        {2'b0, operation[2:0]} : 
+                        operation;
     wire [31:0] source1 = use_pc ? program_counter : a;
     wire [31:0] source2 = use_immediate ? immediate : b;
     

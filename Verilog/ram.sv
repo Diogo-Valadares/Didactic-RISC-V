@@ -1,7 +1,7 @@
 `timescale 1s/1s
 module ram #(
     parameter MEM_INIT_FILE = "",
-    parameter ADDR_WIDTH = 16,
+    parameter ADDR_WIDTH = 12,
     parameter MEM_DEPTH = 1 << ADDR_WIDTH,
     parameter PROGRAM_SIZE = MEM_DEPTH
 ) (
@@ -21,7 +21,7 @@ module ram #(
     initial begin
         integer i;
         for (i = 0; i < MEM_DEPTH; i = i + 1) begin
-            mem[i] = 8'b0;
+            mem[i] = 0;
         end
         if (MEM_INIT_FILE != "") begin
             $readmemh(MEM_INIT_FILE, mem, 0, PROGRAM_SIZE-1);

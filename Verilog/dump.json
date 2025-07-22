@@ -35,56 +35,56 @@
     },
     {
       "netlistId": 229,
-      "name": "test_drisc.drisc_processor.program_counter_0.next",
+      "name": "test_drisc.drisc_processor.program_counter.next",
       "numberFormat": "hexadecimal",
       "colorIndex": 2,
       "renderType": "multiBit"
     },
     {
       "netlistId": 214,
-      "name": "test_drisc.drisc_processor.operation_controller_0.next_instruction",
+      "name": "test_drisc.drisc_processor.operation_controller.next_instruction",
       "numberFormat": "hexadecimal",
       "colorIndex": 2,
       "renderType": "multiBit"
     },
     {
       "netlistId": 231,
-      "name": "test_drisc.drisc_processor.program_counter_0.current",
+      "name": "test_drisc.drisc_processor.program_counter.current",
       "numberFormat": "hexadecimal",
       "colorIndex": 6,
       "renderType": "multiBit"
     },
     {
       "netlistId": 212,
-      "name": "test_drisc.drisc_processor.operation_controller_0.current_instruction",
+      "name": "test_drisc.drisc_processor.operation_controller.current_instruction",
       "numberFormat": "hexadecimal",
       "colorIndex": 6,
       "renderType": "multiBit"
     },
     {
       "netlistId": 230,
-      "name": "test_drisc.drisc_processor.program_counter_0.last",
+      "name": "test_drisc.drisc_processor.program_counter.last",
       "numberFormat": "hexadecimal",
       "colorIndex": 7,
       "renderType": "multiBit"
     },
     {
       "netlistId": 213,
-      "name": "test_drisc.drisc_processor.operation_controller_0.last_instruction",
+      "name": "test_drisc.drisc_processor.operation_controller.last_instruction",
       "numberFormat": "hexadecimal",
       "colorIndex": 7,
       "renderType": "multiBit"
     },
     {
       "netlistId": 204,
-      "name": "test_drisc.drisc_processor.operation_controller_0.immediate",
+      "name": "test_drisc.drisc_processor.operation_controller.immediate",
       "numberFormat": "hexadecimal",
       "colorIndex": 5,
       "renderType": "multiBit"
     },
     {
       "netlistId": 239,
-      "name": "test_drisc.drisc_processor.register_file_0.a_address",
+      "name": "test_drisc.drisc_processor.register_file.a_address",
       "numberFormat": "hexadecimal",
       "colorIndex": 1,
       "renderType": "multiBit"
@@ -98,7 +98,7 @@
     },
     {
       "netlistId": 240,
-      "name": "test_drisc.drisc_processor.register_file_0.b_address",
+      "name": "test_drisc.drisc_processor.register_file.b_address",
       "numberFormat": "hexadecimal",
       "colorIndex": 7,
       "renderType": "multiBit"
@@ -112,7 +112,7 @@
     },
     {
       "netlistId": 241,
-      "name": "test_drisc.drisc_processor.register_file_0.c_address",
+      "name": "test_drisc.drisc_processor.register_file.c_address",
       "numberFormat": "hexadecimal",
       "colorIndex": 6,
       "renderType": "multiBit"
@@ -161,14 +161,14 @@
     },
     {
       "netlistId": 154,
-      "name": "test_drisc.drisc_processor.csr_controller_0.privilege",
+      "name": "test_drisc.drisc_processor.csr_controller.privilege",
       "numberFormat": "binary",
       "colorIndex": 0,
       "renderType": "binary"
     },
     {
       "netlistId": 153,
-      "name": "test_drisc.drisc_processor.csr_controller_0.previous_privilege",
+      "name": "test_drisc.drisc_processor.csr_controller.previous_privilege",
       "numberFormat": "binary",
       "colorIndex": 0,
       "renderType": "binary"
