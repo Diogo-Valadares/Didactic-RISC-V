@@ -19,8 +19,8 @@ module terminal #(
             file_handle = $fopen(TERMINAL_FILE, "w");
             if (file_handle != 0) begin
                 $fclose(file_handle);
-            end 
-        end 
+            end
+        end
         else if (write) begin
             for (int i = 63; i > 0; i--) begin
                 buffer[i] <= buffer[i-1];

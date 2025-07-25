@@ -14,7 +14,7 @@ module input_buffer(
             data_reg <= io_in;
         end
     end
-  
+
   	always@(*) begin
         case (data_type)
             3'b100: cpu_out = {24'h0, data_reg[data_offset*8+7 -: 8]};

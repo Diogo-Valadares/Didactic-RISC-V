@@ -16,9 +16,9 @@ module real_time_clock
     reg [64:0] mtimecmp;
 
     assign data = (read && !write) ? (
-            address == 0 ? mtime[31:0] : 
+            address == 0 ? mtime[31:0] :
             address == 1 ? mtime[63:32] :
-            address == 2 ? mtimecmp[31:0] : 
+            address == 2 ? mtimecmp[31:0] :
             mtimecmp[63:32]
         ) : 32'bz;
 
@@ -39,7 +39,7 @@ module real_time_clock
             else if(address == 1) mtime[63:32] <= data;
             else if(address == 2) mtimecmp[31:0] <= data;
             else mtimecmp[63:32] <= data;
-        end    
+        end
     end
 
     always @(posedge internal_clock) begin

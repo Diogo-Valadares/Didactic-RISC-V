@@ -299,50 +299,13 @@ module test_drisc;
         dump_ram();
         $finish;
     end
+
 // Helper tasks and functions
     task dump_registers;
         integer i;
-        reg [8*4:1] reg_name;
-        begin
-            $display("Register values:");
-            for (i = 0; i < 32; i = i + 1) begin
-                case (i)
-                    0: reg_name = "zero";
-                    1: reg_name = "ra ";
-                    2: reg_name = "sp ";
-                    3: reg_name = "gp ";
-                    4: reg_name = "tp ";
-                    5: reg_name = "t0 ";
-                    6: reg_name = "t1 ";
-                    7: reg_name = "t2 ";
-                    8: reg_name = "s0 ";
-                    9: reg_name = "s1 ";
-                    10: reg_name = "a0 ";
-                    11: reg_name = "a1 ";
-                    12: reg_name = "a2 ";
-                    13: reg_name = "a3 ";
-                    14: reg_name = "a4 ";
-                    15: reg_name = "a5 ";
-                    16: reg_name = "a6 ";
-                    17: reg_name = "a7 ";
-                    18: reg_name = "s2 ";
-                    19: reg_name = "s3 ";
-                    20: reg_name = "s4 ";
-                    21: reg_name = "s5 ";
-                    22: reg_name = "s6 ";
-                    23: reg_name = "s7 ";
-                    24: reg_name = "s8 ";
-                    25: reg_name = "s9 ";
-                    26: reg_name = "s10";
-                    27: reg_name = "s11";
-                    28: reg_name = "t3 ";
-                    29: reg_name = "t4 ";
-                    30: reg_name = "t5 ";
-                    31: reg_name = "t6 ";
-                    default: reg_name = "???";
-                endcase
-                $display("R[%0d] (%s) = %h", i, reg_name, drisc_processor.register_file.registers[i]);
-            end
+        $display("Register values:");
+        for (i = 0; i < 32; i = i + 1) begin
+            $display("R[%2d] (%s) = %h  %0d", i, decode_register(i), drisc_processor.register_file.registers[i], $signed(drisc_processor.register_file.registers[i]));
         end
     endtask
 
@@ -395,40 +358,85 @@ module test_drisc;
         else return "";
     endfunction
 
+    function string current_trap();
+        if(!CSR_ENABLED) return "";
+        else if(drisc_processor.csr.csr_controller.interrupt | drisc_processor.csr.csr_controller.exception) begin
+            case(drisc_processor.csr.csr_controller.trap_cause)
+                `MACHINE_SOFTWARE_INTERRUPT: return "\033[1;31mTrap Triggered: Software Interrupt\033[0m";
+                `MACHINE_TIMER_INTERRUPT: return "\033[1;31mTrap Triggered: Timer Interrupt\033[0m";
+                `MACHINE_EXTERNAL_INTERRUPT: return "\033[1;31mTrap Triggered: External Interrupt\033[0m";
+                `INSTRUCTION_ADDRESS_MISALIGNED: return "\033[1;31mTrap Triggered: Illegal Address\033[0m";
+                `ILLEGAL_INSTRUCTION: return "\033[1;31mTrap Triggered: Illegal Instruction\033[0m";
+                `BREAKPOINT: return "\033[1;31mTrap Triggered: Breakpoint Reached\033[0m";
+                `LOAD_ADDRESS_MISALIGNED: return "\033[1;31mTrap Triggered: Load Address Misaligned\033[0m";
+                `STORE_ADDRESS_MISALIGNED: return "\033[1;31mTrap Triggered: Store Address Misaligned\033[0m";
+                `ECALL_FROM_USER_MODE: return "\033[1;31mTrap Triggered: Environment Call From User Mode\033[0m";
+                `ECALL_FROM_MACHINE_MODE: return "\033[1;31mTrap Triggered: Environment Call From Machine Mode\033[0m";
+                default: return "";
+            endcase
+        end
+    endfunction
+
+    function string current_csr();
+        case(current_instruction[31:20])
+            `M_VENDOR_ID : current_csr = "m_vendor_id";
+            `M_ARCH_ID : current_csr = "m_arch_id";
+            `M_IMP_ID : current_csr = "m_imp_id";
+            `M_HART_ID : current_csr = "m_hart_id";
+            `M_STATUS : current_csr = "m_status";
+            `M_ISA : current_csr = "m_isa";
+            `M_I_E : current_csr = "m_i_e";
+            `M_T_VEC : current_csr = "m_t_vec";
+            `M_STATUS_H : current_csr = "m_status_h";
+            `M_SCRATCH : current_csr = "m_scratch";
+            `M_E_PC : current_csr = "m_e_pc";
+            `M_CAUSE : current_csr = "m_cause";
+            `M_T_VAL : current_csr = "m_t_val";
+            `M_I_P : current_csr = "m_i_p";
+            `CYCLE : current_csr = "cycle";
+            `TIME : current_csr = "time";
+            `INSTRET : current_csr = "inst_ret";
+            `CYCLE_H : current_csr = "cycle_h";
+            `TIME_H : current_csr = "time_h";
+            `INSTRET_H : current_csr = "inst_ret_h";
+            default : current_csr = "invalid_csr";
+        endcase
+    endfunction
+
     function bit [31:0] decode_register(input [4:0] register);
         case (register)
-            5'b00000: decode_register = "zero";
-            5'b00001: decode_register = "ra ";
-            5'b00010: decode_register = "sp ";
-            5'b00011: decode_register = "gp ";
-            5'b00100: decode_register = "tp ";
-            5'b00101: decode_register = "t0 ";
-            5'b00110: decode_register = "t1 ";
-            5'b00111: decode_register = "t2 ";
-            5'b01000: decode_register = "s0 ";
-            5'b01001: decode_register = "s1 ";
-            5'b01010: decode_register = "a0 ";
-            5'b01011: decode_register = "a1 ";
-            5'b01100: decode_register = "a2 ";
-            5'b01101: decode_register = "a3 ";
-            5'b01110: decode_register = "a4 ";
-            5'b01111: decode_register = "a5 ";
-            5'b10000: decode_register = "a6 ";
-            5'b10001: decode_register = "a7 ";
-            5'b10010: decode_register = "s2 ";
-            5'b10011: decode_register = "s3 ";
-            5'b10100: decode_register = "s4 ";
-            5'b10101: decode_register = "s5 ";
-            5'b10110: decode_register = "s6 ";
-            5'b10111: decode_register = "s7 ";
-            5'b11000: decode_register = "s8 ";
-            5'b11001: decode_register = "s9 ";
-            5'b11010: decode_register = "s10";
-            5'b11011: decode_register = "s11";
-            5'b11100: decode_register = "t3 ";
-            5'b11101: decode_register = "t4 ";
-            5'b11110: decode_register = "t5 ";
-            5'b11111: decode_register = "t6 ";
+            5'h00: decode_register = "zero";
+            5'h01: decode_register = "ra ";
+            5'h02: decode_register = "sp ";
+            5'h03: decode_register = "gp ";
+            5'h04: decode_register = "tp ";
+            5'h05: decode_register = "t0 ";
+            5'h06: decode_register = "t1 ";
+            5'h07: decode_register = "t2 ";
+            5'h08: decode_register = "s0 ";
+            5'h09: decode_register = "s1 ";
+            5'h0a: decode_register = "a0 ";
+            5'h0b: decode_register = "a1 ";
+            5'h0c: decode_register = "a2 ";
+            5'h0d: decode_register = "a3 ";
+            5'h0e: decode_register = "a4 ";
+            5'h0f: decode_register = "a5 ";
+            5'h10: decode_register = "a6 ";
+            5'h11: decode_register = "a7 ";
+            5'h12: decode_register = "s2 ";
+            5'h13: decode_register = "s3 ";
+            5'h14: decode_register = "s4 ";
+            5'h15: decode_register = "s5 ";
+            5'h16: decode_register = "s6 ";
+            5'h17: decode_register = "s7 ";
+            5'h18: decode_register = "s8 ";
+            5'h19: decode_register = "s9 ";
+            5'h1a: decode_register = "s10";
+            5'h1b: decode_register = "s11";
+            5'h1c: decode_register = "t3 ";
+            5'h1d: decode_register = "t4 ";
+            5'h1e: decode_register = "t5 ";
+            5'h1f: decode_register = "t6 ";
             default: decode_register = "????";
         endcase
     endfunction
@@ -541,11 +549,11 @@ module test_drisc;
                     default: op = "UNK";
                 endcase
                 if(current_instruction[6:0] == 7'h13)//if is immediate instructions
-                    if(is_shift) return $sformatf("%s <= %s %s immediate  \t\t%s <= %0d %s %0d = %0d (0x%h)",
+                    if(is_shift) return $sformatf("%s <= %s %s immediate  \t\t%s <= %0d %s %0d = %0d (0x%8h)",
                                 trim(c_address), trim(a_address), op, trim(c_address), a_bus, op, immediate[4:0], c_bus, c_bus);
-                    else return $sformatf("%s <= %s %s immediate  \t\t%s <= %0d %s %0d = %0d (0x%h)",
+                    else return $sformatf("%s <= %s %s immediate  \t\t%s <= %0d %s %0d = %0d (0x%8h)",
                                 trim(c_address), trim(a_address), op, trim(c_address), a_bus, op, immediate, c_bus, c_bus);
-                else return $sformatf("%s <= %s %s %s \t\t\t%s <= %0d %s %0d = %0d (0x%h)",
+                else return $sformatf("%s <= %s %s %s \t\t\t%s <= %0d %s %0d = %0d (0x%8h)",
                         trim(c_address), trim(a_address), op, trim(b_address),trim(c_address), a_bus, op, b_bus, c_bus, c_bus);
             end
             7'h03,7'h23: begin
@@ -580,37 +588,37 @@ module test_drisc;
             end
             7'h67: begin
                 if(c_address == decode_register(5'b0)) begin
-                    return $sformatf("Next PC <= %s + immediate\t\tPC <= %0d + %0d = %0d (0x%h)",
+                    return $sformatf("Next PC <= %s + immediate\t\tPC <= %0d + %0d = %0d (0x%8h)",
                         trim(a_address), a_bus, immediate, a_bus + immediate, a_bus + immediate);
                 end
-                return $sformatf("Next PC <= %s + immediate  %s <= PC\tPC <= %0d + %0d = %0d (0x%h)",
+                return $sformatf("Next PC <= %s + immediate  %s <= PC\tPC <= %0d + %0d = %0d (0x%8h)",
                     trim(a_address), trim(c_address), a_bus, immediate, a_bus + immediate, a_bus + immediate);
             end
             7'h6f: begin
                 if(c_address == decode_register(5'b0)) begin
-                    return $sformatf("Next PC <= PC + immediate  \t\tPC <= PC + %0d = %0d (0x%h)",
+                    return $sformatf("Next PC <= PC + immediate  \t\tPC <= PC + %0d = %0d (0x%8h)",
                     immediate, drisc_processor.pc_current_out + immediate, drisc_processor.pc_current_out + immediate);
                 end
-                return $sformatf("Next PC <= PC + immediate  %s <= PC\tPC <= PC + %0d = %0d (0x%h)",
+                return $sformatf("Next PC <= PC + immediate  %s <= PC\tPC <= PC + %0d = %0d (0x%8h)",
                     trim(c_address), immediate, drisc_processor.pc_current_out + immediate, drisc_processor.pc_current_out + immediate);
             end
             7'h37: begin
-                return $sformatf("%s <= immediate high\t\t\t%s <= %0d (0x%h)",
+                return $sformatf("%s <= immediate high\t\t\t%s <= %0d (0x%8h)",
                     trim(c_address),trim(c_address),immediate, immediate);
             end
             7'h17: begin
-                return $sformatf("%s <= PC + immediate high\t\t%s <= %0d + %0d = %0d (0x%h)",
+                return $sformatf("%s <= PC + immediate high\t\t%s <= %0d + %0d = %0d (0x%8h)",
                     trim(c_address),trim(c_address),drisc_processor.pc_current_out, immediate, drisc_processor.alu_out, drisc_processor.alu_out);
             end
             7'h73: begin
                 if(!CSR_ENABLED) return "CSR Instruction, enable CSR support to execute properly";
                 else if(current_instruction[14:12] == 3'b0) begin
                     case(current_instruction[31:20])
-                        `MRET: return $sformatf("Machine Return    Privilege <= %0s   Next PC <= %0d (0x%h)",
+                        `MRET: return $sformatf("Machine Return    Privilege <= %0s   Next PC <= %0d (0x%8h)",
                                 trim(prev_privilege()), {drisc_processor.csr.csr_controller.mepc_reg,2'b0}, {drisc_processor.csr.csr_controller.mepc_reg,2'b0});
-                        `EBREAK: return $sformatf("Environment Breakpoint  Privilege <= Kernel   Next PC <= %0d (0x%h)",
+                        `EBREAK: return $sformatf("Environment Breakpoint  Privilege <= Kernel   Next PC <= %0d (0x%8h)",
                                 drisc_processor.system_address_target, drisc_processor.system_address_target);
-                        `ECALL: return $sformatf("Environment Call  Privilege <= Kernel   Next PC <= %0d (0x%h)",
+                        `ECALL: return $sformatf("Environment Call  Privilege <= Kernel   Next PC <= %0d (0x%8h)",
                                 drisc_processor.system_address_target, drisc_processor.system_address_target);
                     endcase
                 end
@@ -631,18 +639,18 @@ module test_drisc;
                     endcase
 
                     if(trim(c_address) != "zero") begin
-                        op = {op, $sformatf("%s <= %0d(0x%8h)", trim(c_address),
+                        op = {op, $sformatf("%s <= %0d (0x%8h)", trim(c_address),
                             drisc_processor.csr.csr_controller.c_bus, drisc_processor.csr.csr_controller.c_bus)};
                     end
 
                     op = {op,"\t"};
 
                     case(current_instruction[13:12])
-                        2'b01: op = {op, $sformatf("%0s <= %0d(0x%8h)",current_csr(),
+                        2'b01: op = {op, $sformatf("%0s <= %0d (0x%8h)",current_csr(),
                             drisc_processor.a_bus,drisc_processor.a_bus)};
-                        2'b10: op = {op, a_address == decode_register(5'b0) ? "" : {$sformatf("%0s <= |= %0d(0x%8h)",current_csr(),
+                        2'b10: op = {op, a_address == decode_register(5'b0) ? "" : {$sformatf("%0s <= |= %0d (0x%8h)",current_csr(),
                             drisc_processor.a_bus,drisc_processor.a_bus)}};
-                        2'b11: op = {op, $sformatf("%0s <= &= ~%0d(0x%8h)", current_csr(),
+                        2'b11: op = {op, $sformatf("%0s <= &= ~%0d (0x%8h)", current_csr(),
                             drisc_processor.a_bus, drisc_processor.a_bus)};
                         default: op = {op, "invalid_op"};
                     endcase
@@ -653,32 +661,6 @@ module test_drisc;
         endcase
 
         return $sformatf("NOT IMPLEMENTED YET (0x%8h)", current_instruction);
-    endfunction
-
-    function string current_csr();
-        case(current_instruction[31:20])
-            `M_VENDOR_ID : current_csr = "m_vendor_id";
-            `M_ARCH_ID : current_csr = "m_arch_id";
-            `M_IMP_ID : current_csr = "m_imp_id";
-            `M_HART_ID : current_csr = "m_hart_id";
-            `M_STATUS : current_csr = "m_status";
-            `M_ISA : current_csr = "m_isa";
-            `M_I_E : current_csr = "m_i_e";
-            `M_T_VEC : current_csr = "m_t_vec";
-            `M_STATUS_H : current_csr = "m_status_h";
-            `M_SCRATCH : current_csr = "m_scratch";
-            `M_E_PC : current_csr = "m_e_pc";
-            `M_CAUSE : current_csr = "m_cause";
-            `M_T_VAL : current_csr = "m_t_val";
-            `M_I_P : current_csr = "m_i_p";
-            `CYCLE : current_csr = "cycle";
-            `TIME : current_csr = "time";
-            `INSTRET : current_csr = "inst_ret";
-            `CYCLE_H : current_csr = "cycle_h";
-            `TIME_H : current_csr = "time_h";
-            `INSTRET_H : current_csr = "inst_ret_h";
-            default : current_csr = "invalid_csr";
-        endcase
     endfunction
 
     function automatic string trim(input string str);
@@ -696,24 +678,4 @@ module test_drisc;
         if (first > last) return "";
         return str.substr(first, last);
     endfunction
-
-    function string current_trap();
-        if(!CSR_ENABLED) return "";
-        else if(drisc_processor.csr.csr_controller.interrupt | drisc_processor.csr.csr_controller.exception) begin
-            case(drisc_processor.csr.csr_controller.trap_cause)
-                `MACHINE_SOFTWARE_INTERRUPT: return "\033[1;31mTrap Triggered: Software Interrupt\033[0m";
-                `MACHINE_TIMER_INTERRUPT: return "\033[1;31mTrap Triggered: Timer Interrupt\033[0m";
-                `MACHINE_EXTERNAL_INTERRUPT: return "\033[1;31mTrap Triggered: External Interrupt\033[0m";
-                `INSTRUCTION_ADDRESS_MISALIGNED: return "\033[1;31mTrap Triggered: Illegal Address\033[0m";
-                `ILLEGAL_INSTRUCTION: return "\033[1;31mTrap Triggered: Illegal Instruction\033[0m";
-                `BREAKPOINT: return "\033[1;31mTrap Triggered: Breakpoint Reached\033[0m";
-                `LOAD_ADDRESS_MISALIGNED: return "\033[1;31mTrap Triggered: Load Address Misaligned\033[0m";
-                `STORE_ADDRESS_MISALIGNED: return "\033[1;31mTrap Triggered: Store Address Misaligned\033[0m";
-                `ECALL_FROM_USER_MODE: return "\033[1;31mTrap Triggered: Environment Call From User Mode\033[0m";
-                `ECALL_FROM_MACHINE_MODE: return "\033[1;31mTrap Triggered: Environment Call From Machine Mode\033[0m";
-                default: return "";
-            endcase
-        end
-    endfunction
-
 endmodule

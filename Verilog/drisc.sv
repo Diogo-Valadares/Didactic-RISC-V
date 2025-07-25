@@ -26,9 +26,10 @@ module drisc #(
     wire [2:1] phase;
 
 //internal busses
-    wire [31:0]a_bus;
-    wire [31:0]b_bus;
-    wire [31:0]c_bus =
+    wire signed [31:0] immediate;
+    wire signed [31:0] a_bus;
+    wire signed [31:0] b_bus;
+    wire signed [31:0] c_bus =
         input_buffer_read ? input_buffer_out :
         load_upper_immediate ? immediate :
         pc_read_next ? pc_next_out :
@@ -38,18 +39,16 @@ module drisc #(
 //outputs to c bus
     wire [31:0] pc_next_out;
     wire [31:0] alu_out;
-    wire [31:0] shifter_out;
     wire [31:0] input_buffer_out;
 
 //program counter
-    wire [31:0] pc_calculated_address;
-    wire [31:0] pc_current_out;
-    wire [1:0] data_offset;
+    wire unsigned [31:0] pc_calculated_address;
+    wire unsigned [31:0] pc_current_out;
+    wire unsigned [1:0] data_offset;
 
 //controller wires
     wire [31:0] next_instruction;
     //immediate
-    wire [31:0] immediate;
     wire load_upper_immediate;
     //register file
     wire [14:0] registers_addresses;
@@ -82,11 +81,11 @@ module drisc #(
     wire next_system_load;
     //for csr read/write instructions
     wire read_csr;
-    wire [31:0] csr_out;
+    wire signed [31:0] csr_out;
     //pc counter - provides a way to jump to trap handler and to mreturn.
     wire system_load;
     wire system_jump;
-    wire [31:0] system_address_target;
+    wire unsigned [31:0] system_address_target;
 
 //components
     phase_generator phase_generator (
