@@ -24,11 +24,11 @@ module drisc #(
 );
 
     wire [2:1] phase;
-    
+
 //internal busses
     wire [31:0]a_bus;
     wire [31:0]b_bus;
-    wire [31:0]c_bus = 
+    wire [31:0]c_bus =
         input_buffer_read ? input_buffer_out :
         load_upper_immediate ? immediate :
         pc_read_next ? pc_next_out :
@@ -40,12 +40,12 @@ module drisc #(
     wire [31:0] alu_out;
     wire [31:0] shifter_out;
     wire [31:0] input_buffer_out;
-    
+
 //program counter
     wire [31:0] pc_calculated_address;
     wire [31:0] pc_current_out;
     wire [1:0] data_offset;
-    
+
 //controller wires
     wire [31:0] next_instruction;
     //immediate
@@ -63,7 +63,6 @@ module drisc #(
     //pc
     wire pc_relative;
     wire pc_read_next;
-    wire pc_jump;
     wire pc_use_offset;
     wire forward_address;
     //data io
@@ -78,12 +77,14 @@ module drisc #(
     wire jump;
 
 //csr controller
+    //signals for the operation controller
     wire exception;
-    wire system_load;
+    wire next_system_load;
     //for csr read/write instructions
     wire read_csr;
     wire [31:0] csr_out;
     //pc counter - provides a way to jump to trap handler and to mreturn.
+    wire system_load;
     wire system_jump;
     wire [31:0] system_address_target;
 
@@ -98,7 +99,7 @@ module drisc #(
         .reset(reset),
         .clock(clock),
         .write(phase[2]),
-        .jump(pc_jump),
+        .jump(jump),
         .pc_relative(pc_relative),
         .use_offset(pc_use_offset),
         .forward_address(forward_address),
@@ -129,76 +130,77 @@ module drisc #(
         .clock(clock),
         .reset(reset),
         .phase(phase),
+        //IO interface
+        .pad_read(read),
+        .pad_write(write),
+        .pad_data_size(data_size),
         .data_in(data_bus_in),
-        .cnzv(cnzv),
-        .immediate(immediate),        
+        //csr controller interface
         .next_instruction(next_instruction),
         .current_instruction(current_instruction),
         .next_decoded_instruction(next_decoded_instruction),
         .load(load),
         .store(store),
-        .jump(jump),
         .exception(exception),
-        .system_load(system_load),
+        .next_system_load(next_system_load),
         .system_jump(system_jump),
-        .registers_addresses(registers_addresses),
-        .load_upper_immediate(load_upper_immediate),    
+        //register file
         .register_file_write(register_file_write),
+        .registers_addresses(registers_addresses),
+        //immediate
+        .load_upper_immediate(load_upper_immediate),
+        .immediate(immediate),
+        //alu
         .op_function(op_function),
         .alu_use_pc(alu_use_pc),
         .use_immediate(use_immediate),
+        .cnzv(cnzv),
+        //pc
+        .jump(jump),
         .pc_relative(pc_relative),
         .pc_read_next(pc_read_next),
-        .pc_jump(pc_jump),
         .pc_use_offset(pc_use_offset),
         .forward_address(forward_address),
+        //input buffer
         .input_buffer_write(input_buffer_write),
         .input_buffer_read(input_buffer_read),
-        .data_type(data_type),
-        .pad_read(read),
-        .pad_write(write),
-        .pad_data_size(data_size)
+        .data_type(data_type)
     );
     generate
         if (GENERATE_CSR_CONTROLLER) begin : csr
-            wire current_immediate = current_instruction[6:0] == 7'h13;
-            wire current_load = current_instruction[6:0] == 7'h03;
-            wire current_add_upper_immediate_pc = current_instruction[6:0] == 7'h17;
-            wire current_store = current_instruction[6:0] == 7'h23;
-            wire current_operation = current_instruction[6:0] == 7'h33 | current_immediate;
-            wire current_load_upper_immediate = current_instruction[6:0] == 7'h37;
-            wire current_branch = current_instruction[6:0] == 7'h63;
-            wire current_jump_and_link_register = current_instruction[6:0] == 7'h67;
-            wire current_jump_and_link = current_instruction[6:0] == 7'h6f;
-            wire current_system = current_instruction[6:0] == 7'h73;
-
-            wire [9:0]current_decoded_instruction = {
-                current_system, current_jump_and_link, current_jump_and_link_register, current_branch, current_load_upper_immediate, 
-                current_operation, current_store, current_add_upper_immediate_pc, current_immediate, current_load
-            };
             csr_controller csr_controller (
                 .clock(clock),
                 .reset(reset),
                 .phase(phase),
+                //pads
                 .pad_external_interrupt(external_interrupt),
                 .pad_timer_interrupt(timer_interrupt),
                 .pad_software_interrupt(software_interrupt),
-                .current_decoded_instruction(current_decoded_instruction),
+                //csr controller interface
+                .next_decoded_instruction(next_decoded_instruction),
+                .next_instruction(next_instruction),
                 .current_instruction(current_instruction),
-                .a_bus(a_bus),
+                .load(load),
+                .store(store),
+                .jump(jump),
+                .exception(exception),
+                .next_system_load(next_system_load),
+                //pc counter interface
                 .current_pc(pc_current_out),
                 .calculated_address(pc_calculated_address),
-                .pc_jump(pc_jump),
-                .read_csr(read_csr),
-                .c_bus(csr_out),
+                .system_address_target(system_address_target),
                 .system_load(system_load),
                 .system_jump(system_jump),
-                .system_address_target(system_address_target)
+                //csr read/write interface
+                .read_csr(read_csr),
+                .a_bus(a_bus),
+                .c_bus(csr_out)
             );
         end else begin : no_csr
             assign csr_out = 0;
             assign exception = 0;
             assign system_load = 0;
+            assign next_system_load = 0;
             assign system_jump = 0;
             assign system_address_target = 0;
             assign read_csr = 0;

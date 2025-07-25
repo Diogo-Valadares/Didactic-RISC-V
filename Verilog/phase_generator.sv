@@ -6,7 +6,7 @@ module phase_generator(
 );
     reg phase_reg;
 
-    assign phase = {~phase_reg, phase_reg};
+    assign phase = {phase_reg, ~phase_reg};
 
     always @(posedge clock) begin
         if (reset) phase_reg <= 0;

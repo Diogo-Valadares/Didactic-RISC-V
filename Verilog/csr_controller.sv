@@ -13,63 +13,66 @@ module csr_controller(
 
     //used so we don't have to decode the instruction again
     //its ordered by the opcode ascending
-    input [9:0] current_decoded_instruction,
+    input [31:0] next_instruction,
+    input [9:0] next_decoded_instruction,
     input [31:0] current_instruction,
+
+    input load,
+    input store,
+    input jump,
 
     input [31:0] a_bus,
     input [31:0] current_pc,
 
     input [31:0] calculated_address,//TODO find a better name
-    input pc_jump,
 
-    output system_load,
+    output logic exception,
+    output next_system_load,
+    output reg system_load,
+    output system_jump,
     output read_csr,
     output reg [31:0] c_bus,
-    output system_jump,
     output logic [31:0] system_address_target
-
 );
-    wire load = current_decoded_instruction[0];
-    wire store = current_decoded_instruction[3];
-    wire branch = current_decoded_instruction[6];
-    wire jump_and_link_register = current_decoded_instruction[7];
-    wire jump_and_link = current_decoded_instruction[8];
-    wire system = current_decoded_instruction[9];
+    wire [2:0]next_funct_3 = next_instruction[14:12];
+    wire [11:0]next_funct_12 = next_instruction[31:20];
+    wire [2:0]funct_3 = current_instruction[14:12];
+    wire [11:0]funct_12 = current_instruction[31:20];
 
-    wire illegal_instruction = ~|current_decoded_instruction || 
-            (system && ((funct_3[1:0] != 2'h0 && illegal_csr) ||
-                        (funct_3 == 3'h0 && illegal_system)));
+    wire next_system = next_decoded_instruction[9];
+    reg system;
 
-    
-    wire write_read_csr = system && funct_3[1:0] != 2'h0;
-    assign read_csr = write_read_csr && !illegal_csr;
-
-    logic illegal_system;
-    logic illegal_csr;
-    logic misaligned_data = (|calculated_address[1:0] & current_instruction[13]) |  //offset != 0 & data_size == word
+    wire misaligned_data = (|calculated_address[1:0] & current_instruction[13]) |  //offset != 0 & data_size == word
                             (&calculated_address[1:0] & |current_instruction[13:12]);//offset == 3 & data_size >= half
 
+    logic next_illegal_csr;
+    logic next_illegal_system;
     always @ * begin
-        case(funct_12)
+        case(next_funct_12)
             `M_VENDOR_ID, `M_ARCH_ID, `M_IMP_ID, `M_HART_ID, `M_STATUS, `M_ISA,
             `M_T_VEC, `M_STATUS_H, `M_SCRATCH, `M_E_PC, `M_CAUSE, `M_T_VAL, `CYCLE,
             `TIME, `INSTRET, `CYCLE_H, `TIME_H, `INSTRET_H, `M_I_E, `M_I_P: begin
-                if(!funct_12[8] | privilege) illegal_csr = 0;
-                else illegal_csr = 1;
+                if(!next_funct_12[8] | privilege) next_illegal_csr = 0;//testar se privilege já serve aqui
+                else next_illegal_csr = 1;
             end
-            default: illegal_csr = 1;
+            default: next_illegal_csr = 1;
         endcase
-        if(funct_3 == 3'h0) begin
-            case(funct_12)
-                `ECALL, `EBREAK, `MRET, `WFI: illegal_system = 0;
-                default: illegal_system = 1;
+
+        if(next_funct_3 == 3'h0) begin
+            case(next_funct_12)
+                `ECALL, `EBREAK, `MRET, `WFI: next_illegal_system = 0;
+                default: next_illegal_system = 1;
             endcase
         end
-        else illegal_system = 0;
+        else next_illegal_system = 0;
     end
 
-    wire [2:0]funct_3 = current_instruction[14:12];
-    wire [11:0]funct_12 = current_instruction[31:20];
+    wire next_write_read_csr = next_system && next_funct_3[1:0] != 2'h0 && !next_illegal_csr;
+    reg write_read_csr;
+    assign read_csr = write_read_csr;
+
+    reg illegal_instruction;
+
 
     reg privilege = 1'b1;// 1 for machine mode, 0 for user mode
 
@@ -78,11 +81,11 @@ module csr_controller(
 
 // Machine Instruction Set Register(misa)
     reg [31:0] misa_reg = `MISA_E | `MISA_I | `MISA_M | `MISA_U | `MISA_32BIT_MXL;
-    //the last part copies the I extension bit into the E extension bit 
+    //the last part copies the I extension bit into the E extension bit
     wire [31:0] misa_masked_input = csr_input & `MISA_MASK | {27'b0, csr_input[8], 4'b0};
 
 // Machine status register (mstatus_reg) and Machine status register high (mstatush_reg)
-    wire [31:0] mstatus_reg = {19'h0, {2{previous_privilege}}, 3'h0, previous_interrupt_enabled, 3'h0, interrupt_enabled, 3'h0};    
+    wire [31:0] mstatus_reg = {19'h0, {2{previous_privilege}}, 3'h0, previous_interrupt_enabled, 3'h0, interrupt_enabled, 3'h0};
     wire [31:0] mstatush_reg = 32'h0;
 
     reg interrupt_enabled = 0;//mie
@@ -120,7 +123,6 @@ module csr_controller(
     reg [31:0] mtval_reg = 32'h0;
 
     logic interrupt = 0;
-    logic exception = 0;
     logic [31:0] trap_value;
     logic [5:0] trap_cause;
 
@@ -129,18 +131,20 @@ module csr_controller(
     reg [63:0] minstret = 64'h0;
 
 //System instructions and exceptions
-    assign system_jump = phase[2] & (exception | interrupt | (system & funct_3 == 0 & funct_12 == `MRET));
-    assign system_load = write_read_csr && (funct_12 == `TIME || funct_12 == `TIME_H);
+    reg is_mret;
+    assign system_jump = exception | interrupt | is_mret;
+    assign next_system_load = next_write_read_csr && (next_funct_12 == `TIME || next_funct_12 == `TIME_H);
+
     //exception and trap calculations.
     always @ * begin
         interrupt = 0;
         exception = 0;
         trap_cause = 6'h0;
-        trap_value = 32'h0;        
-        system_address_target = system_load ? (funct_12 == `TIME ? 32'h81000000 : 32'h81000004) : {mepc_reg, 2'h0};
+        trap_value = 32'h0;
+        system_address_target = system_load ? (csr_address == `TIME ? 32'h81000000 : 32'h81000004) : {mepc_reg, 2'h0};
 
         if(interrupt_enabled || privilege == `USER_MODE) begin
-            if (external_interrupt_pendent && external_interrupt_enabled) begin                  
+            if (external_interrupt_pendent && external_interrupt_enabled) begin
                 interrupt = 1;
                 trap_cause = `MACHINE_EXTERNAL_INTERRUPT;
                 trap_value = 32'h0;
@@ -155,7 +159,7 @@ module csr_controller(
                 trap_cause = `MACHINE_TIMER_INTERRUPT;
                 trap_value = 32'h0;
             end
-        end  
+        end
 
         if(interrupt) system_address_target = {mtvec_reg[29:0] + (mtvec_reg[0] == 0 ? 29'b0 : {25'b0, trap_cause[4:0]}), 2'h0};
         else if(illegal_instruction) begin
@@ -163,14 +167,14 @@ module csr_controller(
             trap_cause = `ILLEGAL_INSTRUCTION;
             trap_value = current_instruction;
         end
-        else if(calculated_address[1:0] != 2'b0 && (jump_and_link || jump_and_link_register || (branch && pc_jump))) begin
+        else if(calculated_address[1:0] != 2'b0 && jump) begin
             exception = 1;
             trap_cause = `INSTRUCTION_ADDRESS_MISALIGNED;
             trap_value = calculated_address;
         end
         else if (system && funct_3 == 0) begin
             case(funct_12)
-                `MRET: begin                    
+                `MRET: begin
                     system_address_target = {mepc_reg, 2'h0};
                 end
                 `EBREAK: begin
@@ -179,14 +183,14 @@ module csr_controller(
                     trap_value = 32'h0;
                 end
                 `ECALL: begin
-                    exception = 1; 
+                    exception = 1;
                     trap_cause = privilege ? `ECALL_FROM_MACHINE_MODE: `ECALL_FROM_USER_MODE;
                     trap_value = 32'h0;
                 end
                 default: begin end
             endcase
         end
-        else if(misaligned_data && load) begin
+        else if(misaligned_data && load && !system_load) begin
             exception = 1;
             trap_cause = `LOAD_ADDRESS_MISALIGNED;
             trap_value = calculated_address;
@@ -196,10 +200,10 @@ module csr_controller(
             trap_cause = `STORE_ADDRESS_MISALIGNED;
             trap_value = calculated_address;
         end
-        
+
         if(exception) system_address_target = {mtvec_reg[29:0], 2'h0};
     end
-    
+
     //exceptions, interrupts and instructions execution
     always @(posedge clock) begin
         if (reset) begin
@@ -222,8 +226,15 @@ module csr_controller(
             //time
             mcycle <= 64'h0;
             minstret <= 64'h0;
+
+            system <= 0;
+            write_read_csr <= 0;
+            illegal_instruction <= 0;
+            is_mret <= 0;
+            system_load <= 0;
+            exception <= 0;
         end
-        else if(phase[2]) begin 
+        else if(phase[2]) begin
             if((interrupt | exception )) begin
                 previous_interrupt_enabled <= interrupt_enabled;
                 interrupt_enabled <= 0;
@@ -233,25 +244,25 @@ module csr_controller(
                 {mcause_interrupt, mcause_reg} <= trap_cause;
                 mtval_reg <= trap_value;
             end
-            else if (system && funct_12 == `MRET && funct_3 == 0) begin
+            else if (is_mret) begin
                 interrupt_enabled <= previous_interrupt_enabled;
                 privilege <= previous_privilege;
                 previous_privilege <= 0;
                 previous_interrupt_enabled <= 1;
             end
-            else if(write_read_csr && !illegal_csr) begin
+            else if(write_read_csr) begin
                 case (csr_address)
-                //Machine Mode CSRs                  
+                //Machine Mode CSRs
                     //Machine trap setup
                     `M_ISA: begin
                         misa_reg <= calculate_csr(misa_reg, misa_masked_input);
                     end
                     `M_I_E: begin
-                        {software_interrupt_enabled, timer_interrupt_enabled, external_interrupt_enabled} 
-                            <= calculate_csr({software_interrupt_enabled, timer_interrupt_enabled, external_interrupt_enabled}, 
+                        {software_interrupt_enabled, timer_interrupt_enabled, external_interrupt_enabled}
+                            <= calculate_csr({software_interrupt_enabled, timer_interrupt_enabled, external_interrupt_enabled},
                                 {csr_input[3],csr_input[7],csr_input[11]});
                     end
-                    `M_T_VEC: begin 
+                    `M_T_VEC: begin
                         {mtvec_reg, mtvec_mode} <= calculate_csr({mtvec_reg, mtvec_mode}, csr_input);
                     end
                     //machine trap handling
@@ -272,29 +283,38 @@ module csr_controller(
                     end
                     `M_T_VAL: begin
                         mtval_reg <= calculate_csr(mtval_reg, csr_input);
-                    end            
+                    end
                     default: begin end
                 endcase
             end
 
+            system <= next_system;
+            system_load <= next_system_load;
+            is_mret <= next_system && next_funct_3 == 0 && next_funct_12 == `MRET;
+            write_read_csr <= next_write_read_csr;
+            illegal_instruction <= ~|next_decoded_instruction ||
+                (next_system && (
+                    (next_funct_3[1:0] != 2'h0 && next_illegal_csr) ||
+                    (next_funct_3 == 3'h0 && next_illegal_system)));
+
             if (!exception) begin
                 minstret <= minstret + 1;
             end
-        end       
-        else if(phase[1] && write_read_csr && !illegal_csr) begin
+        end
+        else if(phase[1] && write_read_csr) begin
             case (csr_address)
-            //Machine Mode CSRs 
+            //Machine Mode CSRs
                 //Machine information registers
                 `M_VENDOR_ID: c_bus <= 32'hA_F00_1D;//A Foo ID
                 `M_ARCH_ID: c_bus <= 32'h0;//no architecture specified
                 `M_IMP_ID: c_bus <= 32'h4;//version 4
-                `M_HART_ID: c_bus <= 32'h0;//hart(processor core) id 0                
+                `M_HART_ID: c_bus <= 32'h0;//hart(processor core) id 0
                 //Machine trap setup
                 `M_STATUS: c_bus <= mstatus_reg;
                 `M_ISA: c_bus <= misa_reg;
                 `M_I_E: c_bus <= mie_reg;
                 `M_T_VEC: c_bus <= {mtvec_reg, mtvec_mode};
-                `M_STATUS_H: c_bus <= mstatush_reg;                
+                `M_STATUS_H: c_bus <= mstatush_reg;
                 //machine trap handling
                 `M_SCRATCH:c_bus <= mscratch_reg;
                 `M_E_PC:c_bus <= {mepc_reg, 2'h0};
@@ -308,16 +328,16 @@ module csr_controller(
                 `CYCLE_H: c_bus <= mcycle[63:32];//cycle high
                 `TIME_H: c_bus <= 32'b0;//time high
                 `INSTRET_H: c_bus <= minstret[63:32];//instructions retired high
-           
+
                 default: begin end
-            endcase        
+            endcase
         end
 
         if(!reset) begin
             mcycle <= mcycle + 1;
         end
     end
-    
+
     function logic[31:0] calculate_csr(input[31:0] register, input[31:0] data);
         case (funct_3[1:0])
             2'h1: begin//write

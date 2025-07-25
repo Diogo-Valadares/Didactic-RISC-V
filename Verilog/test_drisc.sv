@@ -11,9 +11,9 @@ module test_drisc;
     parameter ADDR_WIDTH = 12;
     parameter PROGRAM_SIZE = 512;
 
-    parameter CLOCK_UPDATE_TIME = 1; //half clock cycle    
+    parameter CLOCK_UPDATE_TIME = 1; //half clock cycle
     parameter INSTRUCTION_TIME = CLOCK_UPDATE_TIME * 4; // 2 clock cycles
-    parameter INSTRUCTION_COUNT = 50; //limit of instructions to execute
+    parameter INSTRUCTION_COUNT = 50000; //limit of instructions to execute
     parameter SIMULATION_TIME = INSTRUCTION_COUNT * INSTRUCTION_TIME;
 
     parameter DISPLAY_TOGGLE = 2;//super-simple=2 simple=1 complex=0
@@ -37,9 +37,9 @@ module test_drisc;
     wire [31:0] address_bus;
     wire [31:0] current_instruction = drisc_processor.current_instruction;
 
-    assign data_bus = write ? data_bus_drisc : 
+    assign data_bus = write ? data_bus_drisc :
                       read && is_software_interrupt_address ? {31'h00000000, software_interrupt_reg} :
-                      32'hz;  
+                      32'hz;
 
 //The processor
     drisc #(
@@ -143,25 +143,24 @@ module test_drisc;
     reg software_interrupt_reg;
     always @(posedge clock) begin
         if (reset) software_interrupt_reg <= 0;
-        else if (write && is_software_interrupt_address) software_interrupt_reg <= data_bus[0];        
+        else if (write && is_software_interrupt_address) software_interrupt_reg <= data_bus[0];
     end
 
     wire is_os_ram_address = (address_bus >= 32'hff000000);
     wire write_os_ram = write && is_os_ram_address;
     wire read_os_ram = read && is_os_ram_address;
-/*
     ram #(
-        .ADDR_WIDTH(12),
-        .PROGRAM_SIZE(512)
+        .MEM_INIT_FILE(RAM_DATA),
+        .ADDR_WIDTH(ADDR_WIDTH),
+        .PROGRAM_SIZE(PROGRAM_SIZE)
     ) os_ram (
         .clock(clock),
         .write(write_os_ram),
         .read(read_os_ram),
         .data_size(data_size),
-        .address(address_bus[11:0]),
+        .address(address_bus[ADDR_WIDTH-1:0]),
         .data(data_bus)
     );
-*/
 
 //clock generation
     initial begin
@@ -173,15 +172,15 @@ module test_drisc;
         if (DISPLAY_TOGGLE == 1) begin
             #INSTRUCTION_TIME;
             $printtimescale(test_drisc);
-            $display("Clock cicle duration = %0d, Instruction duration = %0d, Simulation max duration = %0d", CLOCK_UPDATE_TIME * 2, INSTRUCTION_TIME, SIMULATION_TIME); 
-            $display("        |            |      | addr             addr            addr           |            |     Instruction    "); 
-            $display("  Time  | Instruction|  PC  | [ AA ]:Reg A    [ BB ]:Reg B    [ CC ]:Reg C    |  Immediate |   Code   Argument  "); 
+            $display("Clock cicle duration = %0d, Instruction duration = %0d, Simulation max duration = %0d", CLOCK_UPDATE_TIME * 2, INSTRUCTION_TIME, SIMULATION_TIME);
+            $display("        |            |      | addr             addr            addr           |            |     Instruction    ");
+            $display("  Time  | Instruction|  PC  | [ AA ]:Reg A    [ BB ]:Reg B    [ CC ]:Reg C    |  Immediate |   Code   Argument  ");
             forever #INSTRUCTION_TIME begin
-                $display("%0s%0d\t|  %h  | %d | [%s]:%h [%s]:%h [%s]:%h |%d | %s %0s", 
+                $display("%0s%0d\t|  %h  | %d | [%s]:%h [%s]:%h [%s]:%h |%d | %s %0s",
                     ($time % (2*INSTRUCTION_TIME)) < INSTRUCTION_TIME/4 ? "\033[0m" : "\033[1;30m",
                     $time,
-                    current_instruction, 
-                    drisc_processor.pc_current_out[11:2], 
+                    current_instruction,
+                    drisc_processor.pc_current_out[11:2],
                     decode_register(drisc_processor.registers_addresses[9:5]),
                     drisc_processor.a_bus,
                     decode_register(drisc_processor.registers_addresses[14:10]),
@@ -200,11 +199,11 @@ module test_drisc;
         if (DISPLAY_TOGGLE == 0) begin
             #INSTRUCTION_TIME;
             #1;//offsets so signals updated after the clock are displayed correctly
-            forever #CLOCK_UPDATE_TIME begin        
+            forever #CLOCK_UPDATE_TIME begin
                 if(drisc_processor.phase == 3'b001 & clock == 1) begin
                     $display("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
                 end
-                $display("%0sTime %0d | Phi %b clk %b r %b| PC: N %h C %h| Instruction : N %h C %h| Bus: A %h[%d] B %h[%d] C %h[%d], imm %h| IO bus: %h, Ram Addr %h %h, W/R %b%b | Opcode: %0s | cnzv: %b %b %b", 
+                $display("%0sTime %0d | Phi %b clk %b r %b| PC: N %h C %h| Instruction : N %h C %h| Bus: A %h[%d] B %h[%d] C %h[%d], imm %h| IO bus: %h, Ram Addr %h %h, W/R %b%b | Opcode: %0s | cnzv: %b %b %b",
                     clock == 1? "\033[0m" : "\033[1;30m",
                     $time,
                     drisc_processor.phase,
@@ -231,21 +230,21 @@ module test_drisc;
                     drisc_processor.operation_controller.decoded_cnzv,
                     drisc_processor.operation_controller.pc_jump
                 );
-            end        
+            end
         end
     end
 
 // even more simplified Debugging display
-    initial begin        
+    initial begin
         if (DISPLAY_TOGGLE == 2) begin
             #(3*INSTRUCTION_TIME/2);
             $printtimescale(test_drisc);
-            $display("Clock cicle duration = %0d, Instruction duration = %0d, Simulation max duration = %0d", CLOCK_UPDATE_TIME * 2, INSTRUCTION_TIME, SIMULATION_TIME); 
+            $display("Clock cicle duration = %0d, Instruction duration = %0d, Simulation max duration = %0d", CLOCK_UPDATE_TIME * 2, INSTRUCTION_TIME, SIMULATION_TIME);
             forever begin
                 if(($time % INSTRUCTION_TIME) == INSTRUCTION_TIME/2 + 1)
                     #(INSTRUCTION_TIME-1);
                 else #INSTRUCTION_TIME;
-                $write("%0s%0d PC:%0h%s%s\t| %s %s", 
+                $write("%0s%0d PC:%0h%s%s\t| %s %s",
                     (($time + INSTRUCTION_TIME / 2 ) % (2 * INSTRUCTION_TIME)) < INSTRUCTION_TIME / 4 ? "\033[0m" : "\033[1;30m",
                     $time,
                     drisc_processor.pc_current_out,
@@ -253,22 +252,22 @@ module test_drisc;
                     prev_privilege(),
                     current_instruction_string(),
                     current_trap()
-                );                
-                if(current_instruction[6:0] == 7'h03) begin               
-                    #1;     
-                    $write("%0d (0x%0h)", drisc_processor.input_buffer_out,  drisc_processor.input_buffer_out);  
+                );
+                if(current_instruction[6:0] == 7'h03) begin
+                    #1;
+                    $write("%0d (0x%0h)", drisc_processor.input_buffer_out,  drisc_processor.input_buffer_out);
                 end
                 if(CSR_ENABLED) $display("\n\t\t\t|");
                 else $display("\n\t\t|");
             end
         end
     end
-    
+
 // Infinite loop and illegal instruction detection
     initial begin
         #(INSTRUCTION_TIME*4);
         forever #(INSTRUCTION_TIME) begin
-            if (drisc_processor.program_counter.last == drisc_processor.program_counter.next ) begin
+            if (drisc_processor.jump && drisc_processor.program_counter.calculated_address == drisc_processor.program_counter.current) begin
                 $display("\33[1;31mInfinite loop detected, exiting simulation");
                 $display("\33[0m");
                 dump_registers();
@@ -285,14 +284,14 @@ module test_drisc;
     end
 
 // Test sequence
-    initial begin    
+    initial begin
         $dumpfile("dump.vcd");
         $dumpvars(0,test_drisc);
-        #1    
+        #1
         // Initialize signals
         reset = 1;
         #INSTRUCTION_TIME;
-        reset = 0; 
+        reset = 0;
         #SIMULATION_TIME;
 
         $display("\33[0m");
@@ -349,7 +348,7 @@ module test_drisc;
 
     task dump_ram;
         integer i, j, inc;
-        bit print_zero;        
+        bit print_zero;
 
         //inicialize test memory
         logic [7:0] mem [0:(1 << ADDR_WIDTH)-1];
@@ -364,13 +363,13 @@ module test_drisc;
             for (i = 0; i < (1 << ADDR_WIDTH)/16 ; i = i + 1) begin
                 inc = 0;
                 for(j = 0; j < 16; j = j + 1) begin
-                    inc = mem[i * 16 + j] === ram_inst.mem[i * 16 + j] ? 
-                        inc | ram_inst.mem[i * 16 + j] : 1; 
+                    inc = mem[i * 16 + j] === ram_inst.mem[i * 16 + j] ?
+                        inc | ram_inst.mem[i * 16 + j] : 1;
                 end
                 if (inc != 0) begin
-                    $write("\033[0mAddress %h: ", i*16);          
+                    $write("\033[0mAddress %h: ", i*16);
                     for (j = 0; j < 16; j = j + 1) begin
-                        $write("%0s%h",(mem[i*16 + j] === ram_inst.mem[i*16 + j]) ? 
+                        $write("%0s%h",(mem[i*16 + j] === ram_inst.mem[i*16 + j]) ?
                             "\033[0m" : "\033[1;31m", ram_inst.mem[i*16 + j]);
                         if ( ((j + 1) % 4) == 0 && j < 15) $write(".");
                         else $write(" ");
@@ -431,7 +430,7 @@ module test_drisc;
             5'b11110: decode_register = "t5 ";
             5'b11111: decode_register = "t6 ";
             default: decode_register = "????";
-        endcase        
+        endcase
     endfunction
 
     function bit [63:0] decode_opcode(input [6:0] opcode);
@@ -457,9 +456,9 @@ module test_drisc;
         if(opcode != 7'h13 && opcode != 7'h33 && opcode != 7'h03 && opcode != 7'h23 && opcode != 7'h63) begin
             return "--------";
         end
-        
+
         if(opcode == 7'h13 || opcode == 7'h33) begin
-            case ((opcode == 7'h13 & ~(op_function == 1 | op_function == 5 | op_function == 21)) ? 
+            case ((opcode == 7'h13 & ~(op_function == 1 | op_function == 5 | op_function == 21)) ?
                     {2'b0, op_function[2:0]} : op_function)
                 0: decode_op_function = "ADD";
                 1: decode_op_function = "SLL";
@@ -501,7 +500,7 @@ module test_drisc;
                 3'b111: decode_op_function = "GREATER_EQUAL_U";
                 default: decode_op_function = "INVALID";
             endcase
-        end        
+        end
     endfunction
 
     //function for the simpler display mode
@@ -517,7 +516,7 @@ module test_drisc;
         string op;
 
         if(current_instruction == 32'h00000013) return "No Operation\t\t\t\t---------------------------------";
-        
+
         case(current_instruction[6:0])
             7'h13,7'h33: begin //alu operations
                 case (drisc_processor.alu.op)
@@ -540,13 +539,13 @@ module test_drisc;
                     16: op = "-";
                     21: op = ">>>";
                     default: op = "UNK";
-                endcase                
-                if(current_instruction[6:0] == 7'h13)//if is immediate instructions                  
-                    if(is_shift) return $sformatf("%s <= %s %s immediate  \t\t%s <= %0d %s %0d = %0d (0x%h)", 
+                endcase
+                if(current_instruction[6:0] == 7'h13)//if is immediate instructions
+                    if(is_shift) return $sformatf("%s <= %s %s immediate  \t\t%s <= %0d %s %0d = %0d (0x%h)",
                                 trim(c_address), trim(a_address), op, trim(c_address), a_bus, op, immediate[4:0], c_bus, c_bus);
-                    else return $sformatf("%s <= %s %s immediate  \t\t%s <= %0d %s %0d = %0d (0x%h)", 
+                    else return $sformatf("%s <= %s %s immediate  \t\t%s <= %0d %s %0d = %0d (0x%h)",
                                 trim(c_address), trim(a_address), op, trim(c_address), a_bus, op, immediate, c_bus, c_bus);
-                else return $sformatf("%s <= %s %s %s \t\t\t%s <= %0d %s %0d = %0d (0x%h)", 
+                else return $sformatf("%s <= %s %s %s \t\t\t%s <= %0d %s %0d = %0d (0x%h)",
                         trim(c_address), trim(a_address), op, trim(b_address),trim(c_address), a_bus, op, b_bus, c_bus, c_bus);
             end
             7'h03,7'h23: begin
@@ -559,7 +558,7 @@ module test_drisc;
                     default: op = "unknown";
                 endcase
                 if(current_instruction[6:0] == 7'h23)
-                    return $sformatf("M[%s + %0d] <= %s (%s)  \t\tM[%0d + %0d] = %0d (0x%0h)", 
+                    return $sformatf("M[%s + %0d] <= %s (%s)  \t\tM[%0d + %0d] = %0d (0x%0h)",
                         trim(a_address), immediate, trim(b_address), op, a_bus, immediate, b_bus, b_bus);
                 else
                     return $sformatf("%s <= M[%s + %0d] (%s)  \t\t%s <= M[%0d + %0d] =",
@@ -576,42 +575,42 @@ module test_drisc;
                     3'b111: op = ">(u)";
                     default: op = "unknown";
                 endcase
-                return $sformatf("Next PC <= PC + %0d if(%s %s %s)  \t%0d %s %0d = %0s", 
+                return $sformatf("Next PC <= PC + %0d if(%s %s %s)  \t%0d %s %0d = %0s",
                     immediate, trim(a_address), op, trim(b_address), a_bus, op, b_bus, drisc_processor.operation_controller.jump ? "true" : "false");
             end
             7'h67: begin
                 if(c_address == decode_register(5'b0)) begin
-                    return $sformatf("Next PC <= %s + immediate\t\tPC <= %0d + %0d = %0d (0x%h)", 
+                    return $sformatf("Next PC <= %s + immediate\t\tPC <= %0d + %0d = %0d (0x%h)",
                         trim(a_address), a_bus, immediate, a_bus + immediate, a_bus + immediate);
                 end
-                return $sformatf("Next PC <= %s + immediate  %s <= PC\tPC <= %0d + %0d = %0d (0x%h)", 
+                return $sformatf("Next PC <= %s + immediate  %s <= PC\tPC <= %0d + %0d = %0d (0x%h)",
                     trim(a_address), trim(c_address), a_bus, immediate, a_bus + immediate, a_bus + immediate);
             end
             7'h6f: begin
                 if(c_address == decode_register(5'b0)) begin
-                    return $sformatf("Next PC <= PC + immediate  \t\tPC <= PC + %0d = %0d (0x%h)", 
+                    return $sformatf("Next PC <= PC + immediate  \t\tPC <= PC + %0d = %0d (0x%h)",
                     immediate, drisc_processor.pc_current_out + immediate, drisc_processor.pc_current_out + immediate);
                 end
-                return $sformatf("Next PC <= PC + immediate  %s <= PC\tPC <= PC + %0d = %0d (0x%h)", 
+                return $sformatf("Next PC <= PC + immediate  %s <= PC\tPC <= PC + %0d = %0d (0x%h)",
                     trim(c_address), immediate, drisc_processor.pc_current_out + immediate, drisc_processor.pc_current_out + immediate);
             end
             7'h37: begin
-                return $sformatf("%s <= immediate high\t\t\t%s <= %0d (0x%h)", 
+                return $sformatf("%s <= immediate high\t\t\t%s <= %0d (0x%h)",
                     trim(c_address),trim(c_address),immediate, immediate);
             end
             7'h17: begin
-                return $sformatf("%s <= PC + immediate high\t\t%s <= %0d + %0d = %0d (0x%h)", 
+                return $sformatf("%s <= PC + immediate high\t\t%s <= %0d + %0d = %0d (0x%h)",
                     trim(c_address),trim(c_address),drisc_processor.pc_current_out, immediate, drisc_processor.alu_out, drisc_processor.alu_out);
             end
             7'h73: begin
                 if(!CSR_ENABLED) return "CSR Instruction, enable CSR support to execute properly";
                 else if(current_instruction[14:12] == 3'b0) begin
                     case(current_instruction[31:20])
-                        `MRET: return $sformatf("Machine Return  Privilege <= %0s   Next PC <= %0d (0x%h)",
-                                trim(prev_privilege()), drisc_processor.csr.csr_controller.mepc_reg, drisc_processor.csr.csr_controller.mepc_reg);
-                        `EBREAK: return $sformatf("Environment Breakpoint  Privilege <= Kernel   Next PC <= %0d (0x%h)", 
+                        `MRET: return $sformatf("Machine Return    Privilege <= %0s   Next PC <= %0d (0x%h)",
+                                trim(prev_privilege()), {drisc_processor.csr.csr_controller.mepc_reg,2'b0}, {drisc_processor.csr.csr_controller.mepc_reg,2'b0});
+                        `EBREAK: return $sformatf("Environment Breakpoint  Privilege <= Kernel   Next PC <= %0d (0x%h)",
                                 drisc_processor.system_address_target, drisc_processor.system_address_target);
-                        `ECALL: return $sformatf("Environment Call  Privilege <= Kernel   Next PC <= %0d (0x%h)",                                 
+                        `ECALL: return $sformatf("Environment Call  Privilege <= Kernel   Next PC <= %0d (0x%h)",
                                 drisc_processor.system_address_target, drisc_processor.system_address_target);
                     endcase
                 end
@@ -622,35 +621,38 @@ module test_drisc;
 
                     op = {op, current_csr()};
 
-                    case(current_instruction[13:12]) 
-                        2'b01: op = {op, " <=", $sformatf(" %0s", trim(a_address))};
-                        2'b10: op = {op, a_address == decode_register(5'b0) ? "" : $sformatf(" <= |= %0s", trim(a_address))};
-                        2'b11: op = {op, " <= &= ~", $sformatf(" %0s", trim(a_address))};
+                    case(current_instruction[13:12])
+                        2'b01: op = {op, $sformatf(" <= %0s   \t\t", trim(a_address))};
+                        2'b10:
+                            if(a_address == decode_register(5'b0)) op = {op, "   \t\t\t"};
+                            else op = {op, $sformatf(" <= |= %0s   \t\t", trim(a_address))};
+                        2'b11: op = {op, $sformatf(" <= &= ~ %0s   \t\t", trim(a_address))};
                         default: op = {op, "invalid_op"};
                     endcase
-                    
-                    op = {op, "   \t\t\t"};
 
                     if(trim(c_address) != "zero") begin
-                        op = {op, $sformatf("%s <= %0d(%8h)", trim(c_address), 
+                        op = {op, $sformatf("%s <= %0d(0x%8h)", trim(c_address),
                             drisc_processor.csr.csr_controller.c_bus, drisc_processor.csr.csr_controller.c_bus)};
                     end
 
                     op = {op,"\t"};
 
-                    case(current_instruction[13:12]) 
-                        2'b01: op = {op, current_csr()," <=", $sformatf(" %0s", trim(a_address))};
-                        2'b10: op = {op, a_address == decode_register(5'b0) ? "" : {current_csr(), $sformatf(" <= |= %0s", trim(a_address))}};
-                        2'b11: op = {op, current_csr()," <= &= ~", $sformatf(" %0s", trim(a_address))};
+                    case(current_instruction[13:12])
+                        2'b01: op = {op, $sformatf("%0s <= %0d(0x%8h)",current_csr(),
+                            drisc_processor.a_bus,drisc_processor.a_bus)};
+                        2'b10: op = {op, a_address == decode_register(5'b0) ? "" : {$sformatf("%0s <= |= %0d(0x%8h)",current_csr(),
+                            drisc_processor.a_bus,drisc_processor.a_bus)}};
+                        2'b11: op = {op, $sformatf("%0s <= &= ~%0d(0x%8h)", current_csr(),
+                            drisc_processor.a_bus, drisc_processor.a_bus)};
                         default: op = {op, "invalid_op"};
                     endcase
 
                     return op;
                 end
             end
-        endcase        
-        
-        return $sformatf("NOT IMPLEMENTED YET (0x%8h)", current_instruction);   
+        endcase
+
+        return $sformatf("NOT IMPLEMENTED YET (0x%8h)", current_instruction);
     endfunction
 
     function string current_csr();
@@ -682,11 +684,11 @@ module test_drisc;
     function automatic string trim(input string str);
         int first = 0;
         int last = str.len() - 1;
-        
+
         while ((first <= last) && (str[first] == " ")) begin
             first++;
         end
-        
+
         while ((last >= first) && (str[last] == " ")) begin
             last--;
         end
@@ -694,7 +696,7 @@ module test_drisc;
         if (first > last) return "";
         return str.substr(first, last);
     endfunction
-    
+
     function string current_trap();
         if(!CSR_ENABLED) return "";
         else if(drisc_processor.csr.csr_controller.interrupt | drisc_processor.csr.csr_controller.exception) begin

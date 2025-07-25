@@ -16,36 +16,31 @@ module program_counter(
     output [31:0] calculated_address,
     output [31:0] next,
     output [31:0] current,
-    output [31:0] last,
     output [31:0] address_bus
     );
 
     reg [29:0] next_reg;
     reg [29:0] current_reg;
-    reg [29:0] last_reg;
 
     assign calculated_address = pc_relative ? current + immediate : address_in + immediate;
     assign next = {next_reg, 2'b00};
     assign current = {current_reg, 2'b00};
-    assign last = {last_reg, 2'b00};
-    assign address_bus = forward_address ? 
+    assign address_bus = forward_address ?
                         (system_load ? system_address_target :
-                         use_offset ? calculated_address : {calculated_address[31:2], 2'b00}) : 
+                         use_offset ? calculated_address : {calculated_address[31:2], 2'b00}) :
                         {next_reg, 2'b00};
 
     always@(posedge clock) begin
         if(reset) begin
             current_reg <= 30'b0;
-            last_reg <= 30'b0;
             next_reg <= 30'b0;
             data_offset <= 2'b0;
         end
-        else if(system_jump) next_reg <= system_address_target[31:2];
-        else if(jump) next_reg <= calculated_address[31:2];
-        else if(write) next_reg <= next_reg + 1;
-        
-        if(write) begin
-            last_reg <= current_reg;
+        else if(write) begin
+            if(system_jump) next_reg <= system_address_target[31:2];
+            else if(jump) next_reg <= calculated_address[31:2];
+            else next_reg <= next_reg + 1;
+
             current_reg <= next_reg;
         end
 
