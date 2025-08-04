@@ -7,13 +7,13 @@
 `timescale 1s/1s
 
 module test_drisc;
-    parameter RAM_DATA = "programs/csr_operations.mem";
+    parameter RAM_DATA = "programs/quicksort.mem";
     parameter ADDR_WIDTH = 12;
     parameter PROGRAM_SIZE = 512;
 
     parameter CLOCK_UPDATE_TIME = 1; //half clock cycle
     parameter INSTRUCTION_TIME = CLOCK_UPDATE_TIME * 4; // 2 clock cycles
-    parameter INSTRUCTION_COUNT = 50000; //limit of instructions to execute
+    parameter INSTRUCTION_COUNT = 300000; //limit of instructions to execute
     parameter SIMULATION_TIME = INSTRUCTION_COUNT * INSTRUCTION_TIME;
 
     parameter DISPLAY_TOGGLE = 2;//super-simple=2 simple=1 complex=0
@@ -237,15 +237,18 @@ module test_drisc;
 // even more simplified Debugging display
     initial begin
         if (DISPLAY_TOGGLE == 2) begin
-            #(3*INSTRUCTION_TIME/2);
+            #(5*INSTRUCTION_TIME/2);
             $printtimescale(test_drisc);
-            $display("Clock cicle duration = %0d, Instruction duration = %0d, Simulation max duration = %0d", CLOCK_UPDATE_TIME * 2, INSTRUCTION_TIME, SIMULATION_TIME);
+            $display("Clock cicle duration = %0d, Instruction duration = %0d, Simulation max duration = %0d\n", CLOCK_UPDATE_TIME * 2, INSTRUCTION_TIME, SIMULATION_TIME);
             forever begin
-                if(($time % INSTRUCTION_TIME) == INSTRUCTION_TIME/2 + 1)
-                    #(INSTRUCTION_TIME-1);
-                else #INSTRUCTION_TIME;
-                $write("%0s%0d PC:%0h%s%s\t| %s %s",
-                    (($time + INSTRUCTION_TIME / 2 ) % (2 * INSTRUCTION_TIME)) < INSTRUCTION_TIME / 4 ? "\033[0m" : "\033[1;30m",
+                if(drisc_processor.operation_controller.last_load) begin
+                    $write("%0d (0x%0h)", drisc_processor.input_buffer_out,  drisc_processor.input_buffer_out);
+                    if(CSR_ENABLED) $display("\n\t\t\t|");
+                    else $display("\n\t\t|");
+                end
+                #(INSTRUCTION_TIME/2);
+                $write("%0s%0d PC:%0h%s%s \t| %s %s",
+                    (($time) % (2 * INSTRUCTION_TIME)) < INSTRUCTION_TIME / 4 ? "\033[0m" : "\033[1;30m",
                     $time,
                     drisc_processor.pc_current_out,
                     privilege(),
@@ -253,12 +256,11 @@ module test_drisc;
                     current_instruction_string(),
                     current_trap()
                 );
-                if(current_instruction[6:0] == 7'h03) begin
-                    #1;
-                    $write("%0d (0x%0h)", drisc_processor.input_buffer_out,  drisc_processor.input_buffer_out);
+                if(!drisc_processor.operation_controller.load) begin
+                    if(CSR_ENABLED) $display("\n\t\t\t|");
+                    else $display("\n\t\t|");
                 end
-                if(CSR_ENABLED) $display("\n\t\t\t|");
-                else $display("\n\t\t|");
+                #(INSTRUCTION_TIME/2);
             end
         end
     end
@@ -314,28 +316,38 @@ module test_drisc;
         bit print_zero;
 
         //inicialize test memory
-        logic [7:0] mem [0:(1 << ADDR_WIDTH)-1];
+        logic [7:0] original_data [0:(1 << ADDR_WIDTH)-1];
         for (int i = 0; i < (1 << ADDR_WIDTH); i = i + 1) begin
-            mem[i] = 8'h00;
+            original_data[i] = 8'h00;
         end
-        $readmemh(RAM_DATA, mem, 0, PROGRAM_SIZE-1);
+        $readmemh(RAM_DATA, original_data, 0, PROGRAM_SIZE-1);
 
         begin
             print_zero = 1;
             $display("RAM values:");
+            $display("address |                    data (hex)                    |             data (ascii)");
             for (i = 0; i < (1 << ADDR_WIDTH)/16 ; i = i + 1) begin
+
                 inc = 0;
                 for(j = 0; j < 16; j = j + 1) begin
-                    inc = mem[i * 16 + j] === ram_inst.mem[i * 16 + j] ?
+                    inc = original_data[i * 16 + j] === ram_inst.mem[i * 16 + j] ?
                         inc | ram_inst.mem[i * 16 + j] : 1;
                 end
+
                 if (inc != 0) begin
-                    $write("\033[0mAddress %h: ", i*16);
+                    $write("\033[0m%h: ", i*16);
                     for (j = 0; j < 16; j = j + 1) begin
-                        $write("%0s%h",(mem[i*16 + j] === ram_inst.mem[i*16 + j]) ?
+                        $write("%0s%h",(original_data[i*16 + j] === ram_inst.mem[i*16 + j]) ?
                             "\033[0m" : "\033[1;31m", ram_inst.mem[i*16 + j]);
                         if ( ((j + 1) % 4) == 0 && j < 15) $write(".");
                         else $write(" ");
+                    end
+                    $write("\033[0m | ");
+                    for (j = 0; j < 16; j = j + 1) begin
+                        $write("%0s%0s",
+                            (original_data[i*16 + j] === ram_inst.mem[i*16 + j]) ? "\033[0m" : "\033[1;31m",
+                            (ram_inst.mem[i*16 + j] < 8'h20) ? "?" : ram_inst.mem[i*16 + j]);
+                        $write(" ");
                     end
                     $display("");
                     print_zero = 1;
@@ -611,7 +623,7 @@ module test_drisc;
                     trim(c_address),trim(c_address),drisc_processor.pc_current_out, immediate, drisc_processor.alu_out, drisc_processor.alu_out);
             end
             7'h73: begin
-                if(!CSR_ENABLED) return "CSR Instruction, enable CSR support to execute properly";
+                if(!CSR_ENABLED) return "\033[1;33mCSR Instruction, enable CSR support to execute properly";
                 else if(current_instruction[14:12] == 3'b0) begin
                     case(current_instruction[31:20])
                         `MRET: return $sformatf("Machine Return    Privilege <= %0s   Next PC <= %0d (0x%8h)",
