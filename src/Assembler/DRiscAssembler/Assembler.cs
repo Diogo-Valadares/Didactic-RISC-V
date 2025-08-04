@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-
-namespace DRiscAssembler;
+﻿namespace DRiscAssembler;
 public class Assembler
 {
     public static int textPosition => 12;
@@ -33,7 +31,7 @@ public class Assembler
             var translators = translatorsGenerator(parts[1..]);
             if (translators.Length == 0) continue;
 
-            Console.Write($"[{memIndex}]");
+            Console.Write($"[{memIndex << 2:x}]");
             Console.SetCursorPosition(textPosition, Console.CursorTop);
 
             memory[memIndex] = translators[0]();
@@ -60,7 +58,7 @@ public class Assembler
             for (int i = 1; i < translators.Length; i++)
             {
                 Console.SetCursorPosition($"[{currentLine}]".Length, Console.CursorTop);
-                Console.Write($"[{memIndex}]");
+                Console.Write($"[{memIndex << 2:x}]");
                 Console.SetCursorPosition(textPosition, Console.CursorTop);
                 memory[memIndex] = translators[i]();
                 memIndex++;
@@ -275,7 +273,8 @@ public class Assembler
                     $"{currentAddress << 2}(0x{currentAddress << 2:x8}) and size {opSize}");
                 words.Add(parts[1], currentAddress << 2);
             }
-            if (!lines[currentLine].StartsWith(':')) {
+            if (!lines[currentLine].StartsWith(':'))
+            {
                 currentAddress += opSize;
                 continue;
             }
@@ -305,7 +304,7 @@ public class Assembler
                 continue;
             }
             else if (parts[0].Equals("LA", StringComparison.CurrentCultureIgnoreCase) && //Quick fix for manually typed addresses
-                !parts[2].StartsWith(':') && 
+                !parts[2].StartsWith(':') &&
                 !parts[2].StartsWith('.'))
             {
                 var value = Instruction.ToInteger(parts[2]) - (currentAddress << 2);
