@@ -48,6 +48,7 @@
     .word :cause_ecall_from_machine_mode
 :cause_unknown
 	la a0 .cause_unknown_message
+	call :load_text
 	j 0 //unknown causes halt the system;
 :cause_instruction_address_misaligned
 	la a0 .cause_inst_addr_misaligned
@@ -57,7 +58,6 @@
 	jump :switch_end
 :cause_breakpoint
 	la a0 .cause_breakpoint
-	call :load_text
 	//imprimir registradores talvez?
 	jump :switch_end
 :cause_load_address_misaligned
@@ -67,15 +67,13 @@
 	la a0 .cause_store_addr_misaligned
 	jump :switch_end	
 :cause_ecall_from_user_mode
-	la a0 .cause_ecall_from_user_mode
+	la a0 .cause_ecall_from_user_mode	
 	call :load_text
 	csrr t6 mepc
+	inc t6 4
 	jump :no_mret_return
 :cause_ecall_from_machine_mode
-	la a0 .cause_ecall_from_machine_mode
-	csrr t6 mepc 
-	jump :no_mret_return
-	
+	la a0 .cause_ecall_from_machine_mode	
 :switch_end
 	call :load_text
 	

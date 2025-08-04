@@ -39,7 +39,7 @@ module drisc #(
 //outputs to c bus
     wire [31:0] pc_next_out;
     wire [31:0] alu_out;
-    wire [31:0] input_buffer_out;
+    wire signed [31:0] input_buffer_out;
 
 //program counter
     wire unsigned [31:0] pc_calculated_address;

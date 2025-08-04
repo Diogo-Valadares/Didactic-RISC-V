@@ -1,4 +1,10 @@
-.macro drawPoint videoAddress xReg yReg colorReg resolutionBits yResolutionOffset addressBits 
+//video address 0x01000000 will be stored at the global pointer 
+.define videoAddress 0x01000000
+.define videoRegister gp
+.define colorRegister s2
+.define white 0xffffffff
+
+.macro drawPoint xReg yReg colorReg resolutionBits yResolutionOffset addressBits 
 	//masking the correct bits
 	andi xReg xReg resolutionBits
 	andi yReg yReg resolutionBits
@@ -6,14 +12,14 @@
 	slli yReg yReg yResolutionOffset
 	
 	//generating the pixel address
-	or videoAddress videoAddress xReg
-	or videoAddress videoAddress yReg
+	or videoRegister videoRegister xReg
+	or videoRegister videoRegister yReg
 	
 	//writing the pixel
-	sw colorReg videoAddress 0
+	sb colorReg videoRegister 0
 	
 	//reset video address and yReg to its original value
-	and videoAddress videoAddress addressBits
+	and videoRegister videoRegister addressBits
 	srli yReg yReg yResolutionOffset
 .endmacro
 	
@@ -43,10 +49,8 @@
 .endmacro
 	nop
 	li sp 0x00010000	
-	//video address 0x01000000 will be stored at the global pointer 
-	//adicionally, the keyboard is the videoAddress-1, which should save resources.
-	li gp 0x01000000		
-	li s2 0xffffffff //colorReg white	
+	li videoRegister videoAddress		
+	li colorRegister white //colorReg white	
 	li s3 0xff000000 //address bits
 	li s4 1 //snake size
 	li s5 0 //current head offset
@@ -60,8 +64,6 @@
 
 :loopStart
 	lb t1 gp -1
-	nop
-	
 	blt t1 zero :draw //if there is no input the value will be negative 	
 	
 #REGION "switch"(input)
@@ -89,12 +91,9 @@
 	
 	addVector s0 s1 s0 s1 t2 t3			//apply velocity to position
 	
-	inc s2 0x010203	//update color
+	drawPoint s0 s1 colorRegister 0x3f 6 s3	//draw head
 	
-	drawPoint gp s0 s1 s2 0x3f 6 s3		//draw head
-	
-	
-	drawPoint gp a0 a1 zero 0x3f 6 s3	//erase tail
+	drawPoint a0 a1 zero 0x3f 6 s3	//erase tail
 
 	jump :loopStart
 :loopEnd

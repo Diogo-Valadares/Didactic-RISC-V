@@ -1,0 +1,93 @@
+.define keyboard_address 0x00ffffff
+.define terminal_address 0x1100000
+	nop
+	li a3 keyboard_address
+:loop
+	lb a5 a3 0 //load mcause
+	blt a5 zero :loop //if there is no input the value will be negative 	
+	
+	li t0 terminal_address
+	sb zero t0 1
+	
+	li t0 11
+	
+	dec a5 48
+	blt a5 t0 :c	
+	dec a5 39
+:c
+
+	li a4 11 //load biggest option
+	
+	bgtu a5 a4 :CAUSE_UNKNOWN //if mcause > biggest option
+	
+	slli a4 a5 2 //adjust option number to word addresses.
+	la a5 :TABLE_SWITCH_0 //load the table address
+	add a5 a5 a4 //add option offset to the table address
+	
+	lw a5 a5 0 //load address from table
+	jr a5 //jump to loaded address
+	
+:TABLE_SWITCH_0
+    .word :CAUSE_INSTRUCTION_ADDRESS_MISALIGNED
+    .word :CAUSE_UNKNOWN
+    .word :CAUSE_ILLEGAL_INSTRUCTION
+    .word :CAUSE_BREAKPOINT
+    .word :CAUSE_LOAD_ADDRESS_MISALIGNED
+    .word :CAUSE_UNKNOWN
+    .word :CAUSE_STORE_ADDRESS_MISALIGNED
+    .word :CAUSE_UNKNOWN
+    .word :CAUSE_ECALL_FROM_USER_MODE
+    .word :CAUSE_UNKNOWN
+    .word :CAUSE_UNKNOWN
+    .word :CAUSE_ECALL_FROM_MACHINE_MODE
+:CAUSE_UNKNOWN
+	la a0 .cause_unknown_message
+	jump :END_SWITCH_0
+:CAUSE_INSTRUCTION_ADDRESS_MISALIGNED
+	la a0 .cause_inst_addr_misaligned
+	jump :END_SWITCH_0
+:CAUSE_ILLEGAL_INSTRUCTION
+	la a0 .cause_illegal_inst
+	jump :END_SWITCH_0
+:CAUSE_BREAKPOINT
+	la a0 .cause_breakpoint
+	jump :END_SWITCH_0
+:CAUSE_LOAD_ADDRESS_MISALIGNED
+	la a0 .cause_load_addr_misaligned
+	jump :END_SWITCH_0
+:CAUSE_STORE_ADDRESS_MISALIGNED
+	la a0 .cause_store_addr_misaligned
+	jump :END_SWITCH_0
+:CAUSE_ECALL_FROM_USER_MODE
+	la a0 .cause_ecall_from_user_mode
+	jump :END_SWITCH_0
+:CAUSE_ECALL_FROM_MACHINE_MODE
+	la a0 .cause_ecall_from_machine_mode
+:END_SWITCH_0
+	call :load_text
+	
+	j :loop
+	
+	
+:load_text //print(char[])
+	mv t0 a0 //t0 = endereço string
+	la t2 terminal_address //t2 = endereço terminal
+:load_text_loop
+	lb t1 t0 0 //t1 = valor[endereço string]
+ 	sb t1 t2 0 //[endereço terminal] <= valor
+	beq t1 zero :load_text_end
+	inc t0 1 //endereço string ++
+	jump :load_text_loop
+:load_text_end
+	jr ra
+
+	.string cause_unknown_message "error: cause unknown"
+	.string cause_inst_addr_misaligned "error: instruction address misaligned"
+	.string cause_illegal_inst "error: illegal instruction"
+	.string cause_breakpoint "breakpoint triggered"
+	.string cause_load_addr_misaligned "error: load address misaligned"
+	.string cause_store_addr_misaligned "error: store address misaligned"
+	.string cause_ecall_from_user_mode "environment call from user"
+	.string cause_ecall_from_machine_mode "environment call from machine"
+
+	

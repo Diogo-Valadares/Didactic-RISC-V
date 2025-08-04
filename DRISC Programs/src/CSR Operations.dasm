@@ -19,5 +19,9 @@ csrr s10 time
 csrr s11 timeh
 csrr a0 instret
 
+la t0 :here
+csrw mepc t0
+mret
+
 :here
 j :here

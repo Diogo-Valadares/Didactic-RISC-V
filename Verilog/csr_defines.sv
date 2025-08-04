@@ -1,5 +1,5 @@
-`define ECALL 12'h001
-`define EBREAK 12'h000
+`define ECALL 12'h000
+`define EBREAK 12'h001
 `define MRET 12'h302
 `define WFI 12'h105
 
