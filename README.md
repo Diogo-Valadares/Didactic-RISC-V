@@ -1,29 +1,28 @@
-# Didactic-RISC-I
-This project is part of a monography focused on transforming the RISC I architecture into a didactic tool.
+# Didactic-RISC-V
 
-![riscInternal](https://github.com/user-attachments/assets/4eea920d-c49b-4046-a99b-ded1ad917bcd)
+This project is part of a monograph focused on transforming the legacy RISC I architecture into a modern educational tool. The goal is to recreate RISC I, enhance it with features found in contemporary architectures, and evolve it into a design that aligns with the RISC-V specification.
+
+![Didactic-RISC-V Architecture](https://github.com/user-attachments/assets/c3bb8eed-a5ef-40f1-b8df-c6eda5cc1376)
 
 ## Overview
-This project focus on recriating the RISC I architecture to later improve it for didatic porpuses. Both the original RISC I recriation and DRISC archtectures will be contained in this repository for comparison.
 
-The recriation was based on the works of [James B. Peek](https://www2.eecs.berkeley.edu/Pubs/TechRpts/1983/CSD-83-135.pdf) and [Manolis G. H. Katevenis](https://archive.org/details/reducedinstructi0000kate/mode/2up).
-Although it's not a perfect replica, for reasons like simulation limitations and missing documentation, it can still reproduce the whole RISC I Instruction set, while keeping the same overall structucture.
+The project aims to faithfully reconstruct the original RISC I architecture and then extend it for didactic purposes. This repository contains both the RISC I recreation and the enhanced DRISC-V architecture, allowing side-by-side comparison and analysis.
 
-An assembler, written in C#, has been developed to translate assembly language into machine code that can be directly read by the simulation model.
+The RISC I implementation is inspired by the works of [James B. Peek](https://www2.eecs.berkeley.edu/Pubs/TechRpts/1983/CSD-83-135.pdf) and [Manolis G. H. Katevenis](https://archive.org/details/reducedinstructi0000kate/mode/2up).  
+While not a perfect replica—due to simulation constraints and limited documentation—it successfully reproduces the full RISC I instruction set and retains the original structural design.
+
+To support simulation and experimentation, a custom assembler written in C# has been developed. It translates assembly code into machine-readable instructions compatible with the simulation models, with a focus on transparency and debugging.
 
 ## Features
-- Complete RISC I Simulation: A recreation of the RISC I architecture in Logisim Evolution.
 
-- Custom Assembler: A  assembler written in C# for converting assembly language into executable code for the simulator.
+- **Logisim Simulations**  
+  Both RISC I and DRISC-V architectures are available as interactive Logisim models.
 
-- Educational Focus: Designed to be a comprehensive teaching tool for learning about computer architecture.
+- **SystemVerilog Implementation**  
+  DRISC-V includes a SystemVerilog version for high-performance simulation and testing.
 
-## Getting Started
-To get started with the simulation and assembler, follow these steps:
+- **Custom C# Assembler**  
+  A dedicated assembler that converts assembly language into executable machine code, designed to illustrate the assembly process and assist in system development and debugging.
 
-1. Clone this repository to your local machine.
-
-2. Open the Logisim Evolution project file to explore the RISC I architecture.
-
-3. Use the provided C# assembler to compile assembly code into machine code for the simulator.
-
+- **Educational Focus**  
+  Built as a comprehensive teaching tool for learning computer architecture, ideal for students, educators, and enthusiasts.
