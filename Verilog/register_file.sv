@@ -13,8 +13,8 @@ module register_file(
 
     reg [31:0] registers [0:31];
 
-    assign a_out = (a_address == 5'd0) ? 32'b0 : registers[a_address];
-    assign b_out = (b_address == 5'd0) ? 32'b0 : registers[b_address];
+    assign a_out = registers[a_address];
+    assign b_out = registers[b_address];
 
     always @(posedge clock) begin
         if (reset) begin

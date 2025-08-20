@@ -1,11 +1,3 @@
-//This code is for testing the various Load and Save instructions;
-//Each word size and saved in the sequence of addresses after the code;
-//In each load, a different register in the local window is used 
-//so that signed loads can be checked, since there is no signed save.
-//
-//in the end there is a final test for the compiler to test if it can
-//Clamp the Load High instruction properly. If so the value will be 
-//clamped to 19 bits and won't break the program.
 NOP
 
 ADDI x1 x0 :end	//Counter to write each answer in a different address

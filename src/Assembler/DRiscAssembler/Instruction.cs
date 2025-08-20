@@ -33,6 +33,7 @@ internal static class Instruction
         {"BLTU",  (p) => [() => TranslateB(Instructions.branch, Branch.bltu, p[0], p[1], p[2])]},
         {"BGTU",  (p) => [() => TranslateB(Instructions.branch, Branch.bltu, p[1], p[0], p[2])]},//Branch If Greater Than Unsigned
         {"BLE",   (p) => [() => TranslateB(Instructions.branch, Branch.bge, p[1], p[0], p[2])]},//Branch If Less Equal
+        {"BGEZ",  (p) => [() => TranslateB(Instructions.branch, Branch.bge, p[0], "x0", p[1])]},//Branch If Greater or Equal Zero
         {"BGE",   (p) => [() => TranslateB(Instructions.branch, Branch.bge, p[0], p[1], p[2])]},
         {"BLEU",  (p) => [() => TranslateB(Instructions.branch, Branch.bgeu, p[1], p[0], p[2])]},//Branch If Less Equal Unsigned
         {"BGEU",  (p) => [() => TranslateB(Instructions.branch, Branch.bgeu, p[0], p[1], p[2])]},

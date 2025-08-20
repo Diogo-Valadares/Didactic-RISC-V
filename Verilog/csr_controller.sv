@@ -52,7 +52,7 @@ module csr_controller(
             `M_VENDOR_ID, `M_ARCH_ID, `M_IMP_ID, `M_HART_ID, `M_STATUS, `M_ISA,
             `M_T_VEC, `M_STATUS_H, `M_SCRATCH, `M_E_PC, `M_CAUSE, `M_T_VAL, `CYCLE,
             `TIME, `INSTRET, `CYCLE_H, `TIME_H, `INSTRET_H, `M_I_E, `M_I_P: begin
-                if(!next_funct_12[8] | privilege) next_illegal_csr = 0;//testar se privilege já serve aqui
+                if(!next_funct_12[8] | privilege) next_illegal_csr = 0;
                 else next_illegal_csr = 1;
             end
             default: next_illegal_csr = 1;

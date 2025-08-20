@@ -38,10 +38,7 @@ ret
 .word basePointer :arrayStart
 .word arrayEnd :arrayEnd
 
-.word padding0 0x00000000
-.word padding1 0x00000000
-.word padding2 0x00000000
-.word padding3 0x00000000
+.word 0 0 0 0
 
 :arrayStart
 .word element0 0xAA99CC77
