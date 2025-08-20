@@ -1,0 +1,276 @@
+\providecommand{\abntreprintinfo}[1]{%
+ \citeonline{#1}}
+\setlength{\labelsep}{0pt}\begin{thebibliography}{}
+\providecommand{\abntrefinfo}[3]{}
+\providecommand{\abntbstabout}[1]{}
+\abntbstabout{v-1.9.7 }
+
+\bibitem[{ARM}]{arm_building_nodate}
+\abntrefinfo{{ARM}}{{ARM}}{}
+{{ARM}. \emph{Building the {Future} of {Computing}}.
+Dispon{\'\i}vel em: \url{https://www.arm.com/}.}
+
+\bibitem[{ARM} 2014]{arm_arm_2014}
+\abntrefinfo{{ARM}}{{ARM}}{2014}
+{{ARM}. \emph{{ARM} {Cortex}-{A} {Series} {Programmer}'s {Guide} for
+  {ARMv7}-{A}}. 2014.
+Dispon{\'\i}vel em: \url{https://developer.arm.com/documentation/den0013/d}.}
+
+\bibitem[Burch et al. 2014]{burch_logisim_2014}
+\abntrefinfo{Burch et al.}{BURCH et al.}{2014}
+{BURCH, C. et al. \emph{Logisim {Evolution}}. 2014.
+Dispon{\'\i}vel em:
+  \url{https://github.com/logisim-evolution/logisim-evolution}.}
+
+\bibitem[Catsoulis 2002]{catsoulis_designing_2002}
+\abntrefinfo{Catsoulis}{CATSOULIS}{2002}
+{CATSOULIS, J. \emph{Designing embedded hardware}. 1st ed. ed. Sebastopol, CA:
+  O'Reilly, 2002. OCLC: ocm51226672.
+ISBN 978-0-596-00362-3. Dispon{\'\i}vel em:
+  \url{https://archive.org/details/designing-embedded-hardware/page/n5/mode/1up}.}
+
+\bibitem[Chwif 2014]{chwif_modelagem_2014}
+\abntrefinfo{Chwif}{CHWIF}{2014}
+{CHWIF, L. \emph{Modelagem e simulação de eventos discretos: teoria \&
+  aplicações}. 4a. ed. [S.l.]: Elsevier Brasil, 2014.
+ISBN 978-85-352-7933-7.}
+
+\bibitem[Clements 1999]{clements_selecting_1999}
+\abntrefinfo{Clements}{CLEMENTS}{1999}
+{CLEMENTS, A. Selecting a processor for teaching computer architecture.
+\emph{Microprocessors and Microsystems}, v.~23, n.~5, p. 281--290, out. 1999.
+ISSN 01419331.
+Dispon{\'\i}vel em:
+  \url{https://linkinghub.elsevier.com/retrieve/pii/S0141933199000496}.}
+
+\bibitem[Clements 2010]{clements_arms_2010}
+\abntrefinfo{Clements}{CLEMENTS}{2010}
+{CLEMENTS, A. {ARMs} for the poor: {Selecting} a processor for teaching
+  computer architecture. In:  \emph{2010 {IEEE} {Frontiers} in {Education}
+  {Conference} ({FIE})}. [s.n.], 2010. p. T3E--1--T3E--6. ISSN: 2377-634X.
+  Dispon{\'\i}vel em:
+  \url{https://ieeexplore.ieee.org/abstract/document/5673541}.}
+
+\bibitem[Costa 2010]{costa_modelo_2010}
+\abntrefinfo{Costa}{COSTA}{2010}
+{COSTA, H. Modelo para webibliomining: proposta e caso de aplicação.
+v.~13, p. 115--126, 2010.}
+
+\bibitem[{Daniel T. Fitzpatrick} et al. 1982]{daniel_t_fitzpatrick_riscy_1982}
+\abntrefinfo{{Daniel T. Fitzpatrick} et al.}{{Daniel T. Fitzpatrick} et
+  al.}{1982}
+{{Daniel T. Fitzpatrick} et al. A {RISCy} approach to {VLSI}.
+\emph{ACM Sigarch Computer Architecture News}, v.~10, n.~1, p. 28--32, jan.
+  1982.
+MAG ID: 2048226925.}
+
+\bibitem[Dimitrijevic e Devedzic 2020]{dimitrijevic_usability_2020}
+\abntrefinfo{Dimitrijevic e Devedzic}{DIMITRIJEVIC; DEVEDZIC}{2020}
+{DIMITRIJEVIC, S.; DEVEDZIC, V. Usability {Evaluation} in {Selecting}
+  {Educational} {Technology}. In:  . Zrenjanin, Serbia: [s.n.], 2020.
+ISBN 978-86-7672-341-6. Dispon{\'\i}vel em:
+  \url{https://www.researchgate.net/publication/346403516\_Usability\_Evaluation\_in\_Selecting\_Educational\_Technology}.}
+
+\bibitem[Djordjevic, Milenkovic e Grbanovic 2000]{djordjevic_integrated_2000}
+\abntrefinfo{Djordjevic, Milenkovic e Grbanovic}{DJORDJEVIC; MILENKOVIC;
+  GRBANOVIC}{2000}
+{DJORDJEVIC, J.; MILENKOVIC, A.; GRBANOVIC, N. An integrated environment for
+  teaching computer architecture.
+\emph{IEEE Micro}, v.~20, n.~3, p. 66--74, maio 2000.
+ISSN 1937-4143.
+Dispon{\'\i}vel em: \url{https://ieeexplore.ieee.org/document/846311}.}
+
+\bibitem[Fávero 2011]{favero_organizacao_2011}
+\abntrefinfo{Fávero}{FáVERO}{2011}
+{FáVERO, E. \emph{Organização e arquitetura de computadores}. Pato Branco:
+  Edutfpr, 2011.
+ISBN 978-85-7014-082-1. Dispon{\'\i}vel em:
+  \url{https://redeetec.mec.gov.br/images/stories/pdf/eixo\_infor\_comun/tec\_inf/081112\_org\_arq\_comp.pdf}.}
+
+\bibitem[{IEEE} 1985]{ieee_ieee_1985}
+\abntrefinfo{{IEEE}}{{IEEE}}{1985}
+{{IEEE}. \emph{{IEEE} {Standard} for {Binary} {Floating}-{Point} {Arithmetic}}.
+  IEEE, 1985.
+ISBN: 9780738111650.
+Dispon{\'\i}vel em: \url{http://ieeexplore.ieee.org/document/30711/}.}
+
+\bibitem[Katevenis 1985]{katevenis_reduced_1985}
+\abntrefinfo{Katevenis}{KATEVENIS}{1985}
+{KATEVENIS, M. Reduced instruction set computer architectures for {VLSI}.
+jan. 1985.
+MAG ID: 2171342458 S2ID: f2e99c1a499176ffe665c9b523080b1ac65665a0.}
+
+\bibitem[Keim 2020]{keim_what_2020}
+\abntrefinfo{Keim}{KEIM}{2020}
+{KEIM, R. \emph{What {Is} a {Hardware} {Description} {Language} ({HDL})? -
+  {Technical} {Articles}}. 2020.
+Dispon{\'\i}vel em:
+  \url{https://www.allaboutcircuits.com/technical-articles/what-is-a-hardware-description-language-hdl/}.}
+
+\bibitem[Lin et al. 2012]{lin_syntactic_2012}
+\abntrefinfo{Lin et al.}{LIN et al.}{2012}
+{LIN, Y. et al. Syntactic {Annotations} for the {Google} {Books} {NGram}
+  {Corpus}.
+jul. 2012.}
+
+\bibitem[Lourenço e Midorikawa 2005]{lourenco_ensino_2005}
+\abntrefinfo{Lourenço e Midorikawa}{LOURENçO; MIDORIKAWA}{2005}
+{LOURENçO, A.~E.; MIDORIKAWA, E.~T. Ensino de arquitetura de computadores
+  utilizando simuladores completos.
+2005.
+ISSN 1413-215X.
+Dispon{\'\i}vel em: \url{https://repositorio.usp.br/item/001458472}.}
+
+\bibitem[Malvino e Brown 1993]{malvino_digital_1993}
+\abntrefinfo{Malvino e Brown}{MALVINO; BROWN}{1993}
+{MALVINO, A.~P.; BROWN, J.~A. \emph{Digital computer electronics}. 3. ed. ed.
+  Lake Forest, Ill.: Glencoe, 1993.
+ISBN 978-0-02-800594-2 978-0-07-462235-3.}
+
+\bibitem[{MIPS Tech LLC} 2016]{mips_tech_llc_mips32_2016}
+\abntrefinfo{{MIPS Tech LLC}}{{MIPS Tech LLC}}{2016}
+{{MIPS Tech LLC}. \emph{{MIPS32} {Architecture} {For} {Programmers}}. 6. ed.
+  [S.l.: s.n.], 2016. v.~1-2.}
+
+\bibitem[Monteiro 2007]{monteiro_introducao_2007}
+\abntrefinfo{Monteiro}{MONTEIRO}{2007}
+{MONTEIRO, M. \emph{Introdução À {Organização} {De} {Computadores}}.
+  [S.l.]: Ltc-Livros Tecnicos E Cientificos Editora Lda, 2007.
+ISBN 978-85-216-1543-9.}
+
+\bibitem[Patterson 2017]{patterson_how_2017}
+\abntrefinfo{Patterson}{PATTERSON}{2017}
+{PATTERSON, D. \emph{How close is {RISC}-{V} to {RISC}-{I}? {\textbar}
+  {ASPIRE}}. 2017.
+Dispon{\'\i}vel em:
+  \url{https://aspire.eecs.berkeley.edu/2017/06/how-close-is-risc-v-to-risc-i/}.}
+
+\bibitem[Patterson e Séquin 1982]{patterson_design_1982}
+\abntrefinfo{Patterson e Séquin}{PATTERSON; SéQUIN}{1982}
+{PATTERSON, D.; SéQUIN, C. \emph{Design and {Implementation} of {RISC} {I}}.
+Berkeley, 1982. 25~p. Dispon{\'\i}vel em:
+  \url{http://www2.eecs.berkeley.edu/Pubs/TechRpts/1982/5449.html}.}
+
+\bibitem[Patterson 1985]{patterson_reduced_1985}
+\abntrefinfo{Patterson}{PATTERSON}{1985}
+{PATTERSON, D.~A. Reduced instruction set computers.
+\emph{Communications of The ACM}, v.~28, n.~1, p. 8--21, jan. 1985.
+MAG ID: 2018426736.}
+
+\bibitem[Patterson e Chen 2016]{patterson_risc-v_2016}
+\abntrefinfo{Patterson e Chen}{PATTERSON; CHEN}{2016}
+{PATTERSON, D.~A.; CHEN, T. \emph{{RISC}-{V} {Geneology}}.
+Berkeley, 2016. 8~p. Dispon{\'\i}vel em:
+  \url{https://www2.eecs.berkeley.edu/Pubs/TechRpts/2016/EECS-2016-6.pdf}.}
+
+\bibitem[Patterson e Hennessy 1996]{patterson_computer_1996}
+\abntrefinfo{Patterson e Hennessy}{PATTERSON; HENNESSY}{1996}
+{PATTERSON, D.~A.; HENNESSY, J.~L. \emph{Computer architecture : a quantitative
+  approach}. 2nd ed. ed. San Francisco: Morgan Kaufmann Publishers, 1996.
+ISBN 978-1-55860-329-5 978-1-55860-372-1. Dispon{\'\i}vel em:
+  \url{http://archive.org/details/computerarchitec00patt}.}
+
+\bibitem[Peek 1983]{peek_vlsi_1983}
+\abntrefinfo{Peek}{PEEK}{1983}
+{PEEK, J. \emph{The {VLSI} {Circuitry} of {RISC} {I}}.
+Berkeley, 1983. 59~p. Dispon{\'\i}vel em:
+  \url{https://www2.eecs.berkeley.edu/Pubs/TechRpts/1983/6347.html}.}
+
+\bibitem[Raabe e Zeferino 2006]{raabe_processadores_2006}
+\abntrefinfo{Raabe e Zeferino}{RAABE; ZEFERINO}{2006}
+{RAABE, A.; ZEFERINO, C. \emph{Processadores para {Ensino} de {Conceitos}
+  {Básicos} de {Arquitetura} de {Computadores}}. Workshop sobre Educação em
+  Arquitetura de Computadores, 2006.
+Dispon{\'\i}vel em:
+  \url{https://www.researchgate.net/publication/266878017\_Processadores\_para\_Ensino\_de\_Conceitos\_Basicos\_de\_Arquitetura\_de\_Computadores}.}
+
+\bibitem[{RISC-V} 2022]{risc-v_risc-v_2022}
+\abntrefinfo{{RISC-V}}{{RISC-V}}{2022}
+{{RISC-V}. \emph{{RISC}-{V} {Advanced} {Core} {Local} {Interruptor}
+  {Specification}}. Version 1.0-rc4. RISC-V, 2022. Dispon{\'\i}vel em:
+  \url{https://riscv.org/technical/specifications/}.}
+
+\bibitem[{RISC-V} 2024]{risc-v_risc-v_2024-1}
+\abntrefinfo{{RISC-V}}{{RISC-V}}{2024a}
+{{RISC-V}. \emph{The {RISC}-{V} {Instruction} {Set} {Manual} {Volume} {I}:
+  {Unprivileged} {Architecture}}. Version 20240411. RISC-V, 2024. I.
+  Dispon{\'\i}vel em: \url{https://riscv.org/technical/specifications/}.}
+
+\bibitem[{RISC-V} 2024]{risc-v_risc-v_2024}
+\abntrefinfo{{RISC-V}}{{RISC-V}}{2024b}
+{{RISC-V}. \emph{The {RISC}-{V} {Instruction} {Set} {Manual}: {Volume} {II}:
+  {Privileged} {Architecture}}. Version 20240411. RISC-V, 2024. II.
+  Dispon{\'\i}vel em: \url{https://riscv.org/technical/specifications/}.}
+
+\bibitem[{RISC-V} 2025]{risc-v_risc-v_2025}
+\abntrefinfo{{RISC-V}}{{RISC-V}}{2025}
+{{RISC-V}. \emph{{RISC}-{V} {Assembly} {Programmer}’s {Manual}}. Version
+  v0.0.0. [s.n.], 2025. Dispon{\'\i}vel em:
+  \url{https://riscv.org/technical/specifications/}.}
+
+\bibitem[Snyder 2003]{snyder_verilator_2003}
+\abntrefinfo{Snyder}{SNYDER}{2003}
+{SNYDER, W. \emph{Verilator}. 2003.
+Dispon{\'\i}vel em: \url{https://www.veripool.org/verilator/}.}
+
+\bibitem[Soares 2015]{soares_simuladores_2015}
+\abntrefinfo{Soares}{SOARES}{2015}
+{SOARES, L.
+Seminary, \emph{Simuladores e ferramentas educacionais no ensino de arquitetura
+  de computadores}. São Paulo: [s.n.], 2015.
+Dispon{\'\i}vel em:
+  \url{https://www.dcce.ibilce.unesp.br/~aleardo/cursos/arqcomp/Semin\_EnsinoArq.pdf}.}
+
+\bibitem[{SPARC International Inc} 1994]{sparc_international_inc_sparc_1994}
+\abntrefinfo{{SPARC International Inc}}{{SPARC International Inc}}{1994}
+{{SPARC International Inc}. \emph{The {SPARC} architecture manual}. Version 9.
+  Englewood Cliffs, NJ: Prentice Hall, 1994.
+ISBN 978-0-13-825001-0.}
+
+\bibitem[Stallings 1988]{stallings_reduced_1988}
+\abntrefinfo{Stallings}{STALLINGS}{1988}
+{STALLINGS, W. Reduced instruction set computer architecture.
+\emph{Proceedings of the IEEE}, v.~76, n.~1, p. 38--55, jan. 1988.
+ISSN 1558-2256.
+Dispon{\'\i}vel em: \url{https://ieeexplore.ieee.org/document/3287}.}
+
+\bibitem[Tanenbaum e Austin 2013]{tanenbaum_structured_2013}
+\abntrefinfo{Tanenbaum e Austin}{TANENBAUM; AUSTIN}{2013}
+{TANENBAUM, A.~S.; AUSTIN, T. \emph{Structured computer organization}. 6. ed.
+  ed. Boston, Mass. Munich: Pearson, 2013.  (Always learning).
+ISBN 978-0-13-291652-3.}
+
+\bibitem[Valadares 2024]{valadares_didactic-risc-i_2024}
+\abntrefinfo{Valadares}{VALADARES}{2024}
+{VALADARES, D. \emph{Didactic-{RISC}-{I}}. 2024.
+Dispon{\'\i}vel em: \url{https://github.com/Diogo-Valadares/Didactic-RISC-I}.}
+
+\bibitem[Valadares 2025]{valadares_uma_2025}
+\abntrefinfo{Valadares}{VALADARES}{2025}
+{VALADARES, D. \emph{Uma {Implementação} do {RISC} {I} {Utilizando} o
+  {Simulador} {Logisim} {Evolution}}.
+[S.l.], 2025. Dispon{\'\i}vel em:
+  \url{https://github.com/Diogo-Valadares/Didactic-RISC-I/blob/main/Documentation/Technical\%20Report\%20RISC-I/Uma\_Implementa\%C3\%A7\%C3\%A3o\_do\_RISC\_I\_utilizando\_o\_simulador\_Logisim\_Evolution.pdf}.}
+
+\bibitem[Williams 1998]{williams_icarus_1998}
+\abntrefinfo{Williams}{WILLIAMS}{1998}
+{WILLIAMS, S. \emph{Icarus {Verilog}}. 1998.
+Dispon{\'\i}vel em: \url{https://bleyer.org/icarus/}.}
+
+\bibitem[Wolffe et al. 2002]{wolffe_teaching_2002}
+\abntrefinfo{Wolffe et al.}{WOLFFE et al.}{2002}
+{WOLFFE, G.~S. et al. Teaching computer organization/architecture with limited
+  resources using simulators.
+\emph{SIGCSE Bull.}, v.~34, n.~1, p. 176--180, fev. 2002.
+ISSN 0097-8418.
+Dispon{\'\i}vel em: \url{https://doi.org/10.1145/563517.563408}.}
+
+\bibitem[Yehezkel et al. 2001]{yehezkel_three_2001}
+\abntrefinfo{Yehezkel et al.}{YEHEZKEL et al.}{2001}
+{YEHEZKEL, C. et al. Three simulator tools for teaching computer architecture:
+  {Little} {Man} computer, and {RTLSim}.
+\emph{J. Educ. Resour. Comput.}, v.~1, n.~4, p. 60--80, dez. 2001.
+ISSN 1531-4278.
+Dispon{\'\i}vel em: \url{https://doi.org/10.1145/514144.514732}.}
+
+\end{thebibliography}

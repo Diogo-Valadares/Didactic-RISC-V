@@ -1,0 +1,129 @@
+\changetocdepth {4}
+\babel@toc {brazil}{}\relax 
+\babel@toc {brazil}{}\relax 
+\setlength {\cftchapterindent }{\cftlastnumwidth } \setlength {\cftchapternumwidth }{2em}
+\setlength {\cftchapterindent }{\cftlastnumwidth } \setlength {\cftchapternumwidth }{2em}
+\setlength {\cftchapterindent }{\cftlastnumwidth } \setlength {\cftchapternumwidth }{2em}
+\setlength {\cftchapterindent }{\cftlastnumwidth } \setlength {\cftchapternumwidth }{2em}
+\setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
+\contentsline {chapter}{\chapternumberline {1}\MakeTextUppercase []{Introdução}}{10}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Problema e Contexto}{10}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Objetivos}{11}{section.1.2}%
+\contentsline {section}{\numberline {1.3}Justificativa}{12}{section.1.3}%
+\setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
+\contentsline {chapter}{\chapternumberline {2}\MakeTextUppercase []{Fundamentação teórica}}{13}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Arquitetura e Organização de Computadores}{13}{section.2.1}%
+\contentsline {subsection}{\numberline {2.1.1}A Máquina de von Neumann}{13}{subsection.2.1.1}%
+\contentsline {subsection}{\numberline {2.1.2}Características de Arquiteturas de Computadores}{13}{subsection.2.1.2}%
+\contentsline {subsubsection}{\numberline {2.1.2.1}Níveis de Máquina}{13}{subsubsection.2.1.2.1}%
+\contentsline {subsubsection}{\numberline {2.1.2.2}Barramentos}{15}{subsubsection.2.1.2.2}%
+\contentsline {subsubsection}{\numberline {2.1.2.3}\textit {Pipeline}}{15}{subsubsection.2.1.2.3}%
+\contentsline {subsubsection}{\numberline {2.1.2.4}Conjunto de instruções}{16}{subsubsection.2.1.2.4}%
+\contentsline {paragraph}{\numberline {2.1.2.4.1}Modos de Operação}{16}{paragraph.2.1.2.4.1}%
+\contentsline {subsubsection}{\numberline {2.1.2.5}\textit {Assembly}}{17}{subsubsection.2.1.2.5}%
+\contentsline {section}{\numberline {2.2}Partes de uma Microarquitetura}{17}{section.2.2}%
+\contentsline {subsection}{\numberline {2.2.1}Unidade Lógica e Aritmética(ULA)}{17}{subsection.2.2.1}%
+\contentsline {subsubsection}{\numberline {2.2.1.1}IEEE 754}{18}{subsubsection.2.2.1.1}%
+\contentsline {subsection}{\numberline {2.2.2}Memória}{18}{subsection.2.2.2}%
+\contentsline {subsubsection}{\numberline {2.2.2.1}Registradores}{19}{subsubsection.2.2.2.1}%
+\contentsline {subsubsection}{\numberline {2.2.2.2}Memória \textit {Cache}}{19}{subsubsection.2.2.2.2}%
+\contentsline {paragraph}{\numberline {2.2.2.2.1}Arquitetura de Caches}{20}{paragraph.2.2.2.2.1}%
+\contentsline {subsubsection}{\numberline {2.2.2.3}Arquivo de Registradores}{20}{subsubsection.2.2.2.3}%
+\contentsline {subsubsection}{\numberline {2.2.2.4}Modos de Endereçamento}{21}{subsubsection.2.2.2.4}%
+\contentsline {subsection}{\numberline {2.2.3}Unidade de Controle}{22}{subsection.2.2.3}%
+\contentsline {section}{\numberline {2.3}Arquitetura Berkeley RISC}{22}{section.2.3}%
+\contentsline {subsection}{\numberline {2.3.1}RISC-V}{23}{subsection.2.3.1}%
+\contentsline {section}{\numberline {2.4}CISC \textit {versus} RISC}{24}{section.2.4}%
+\contentsline {section}{\numberline {2.5}Simuladores}{25}{section.2.5}%
+\contentsline {subsection}{\numberline {2.5.1}Linguagens de Descrição de Hardware (HDLs)}{25}{subsection.2.5.1}%
+\setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
+\contentsline {chapter}{\chapternumberline {3}\MakeTextUppercase []{Métodos e recursos}}{26}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Visão geral}{26}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Ferramentas Utilizadas}{28}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Simulador}{29}{subsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.2.2}IDE e Linguagem de Programação}{29}{subsection.3.2.2}%
+\contentsline {subsection}{\numberline {3.2.3}Documentação}{29}{subsection.3.2.3}%
+\contentsline {subsection}{\numberline {3.2.4}Controle de Versão}{29}{subsection.3.2.4}%
+\contentsline {subsection}{\numberline {3.2.5}Assistentes Virtuais}{29}{subsection.3.2.5}%
+\setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
+\contentsline {chapter}{\chapternumberline {4}\MakeTextUppercase []{Trabalhos Realizados}}{31}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Pesquisa de Arquiteturas}{31}{section.4.1}%
+\contentsline {subsection}{\numberline {4.1.1}Critérios da Pesquisa}{31}{subsection.4.1.1}%
+\contentsline {subsection}{\numberline {4.1.2}Metodologia de Pesquisa}{32}{subsection.4.1.2}%
+\contentsline {subsection}{\numberline {4.1.3}Trabalhos Encontrados}{33}{subsection.4.1.3}%
+\contentsline {subsection}{\numberline {4.1.4}Motivações da Escolha da arquitetura RISC~I}{34}{subsection.4.1.4}%
+\contentsline {section}{\numberline {4.2}Modelo de Simulação Base}{35}{section.4.2}%
+\contentsline {section}{\numberline {4.3}\textit {Assembler} Base}{36}{section.4.3}%
+\contentsline {section}{\numberline {4.4}Relatório Técnico}{37}{section.4.4}%
+\contentsline {section}{\numberline {4.5}Bibliometria sobre arquiteturas}{38}{section.4.5}%
+\contentsline {section}{\numberline {4.6}Listagem de Recursos Para Implementação}{41}{section.4.6}%
+\contentsline {subsection}{\numberline {4.6.1}Recursos Para a Arquitetura}{42}{subsection.4.6.1}%
+\contentsline {subsubsection}{\numberline {4.6.1.1}Remoção das Janelas de Registradores}{42}{subsubsection.4.6.1.1}%
+\contentsline {subsubsection}{\numberline {4.6.1.2}Formato de Instrução Próximo ao RISC-V}{42}{subsubsection.4.6.1.2}%
+\contentsline {subsubsection}{\numberline {4.6.1.3}Reorganização das Instruções}{43}{subsubsection.4.6.1.3}%
+\contentsline {subsubsection}{\numberline {4.6.1.4}Padronização de Nomes}{44}{subsubsection.4.6.1.4}%
+\contentsline {subsubsection}{\numberline {4.6.1.5}Padronização dos sinais de ativação entre componentes}{44}{subsubsection.4.6.1.5}%
+\contentsline {subsubsection}{\numberline {4.6.1.6}Modo \textit {Kernel}/Privilegiado}{44}{subsubsection.4.6.1.6}%
+\contentsline {subsubsection}{\numberline {4.6.1.7}Novo Sistema de Interrupções e \textit {Traps}}{44}{subsubsection.4.6.1.7}%
+\contentsline {subsubsection}{\numberline {4.6.1.8}\textit {Pipeline Flush}}{45}{subsubsection.4.6.1.8}%
+\contentsline {subsubsection}{\numberline {4.6.1.9}Melhoria na Entrada e Saída de Informações para o Usuário}{45}{subsubsection.4.6.1.9}%
+\contentsline {subsubsection}{\numberline {4.6.1.10}Mover os registradores dos próximos endereços do Arquivo de Registradores para o controlador}{45}{subsubsection.4.6.1.10}%
+\contentsline {subsubsection}{\numberline {4.6.1.11}Multiplicação e Divisão}{46}{subsubsection.4.6.1.11}%
+\contentsline {subsubsection}{\numberline {4.6.1.12}Pontos Flutuantes}{46}{subsubsection.4.6.1.12}%
+\contentsline {subsubsection}{\numberline {4.6.1.13}\textit {Pipeline} de 3 passos}{46}{subsubsection.4.6.1.13}%
+\contentsline {subsubsection}{\numberline {4.6.1.14}Encaminhamento de dados para Instruções de \texttt {load}}{46}{subsubsection.4.6.1.14}%
+\contentsline {subsubsection}{\numberline {4.6.1.15}\textit {Pipeline} de 5 passos}{47}{subsubsection.4.6.1.15}%
+\contentsline {subsubsection}{\numberline {4.6.1.16}Instruções \textit {branch}}{47}{subsubsection.4.6.1.16}%
+\contentsline {subsubsection}{\numberline {4.6.1.17}Predição de pulo}{48}{subsubsection.4.6.1.17}%
+\contentsline {subsubsection}{\numberline {4.6.1.18}Conversão para HDL}{48}{subsubsection.4.6.1.18}%
+\contentsline {subsubsection}{\numberline {4.6.1.19}Tornar compatível com FPGA}{48}{subsubsection.4.6.1.19}%
+\contentsline {subsubsection}{\numberline {4.6.1.20}Interface de Expansão}{49}{subsubsection.4.6.1.20}%
+\contentsline {subsubsection}{\numberline {4.6.1.21}\textit {Multithreading}}{49}{subsubsection.4.6.1.21}%
+\contentsline {subsubsection}{\numberline {4.6.1.22}Memória \textit {Cache}}{50}{subsubsection.4.6.1.22}%
+\contentsline {subsubsection}{\numberline {4.6.1.23}Paginação de Memória}{50}{subsubsection.4.6.1.23}%
+\contentsline {subsection}{\numberline {4.6.2}Recursos Para a Assembler}{51}{subsection.4.6.2}%
+\contentsline {subsubsection}{\numberline {4.6.2.1}Omissão de parâmetro}{51}{subsubsection.4.6.2.1}%
+\contentsline {subsubsection}{\numberline {4.6.2.2}Pseudo-Instruções}{51}{subsubsection.4.6.2.2}%
+\contentsline {subsubsection}{\numberline {4.6.2.3}\textit {Debug Log} mais detalhado}{51}{subsubsection.4.6.2.3}%
+\contentsline {subsubsection}{\numberline {4.6.2.4}Destaque de Sintaxe}{52}{subsubsection.4.6.2.4}%
+\contentsline {subsubsection}{\numberline {4.6.2.5}Macros}{52}{subsubsection.4.6.2.5}%
+\contentsline {subsubsection}{\numberline {4.6.2.6}Define}{53}{subsubsection.4.6.2.6}%
+\contentsline {section}{\numberline {4.7}Implementação dos Recursos e Melhorias}{53}{section.4.7}%
+\contentsline {subsection}{\numberline {4.7.1}Processo de Desenvolvimento - Arquitetura}{53}{subsection.4.7.1}%
+\contentsline {subsubsection}{\numberline {4.7.1.1}Primeira Fase: Alterações Iniciais}{53}{subsubsection.4.7.1.1}%
+\contentsline {subsubsection}{\numberline {4.7.1.2}Segunda Fase: \textit {Pipeline} e Usabilidade}{59}{subsubsection.4.7.1.2}%
+\contentsline {subsubsection}{\numberline {4.7.1.3}Terceira Fase: \textit {SystemVerilog}}{66}{subsubsection.4.7.1.3}%
+\contentsline {subsubsection}{\numberline {4.7.1.4}Quarta Fase: Entrada e Saída}{69}{subsubsection.4.7.1.4}%
+\contentsline {subsubsection}{\numberline {4.7.1.5}Quinta Fase: Controlador de Registradores de Controle e Status }{74}{subsubsection.4.7.1.5}%
+\contentsline {subsubsection}{\numberline {4.7.1.6}Sexta Fase: Pipeline}{87}{subsubsection.4.7.1.6}%
+\contentsline {subsection}{\numberline {4.7.2}Processo de Desenvolvimento - Assembler}{92}{subsection.4.7.2}%
+\contentsline {subsubsection}{\numberline {4.7.2.1}Adaptação para RISC-V}{92}{subsubsection.4.7.2.1}%
+\contentsline {subsubsection}{\numberline {4.7.2.2}Variáveis}{94}{subsubsection.4.7.2.2}%
+\contentsline {subsubsection}{\numberline {4.7.2.3}Sintaxe}{95}{subsubsection.4.7.2.3}%
+\contentsline {subsubsection}{\numberline {4.7.2.4}Pré-processamento}{96}{subsubsection.4.7.2.4}%
+\contentsline {subsubsection}{\numberline {4.7.2.5}Processo de montagem}{97}{subsubsection.4.7.2.5}%
+\setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
+\contentsline {chapter}{\chapternumberline {5}\MakeTextUppercase []{Resultados}}{99}{chapter.5}%
+\setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
+\contentsline {chapter}{\chapternumberline {6}\MakeTextUppercase []{Conclusão}}{100}{chapter.6}%
+\vspace {\cftbeforechapterskip }
+\setlength {\cftchapterindent }{\cftlastnumwidth } \setlength {\cftchapternumwidth }{2em}
+\contentsline {chapter}{Considerações finais}{101}{chapter*.67}%
+\vspace {\cftbeforechapterskip }
+\setlength {\cftchapterindent }{\cftlastnumwidth } \setlength {\cftchapternumwidth }{2em}
+\contentsline {chapter}{\MakeTextUppercase []{Refer\^encias}}{102}{section*.70}%
+\renewcommand *{\cftappendixname }{AP\^ENDICE \space }
+\setlength {\cftpartindent }{\cftlastnumwidth } \setlength {\cftpartnumwidth }{2em}
+\cftinsert {A}
+\contentsline {part}{\uppercase {Ap\^endices}}{106}{section*.71}%
+\setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
+\setlength {\cftchapterindent }{\cftlastnumwidth } \setlength {\cftchapternumwidth }{2em}
+\cftinsert {A}
+\contentsline {appendix}{\chapternumberline {A}\MakeTextUppercase []{Arquitetura em SystemVerilog - Primeira Versão}}{107}{appendix.A}%
+\setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
+\contentsline {chapter}{\chapternumberline {B}\MakeTextUppercase []{Teste de Entrada e Saída}}{108}{appendix.B}%
+\cftinsert {AAA}
+\renewcommand *{\cftappendixname }{ANEXO \space }
+\setlength {\cftpartindent }{\cftlastnumwidth } \setlength {\cftpartnumwidth }{2em}
+\cftinsert {A}
+\contentsline {part}{\uppercase {Anexos}}{111}{section*.72}%

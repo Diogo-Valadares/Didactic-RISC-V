@@ -1,0 +1,54 @@
+\babel@toc {brazil}{}\relax 
+\babel@toc {brazil}{}\relax 
+\contentsline {figure}{\numberline {1}{\ignorespaces A Máquina de von Neumann original\cite [p.18]{tanenbaum_structured_2013}}}{13}{figure.caption.7}%
+\contentsline {figure}{\numberline {2}{\ignorespaces Um computador de 6 níveis. O método suportado para cada nível é indicado abaixo dele(junto com o programa que suporta). \cite [Adaptação~p.5]{tanenbaum_structured_2013}}}{14}{figure.caption.8}%
+\contentsline {figure}{\numberline {3}{\ignorespaces Planejamento Monografia}}{28}{figure.caption.9}%
+\contentsline {figure}{\numberline {4}{\ignorespaces Modelo de simulação no Logisim Evolution.}}{35}{figure.caption.11}%
+\contentsline {figure}{\numberline {5}{\ignorespaces Resultado das pesquisas no \textit {Google Ngram Viewer} \cite {valadares_uma_2025}}}{39}{figure.caption.12}%
+\contentsline {figure}{\numberline {6}{\ignorespaces Exemplo da impressão de uma instrução realizada pelo \textit {assembler}}}{51}{figure.caption.17}%
+\contentsline {figure}{\numberline {7}{\ignorespaces Arquivo de Registradores antes (esquerda) e depois (direita) da modificação.}}{54}{figure.caption.18}%
+\contentsline {figure}{\numberline {8}{\ignorespaces Encapsulamento do Arquivo de Registradores antes (esquerda) e depois (direita) da modificação.}}{54}{figure.caption.19}%
+\contentsline {figure}{\numberline {9}{\ignorespaces Primeira fase de decodificação de instruções. Antes (esquerda) e depois (direita).}}{55}{figure.caption.20}%
+\contentsline {figure}{\numberline {10}{\ignorespaces Segunda fase de decodificação de instruções. Antes (esquerda) e depois (direita).}}{56}{figure.caption.21}%
+\contentsline {figure}{\numberline {11}{\ignorespaces Formato de instrução do RISC-V para operações entre registradores \cite {risc-v_risc-v_2024}}}{56}{figure.caption.22}%
+\contentsline {figure}{\numberline {12}{\ignorespaces Decodificador de imediato do RISC~I(esquerda) em comparação com o novo decodificador(direita)}}{57}{figure.caption.23}%
+\contentsline {figure}{\numberline {13}{\ignorespaces Decodificador de condição antigo(esquerda) e novo(direita)}}{57}{figure.caption.24}%
+\contentsline {figure}{\numberline {14}{\ignorespaces Modelo original com modificações que foram executadas destacadas em amarelo, componentes que foram removidos cortados em vermelho e posições de novos componentes destacados em verde}}{58}{figure.caption.25}%
+\contentsline {figure}{\numberline {15}{\ignorespaces Resultado da primeira fase de modificações da arquitetura}}{59}{figure.caption.26}%
+\contentsline {figure}{\numberline {16}{\ignorespaces Temporização do RISC~I (adaptado de \citeonline {peek_vlsi_1983})}}{60}{figure.caption.27}%
+\contentsline {figure}{\numberline {17}{\ignorespaces Demonstração da \textit {pipeline} do RISC~I.\cite {stallings_reduced_1988}}}{60}{figure.caption.28}%
+\contentsline {figure}{\numberline {18}{\ignorespaces Demonstração da \textit {pipeline} do RISC~II.\cite {stallings_reduced_1988}}}{61}{figure.caption.29}%
+\contentsline {figure}{\numberline {19}{\ignorespaces Primeira fase de decodificação durante a segunda fase de desenvolvimento}}{61}{figure.caption.30}%
+\contentsline {figure}{\numberline {20}{\ignorespaces Comparação entre o Decodificador de Imediato com \textit {buffers tri-state} (esquerda) e multiplexadores (direita)}}{62}{figure.caption.31}%
+\contentsline {figure}{\numberline {21}{\ignorespaces Segunda fase de decodificação de instruções. Antes (esquerda) Depois (direita)}}{62}{figure.caption.32}%
+\contentsline {figure}{\numberline {22}{\ignorespaces Atualização no visual dos componentes}}{63}{figure.caption.33}%
+\contentsline {figure}{\numberline {23}{\ignorespaces Visualização dos componentes e suas conexões com os barramentos}}{64}{figure.caption.34}%
+\contentsline {figure}{\numberline {24}{\ignorespaces Comparação entre o Deslocador (acima) e o DataIO (abaixo) antes e depois}}{64}{figure.caption.35}%
+\contentsline {figure}{\numberline {25}{\ignorespaces Contador de Programa antes (esquerda) e depois (direita)}}{65}{figure.caption.36}%
+\contentsline {figure}{\numberline {26}{\ignorespaces Separação dos barramentos de dados e endereços}}{66}{figure.caption.37}%
+\contentsline {figure}{\numberline {27}{\ignorespaces Início da simulação do código SystemVerilog, com exibição simplificada do estado do sistema}}{67}{figure.caption.38}%
+\contentsline {figure}{\numberline {28}{\ignorespaces Fim da simulação do código SystemVerilog}}{68}{figure.caption.39}%
+\contentsline {figure}{\numberline {29}{\ignorespaces Contador em Anel, implementado com um Registrador de Deslocamento de 3 bits}}{68}{figure.caption.40}%
+\contentsline {figure}{\numberline {30}{\ignorespaces Dispositivos de entrada e saída do Logisim utilizados}}{69}{figure.caption.41}%
+\contentsline {figure}{\numberline {31}{\ignorespaces Seletor de Endereços}}{70}{figure.caption.42}%
+\contentsline {figure}{\numberline {32}{\ignorespaces Enter Caption}}{70}{figure.caption.43}%
+\contentsline {figure}{\numberline {33}{\ignorespaces Resultado da remoção de registradores de entrada, do Deslocador e da ULA de endereços}}{72}{figure.caption.44}%
+\contentsline {figure}{\numberline {34}{\ignorespaces Programa para interação com a simulação SV, denominado DRISC-V Interface}}{73}{figure.caption.45}%
+\contentsline {figure}{\numberline {35}{\ignorespaces Interface atualizada para interação com os dados do terminal}}{74}{figure.caption.46}%
+\contentsline {figure}{\numberline {36}{\ignorespaces Alteração no momento de atualização do registrador de instrução atual (\textit {current\_instruction})}}{75}{figure.caption.47}%
+\contentsline {figure}{\numberline {37}{\ignorespaces Circuito do Controlador de CSR.}}{82}{figure.caption.49}%
+\contentsline {figure}{\numberline {38}{\ignorespaces Circuitos de fase, instrução atual e instrução decodificada.}}{82}{figure.caption.50}%
+\contentsline {figure}{\numberline {39}{\ignorespaces Representação simplificada do circuito de armazenamento e manipulação de CSRs.}}{83}{figure.caption.51}%
+\contentsline {figure}{\numberline {40}{\ignorespaces Circuitos de tratamento de \textit {traps}.}}{84}{figure.caption.52}%
+\contentsline {figure}{\numberline {41}{\ignorespaces Circuito de verificação de CSRs e controle de sinais de pulo e carregamento.}}{84}{figure.caption.53}%
+\contentsline {figure}{\numberline {42}{\ignorespaces Encapsulamento do Controlador de CSR}}{85}{figure.caption.54}%
+\contentsline {figure}{\numberline {43}{\ignorespaces Integração do Controlador de CSR na arquitetura}}{85}{figure.caption.55}%
+\contentsline {figure}{\numberline {44}{\ignorespaces Circuito do Dispositivo de Tempo Real}}{86}{figure.caption.56}%
+\contentsline {figure}{\numberline {45}{\ignorespaces Encapsulamento do Dispositivo de Tempo Real}}{87}{figure.caption.57}%
+\contentsline {figure}{\numberline {46}{\ignorespaces Registrador de Interrupção de Software}}{87}{figure.caption.58}%
+\contentsline {figure}{\numberline {47}{\ignorespaces Controlador de Operações com \textit {Pipeline} Corrigida.}}{89}{figure.caption.59}%
+\contentsline {figure}{\numberline {48}{\ignorespaces Controlador de Operações com \textit {Pipeline} Corrigida.}}{90}{figure.caption.60}%
+\contentsline {figure}{\numberline {49}{\ignorespaces Saída do programa de teste com melhorias na impressão.}}{92}{figure.caption.61}%
+\contentsline {figure}{\numberline {50}{\ignorespaces Formatos de instrução base do RISC-V~\cite {risc-v_risc-v_2024}.}}{93}{figure.caption.62}%
+\contentsline {figure}{\numberline {51}{\ignorespaces Exemplo de código com destaque de sintaxe no Notepad++.}}{95}{figure.caption.64}%
+\contentsline {figure}{\numberline {52}{\ignorespaces Visualização da montagem de um programa de ordenação por inserção}}{97}{figure.caption.65}%

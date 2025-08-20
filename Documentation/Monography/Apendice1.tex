@@ -1,0 +1,985 @@
+
+Módulos:
+\begin{lstlisting}[
+    language=Verilog,
+    basicstyle=\ttfamily\tiny,
+    keywordstyle=\color{blue},
+    commentstyle=\color{green},
+    stringstyle=\color{red},
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    frame=single,
+    breaklines=true,
+    showstringspaces=false
+]
+
+module drisc(
+    input clock,
+    input reset,
+    inout [31:0] io_bus,
+    output [31:0] address_bus,
+    output [1:0]data_size,
+    output write_address,
+    output write,
+    output read,
+    output [6:0] opcode_debug
+);
+
+    wire [3:1] phase;
+
+    wire [31:0] data_io_out_io;
+    assign io_bus = data_io_read_io ? data_io_out_io : 32'bz ;
+
+    //internal busses
+    wire [31:0]a_bus;
+    wire [31:0]b_bus;
+    wire [31:0]c_bus = 
+        data_io_load ? data_io_out_c :
+        load_upper_immediate ? immediate :
+        shifter_read ? alu_out :
+        pc_read_next ? pc_next_out :
+        alu_out;
+
+    //outputs to c bus
+    wire [31:0] pc_next_out;
+    wire [31:0] alu_out;
+    wire [31:0] shifter_out;
+    wire [31:0] data_io_out_c;
+    
+    //program counter
+    wire [31:0] pc_current_out;
+    wire [1:0] data_offset;
+    wire [31:0] pc_address_in;
+    
+    //controller wires
+    wire [31:0] immediate;
+    wire [2:0] funct_3;
+    wire load_upper_immediate;
+    wire [14:0] registers_addresses;
+    wire register_file_write;
+    wire [3:0] cnzv;
+    wire [4:0] op_function;
+    wire alu_read;
+    wire alu_use_pc;
+    wire use_immediate;
+    wire shifter_read;
+    wire address_alu_use_pc;
+    wire pc_read_next;
+    wire pc_jump;
+    wire pc_use_offset;
+    wire pc_addr_in_to_AD;
+    wire data_io_write_io;
+    wire data_io_read_io;
+    wire data_io_load;
+
+    // Instantiate the phase_generator module
+    phase_generator phase_generator_0 (
+        .clock(clock),
+        .reset(reset),
+        .phase(phase)
+    );
+
+    // Instantiate the program_counter module
+    program_counter program_counter_0 (
+        .reset(reset),
+        .clock(clock),
+        .write(phase[3]),
+        .jump(pc_jump),
+        .use_offset(pc_use_offset),
+        .address_in_to_AD(pc_addr_in_to_AD),
+        .address_in(pc_address_in),
+        .data_offset(data_offset),
+        .next(pc_next_out),
+        .current(pc_current_out),
+        .AD_Bus(address_bus)
+    );
+
+    // Instantiate the data io module
+    data_io data_io_0 (
+        .clock(clock),
+        .store(phase[1]),
+        .load(data_io_write_io),
+        .data_type(funct_3),
+        .data_offset(data_offset),
+        .cpu_in(b_bus),
+        .io_in(io_bus),
+        .cpu_out(data_io_out_c),
+        .io_out(data_io_out_io)
+    );
+
+    // Instantiate the operation_controller module
+    operation_controller operation_controller_0 (
+        .clock(clock),
+        .reset(reset),
+        .phase(phase),
+        .data_in(io_bus),
+        .immediate(immediate),
+        .opcode(opcode_debug),
+        .funct_3(funct_3),
+        .load_upper_immediate(load_upper_immediate),
+        .registers_addresses(registers_addresses),
+        .register_file_write(register_file_write),
+        .cnzv(cnzv),
+        .op_function(op_function),
+        .alu_read(alu_read),
+        .alu_use_pc(alu_use_pc),
+        .use_immediate(use_immediate),
+        .shifter_read(shifter_read),
+        .address_alu_use_pc(address_alu_use_pc),
+        .pc_read_next(pc_read_next),
+        .pc_jump(pc_jump),
+        .pc_use_offset(pc_use_offset),
+        .pc_addr_in_to_AD(pc_addr_in_to_AD),
+        .data_io_write_io(data_io_write_io),
+        .data_io_read_io(data_io_read_io),
+        .data_io_load(data_io_load),
+        .pad_write_address(write_address),
+        .pad_read(read),
+        .pad_write(write),
+        .pad_data_size(data_size)
+    );
+
+    // Instantiate the register_file module
+    register_file register_file_0 (
+        .clock(clock),
+        .reset(reset),
+        .write(register_file_write),
+        .a_address(registers_addresses[9:5]),
+        .b_address(registers_addresses[14:10]),
+        .c_address(registers_addresses[4:0]),
+        .c_in(c_bus),
+        .a_out(a_bus),
+        .b_out(b_bus)
+    );
+
+    // Instantiate the alu module
+    alu alu_0 (
+        .clock(clock),
+        .write(phase[1]),
+        .use_pc(alu_use_pc),
+        .a(a_bus),
+        .program_counter(pc_current_out),
+        .use_immediate(use_immediate),
+        .b(b_bus),
+        .immediate(immediate),
+        .operation(op_function),
+        .result(alu_out),
+        .cnzv(cnzv)
+    );
+
+    // Instantiate the address_alu module
+    address_alu address_alu_0 (
+        .clock(clock),
+        .write(phase[1]),
+        .use_pc(address_alu_use_pc),
+        .a(a_bus),
+        .program_counter(pc_current_out),
+        .immediate(immediate),
+        .result(pc_address_in)
+    );
+endmodule
+
+module alu(
+    input clock,
+    input write,
+    input use_pc,
+    input [31:0] a,
+    input [31:0] program_counter,
+    input use_immediate,
+    input [31:0] b,
+    input [31:0] immediate,
+    input [4:0] operation,
+    output reg [31:0] result,
+    output reg [3:0] cnzv
+    );
+    
+    reg [31:0] a_reg;
+    reg [31:0] b_reg;
+    reg [63:0] r64;
+    
+    wire [4:0]op = (use_immediate & ~(operation == 1 | operation == 5 | operation == 21)) ? {2'b0, operation[2:0]} : operation;
+    
+    always@(posedge clock) begin
+        
+        if(write) begin
+            a_reg <= use_pc ? program_counter : a;
+            b_reg <= use_immediate ? immediate : b;
+        end
+    end
+    
+    always@(*) begin
+        case(op)
+            0: {cnzv[0], result} = a_reg + b_reg;
+            1: result = a_reg << b_reg[4:0];
+            2: result = ($signed(a_reg) < $signed(b_reg)) ? 1 : 0;
+            3: result = ($unsigned(a_reg) < $unsigned(b_reg)) ? 1 : 0;
+            4: result = a_reg ^ b_reg;
+            5: result = a_reg >> b_reg[4:0];
+            6: result = a_reg | b_reg;
+            7: result = a_reg & b_reg;
+            8: result = a_reg * b_reg;
+            9: begin
+                r64 = $signed(a_reg) * $signed(b_reg); 
+                result = r64[63:32];
+            end
+            10: begin 
+                r64 = $signed({a_reg[31],a_reg}) * $signed({1'b0, b_reg});
+                result = r64[63:32];
+            end
+            11: begin
+                r64 = a_reg * b_reg;
+                result = r64[63:32];
+            end
+            16: {cnzv[0], result} = a_reg - b_reg;
+            21: result = $signed(a_reg) >>> b_reg[4:0];
+            default: result = 32'b0;
+        endcase
+        cnzv[3:1] = {
+            (operation == 16 ^ (a_reg[31] == b_reg[31]) && (result[31] != a_reg[31])), 
+            result == 0 ? 1'b1 : 1'b0 , 
+            result[31]
+        };
+    end
+endmodule
+
+module address_alu(
+    input clock,
+    input write,
+    input use_pc,
+    input [31:0] a,
+    input [31:0] program_counter,
+    input [31:0] immediate,
+    output [31:0] result
+    );
+    
+    reg [31:0] a_reg;
+    reg [31:0] b_reg;
+    
+    assign result = a_reg + b_reg;
+
+    always @(posedge clock) begin
+        if (write) begin
+            a_reg <= use_pc ? program_counter : a;
+            b_reg <= immediate;
+        end       
+    end
+endmodule
+
+module register_file(
+    input clock,
+    input reset,
+    input write,
+    input [4:0] a_address,
+    input [4:0] b_address,
+    input [4:0] c_address,
+    input [31:0] c_in,
+    output [31:0] a_out,
+    output [31:0] b_out
+);
+
+    reg [31:0] registers [0:31];
+
+    assign a_out = (a_address == 5'd0) ? 32'b0 : registers[a_address];
+    assign b_out = (b_address == 5'd0) ? 32'b0 : registers[b_address];
+
+    always @(posedge clock) begin
+        if (reset) begin
+            integer i;
+            for (i = 0; i < 32; i = i + 1) begin
+                registers[i] <= 32'b0;
+            end
+        end
+        else if (write && c_address != 5'd0) begin
+            registers[c_address] <= c_in;
+        end
+    end
+endmodule
+
+module data_io(
+    input clock,
+    input store,
+    input load,
+    input [2:0] data_type,
+    input [1:0] data_offset,
+    input [31:0] cpu_in,
+    input [31:0] io_in,
+    output logic [31:0] cpu_out,
+    output [31:0] io_out
+);
+    reg [31:0] output_reg;
+    reg [31:0] input_reg;
+
+    assign io_out = output_reg;     
+  
+    always@(posedge clock) begin
+        if(store) begin
+            output_reg <= cpu_in;
+        end
+        if(load) begin
+            input_reg <= io_in;
+        end
+    end
+  
+  	always@(*) begin
+        case (data_type)
+            3'b100: cpu_out = {24'h0, input_reg[data_offset*8+7 -: 8]};
+            3'b101: cpu_out = {16'h0, input_reg[data_offset*8+15 -: 16]};
+            3'b000: cpu_out = {{24{input_reg[data_offset*8+7]}}, input_reg[data_offset*8+7 -: 8]};
+            3'b001: cpu_out = {{16{input_reg[data_offset*8+15]}}, input_reg[data_offset*8+15 -: 16]};
+            default: cpu_out = input_reg;
+        endcase
+    end
+endmodule
+
+module program_counter(
+    input reset,
+    input clock,
+    input write,
+    input jump,
+    input use_offset,
+    input address_in_to_AD,
+    input [31:0] address_in,
+    output reg [1:0] data_offset,
+    output [31:0] next,
+    output [31:0] current,
+    output [31:0] last,
+    output [31:0] AD_Bus
+    );
+    
+    reg [29:0] next_reg;
+    reg [29:0] current_reg;
+    reg [29:0] last_reg;
+
+    assign next = {next_reg, 2'b00};
+    assign current = {current_reg, 2'b00};
+    assign last = {last_reg, 2'b00};
+    assign AD_Bus = address_in_to_AD ? 
+                        (use_offset ? address_in : {address_in[31:2], 2'b00}) : 
+                        {next_reg, 2'b00};
+
+    always@(posedge clock) begin
+        if(reset) begin
+            current_reg <= 30'b0;
+            last_reg <= 30'b0;
+            next_reg <= 30'b0;
+            data_offset <= 2'b0;
+        end
+        else if(jump) begin
+            next_reg <= address_in[31:2];
+        end
+        else if(write) begin
+            last_reg <= current_reg;
+            current_reg <= next_reg;
+            next_reg <= next_reg + 1;
+        end
+        if(address_in_to_AD) begin
+            data_offset <= address_in[1:0];
+        end
+    end
+
+endmodule
+
+module operation_controller(
+    input clock,
+    input reset,
+    input [3:1] phase,
+    input [31:0] data_in,
+    output [31:0] immediate,
+    output [6:0] opcode,
+    output [2:0] funct_3,
+    /////Miscellaneous/////
+    output load_upper_immediate,
+    /////Register File/////
+    output [14:0] registers_addresses,
+    output register_file_write,
+    /////Alu and Shifter/////
+    input [3:0] cnzv,
+    output [4:0] op_function,
+    output alu_read,
+    output alu_use_pc,
+    output use_immediate,
+    output shifter_read,
+    output address_alu_use_pc,
+    /////Program Counter/////
+    output pc_read_next,
+    output pc_jump,
+    output pc_use_offset,
+    output pc_addr_in_to_AD,
+    /////Data IO/////
+    output data_io_write_io,
+    output data_io_read_io,
+    output data_io_load,
+    /////Output Interface/////
+    output pad_write_address,
+    output pad_read,
+    output pad_write,
+    output [1:0]pad_data_size
+);
+
+    reg [31:0] next_instruction;
+    reg [31:0] current_instruction;
+    reg [31:0] last_instruction;
+    reg flush_pipeline;
+
+    // instruction decoder
+    wire operation_immediate = current_instruction[6:0] == 7'h13;
+    wire load = current_instruction[6:0] == 7'h03;
+    wire add_upp_immediate_pc = current_instruction[6:0] == 7'h17;
+    wire store = current_instruction[6:0] == 7'h23;
+    wire operation = current_instruction[6:0] == 7'h33 | operation_immediate;
+    wire is_load_upper_immediate = current_instruction[6:0] == 7'h37;
+    wire branch = current_instruction[6:0] == 7'h63;
+    wire jump_and_link_register = current_instruction[6:0] == 7'h67;
+    wire jump_and_link = current_instruction[6:0] == 7'h6f;
+    wire system = current_instruction[6:0] == 7'h73;
+
+    // last instruction decoder
+    wire load_second_part = last_instruction[6:0] == 7'h03;
+    wire store_second_part = last_instruction[6:0] == 7'h23;
+
+    // register file addresses
+    assign registers_addresses = 
+        load_second_part & phase[2] ? 
+            {last_instruction[24:15], last_instruction[11:7]} : 
+            {current_instruction[24:15], current_instruction[11:7]};
+    
+    // opcode output for debugging
+    assign opcode = current_instruction[6:0];
+
+    // instructions function number
+    wire [9:0] funct_10 = 
+        load_second_part & phase[2] | store_second_part & phase[1] ? 
+            {last_instruction[31:25], last_instruction[14:12]} : 
+            {current_instruction[31:25], current_instruction[14:12]};
+    wire [6:0] funct7 = funct_10[9:3];
+    assign funct_3 = funct_10[2:0];  
+    assign op_function = 
+        (~(load_second_part & phase[2]) & operation) ? {funct7[5], funct7[1], funct_3} :
+        branch ? 5'h10 : {~funct_3[2], 4'h5};
+
+    // immediate decoder
+    assign immediate =  
+        add_upp_immediate_pc | is_load_upper_immediate ? {current_instruction[31:12], 12'b0} :
+        jump_and_link ? {{12{current_instruction[31]}}, current_instruction[19:12], current_instruction[20], current_instruction[30:21], 1'b0} :
+        branch ? {{20{current_instruction[31]}}, current_instruction[7], current_instruction[30:25], current_instruction[11:8], 1'b0} :
+        store ? {{20{current_instruction[31]}}, current_instruction[31:25], current_instruction[11:7]} : 
+        {{20{current_instruction[31]}}, current_instruction[31:20]}; // immediate for immediate operations
+
+//********************************************************************************************************************//
+    // control signals decoding
+
+    // miscellaneous
+    assign load_upper_immediate = phase[3] & is_load_upper_immediate;
+
+    // register file
+    assign register_file_write = 
+        ((system | load | jump_and_link_register | jump_and_link | operation | add_upp_immediate_pc | is_load_upper_immediate) & phase[3]) | 
+        (load_second_part & phase[2]);
+    
+    // alu and shifter
+    wire alu = operation & ~(op_function == 5'h01 | op_function == 5'h05 | op_function == 5'h15);
+    wire shifter = operation & (op_function == 5'h01 | op_function == 5'h05 | op_function == 5'h15);
+    
+    assign alu_read = phase[3] & (alu | add_upp_immediate_pc | branch);
+    assign alu_use_pc = add_upp_immediate_pc;
+
+    assign use_immediate = add_upp_immediate_pc | operation_immediate;
+
+    assign address_alu_use_pc = branch | jump_and_link;
+
+    assign shifter_read = phase[3] & shifter;
+
+    // program counter
+    assign pc_read_next = phase[3] & (jump_and_link_register | jump_and_link);
+
+    wire decoded_cnzv = 
+        funct_3 == 3'h0 ? cnzv[2] : 
+        funct_3 == 3'h1 ? ~cnzv[2] : 
+        funct_3 == 3'h4 ? (cnzv[1] ^ cnzv[3]) : 
+        funct_3 == 3'h5 ? ~(cnzv[1] ^ cnzv[3]) : 
+        funct_3 == 3'h6 ? cnzv[0] : 
+        funct_3 == 3'h7 ? ~cnzv[0] : 1'b0;
+
+    wire jump = jump_and_link | jump_and_link_register | (branch & decoded_cnzv);
+
+    assign pc_jump = phase[3] & jump;
+
+    assign pc_use_offset = store;
+
+    assign pc_addr_in_to_AD = phase[3] & (load | store);
+
+    // data io
+    assign data_io_write_io = phase[1] & load_second_part;
+    assign data_io_read_io = phase[1] & store_second_part;
+    assign data_io_load = phase[2] & load_second_part;
+
+    // output interface
+    assign pad_write_address = phase[1] | pc_addr_in_to_AD;
+    assign pad_read = phase[2] | data_io_write_io;
+    assign pad_write = data_io_read_io;
+    assign pad_data_size = {funct_3[1], funct_3[1] | funct_3[0]};
+//********************************************************************************************************************//
+    // registers update
+    always @(posedge clock) begin
+        if (reset) begin
+            next_instruction <= 32'h00000013;
+        end
+        if (phase[2]) begin
+            next_instruction <= data_in;
+        end
+    end
+
+    always @(negedge clock) begin
+        if (reset) begin
+            current_instruction <= 32'h00000013;
+            last_instruction <= 32'h00000013;
+        end
+        else if (phase[1]) begin
+            last_instruction <= current_instruction;
+            current_instruction <= flush_pipeline ? 32'h00000013 : next_instruction;
+        end
+        else if (phase[2]) begin
+            flush_pipeline <= 0;
+        end
+
+        if(jump)begin
+            flush_pipeline <= 1;
+        end
+    end
+
+endmodule
+
+
+module phase_generator(
+    input clock,
+    input reset,
+    output [3:1] phase
+);
+    reg [3:1] phase_reg;
+
+    always @(posedge clock) begin
+        if (reset) begin
+            phase_reg <= 3'b010;
+        end
+        else begin
+            phase_reg <= {phase_reg[2:1], phase_reg[3]};
+        end
+    end
+
+    assign phase = phase_reg;
+endmodule
+
+module ram #(
+    parameter MEM_INIT_FILE = "",
+    parameter ADDR_WIDTH = 16,
+    parameter MEM_DEPTH = 1 << ADDR_WIDTH,
+    parameter PROGRAM_SIZE = MEM_DEPTH
+) (
+    input clock,
+    input reset,
+    input write,
+    input read,
+    input write_address, 
+    input [1:0] data_size, // 00: 1 byte, 01: 2 bytes, 11: 4 bytes
+    input [ADDR_WIDTH-1 : 0] address,
+    inout [31:0] data
+);
+
+    // Memory array
+    reg [7:0] mem [0:MEM_DEPTH-1];
+    reg [31:0] data_out;
+    reg [ADDR_WIDTH-1 : 0] stored_address = 32'b0; 
+
+    assign data = (read && !write) ? {mem[stored_address+3], mem[stored_address+2], mem[stored_address+1], mem[stored_address]} : 32'bz;
+
+    initial begin
+        integer i;
+        for (i = 0; i < MEM_DEPTH; i = i + 1) begin
+            mem[i] = 8'b0;
+        end
+        if (MEM_INIT_FILE != "") begin
+            $readmemh(MEM_INIT_FILE, mem, 0, PROGRAM_SIZE-1);
+        end
+    end
+
+    always @(posedge clock) begin
+        if (write) begin
+            case (data_size)
+                2'b00: mem[stored_address] <= data[7:0];
+                2'b01: begin
+                    mem[stored_address] <= data[7:0];
+                    mem[stored_address+1] <= data[15:8];
+                end
+                2'b10: ; // Invalid case, do nothing
+                2'b11: begin
+                    mem[stored_address] <= data[7:0];
+                    mem[stored_address+1] <= data[15:8];
+                    mem[stored_address+2] <= data[23:16];
+                    mem[stored_address+3] <= data[31:24];
+                end
+            endcase
+        end
+    end
+
+    always @(posedge clock) begin
+        if (reset) begin
+            stored_address <= 32'b0;
+        end
+        else if (write_address) begin
+            stored_address <= address;
+        end
+    end
+
+endmodule
+
+\end{lstlisting}
+
+Código do topo para execução de programas na arquitetura:
+
+\begin{lstlisting}[
+    language=Verilog,
+    basicstyle=\ttfamily\tiny,
+    keywordstyle=\color{blue},
+    commentstyle=\color{green},
+    stringstyle=\color{red},
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    frame=single,
+    breaklines=true,
+    showstringspaces=false
+]
+module test_drisc;
+    parameter RAM_DATA = "quicksort.mem";
+    parameter ADDR_WIDTH = 12;
+    parameter PROGRAM_SIZE = 512;
+
+    parameter CLOCK_TIME = 5;
+    parameter SIMULATION_TIME = 1500*30;
+
+    parameter DISPLAY_TOGGLE = 1;
+
+    // Testbench signals
+    reg clock;
+    reg reset;
+    wire [31:0] io_bus_ram;
+    wire [31:0] io_bus_drisc;
+    wire [1:0] data_size;
+    wire write_address;
+    wire write;
+    wire read;
+    wire [6:0] opcode_debug;
+    wire [ADDR_WIDTH-1:0] address_bus;
+
+    // Instantiate the DUT (Device Under Test)
+    drisc drisc_processor (
+        .clock(clock),
+        .reset(reset),
+        .io_bus(io_bus_drisc),
+        .address_bus(address_bus),
+        .data_size(data_size),
+        .write_address(write_address),
+        .write(write),
+        .read(read),
+        .opcode_debug(opcode_debug)
+    );
+
+    // Instantiate the RAM
+    ram #(
+        .MEM_INIT_FILE(RAM_DATA),
+        .ADDR_WIDTH(ADDR_WIDTH),
+        .PROGRAM_SIZE(PROGRAM_SIZE)
+    ) ram_inst (
+        .clock(clock),
+        .reset(reset),
+        .write(write),
+        .write_address(write_address),
+        .read(read),
+        .data_size(data_size),
+        .address(address_bus),
+        .data(io_bus_drisc)
+    );
+
+    initial begin
+        clock = 1;
+        forever #CLOCK_TIME clock = ~clock; // 10ns period
+    end
+
+    initial begin
+        $display("        |            |      | addr             addr            addr  |             |     Instruction    "); 
+        $display("  Time  | Instruction|  PC  | [ AA ]:Reg A    [ BB ]Reg B     [ CC ] |  Immediate  |   Code   Argument  "); 
+        forever #30 begin
+            if (DISPLAY_TOGGLE) begin
+                $display("%0s%0d\t|  %h  | %d | [%s]:%h [%s]:%h [%s] |%d | %s %0s  ", 
+                    ($time % 60) < 15 ? "\033[0m" : "\033[1;30m",
+                    $time,
+                    drisc_processor.operation_controller_0.current_instruction, 
+                    drisc_processor.pc_current_out[11:2], 
+                    decode_register(drisc_processor.registers_addresses[9:5]),
+                    drisc_processor.a_bus,
+                    decode_register(drisc_processor.registers_addresses[14:10]),
+                    drisc_processor.b_bus,
+                    decode_register(drisc_processor.registers_addresses[4:0]),
+                    $signed(drisc_processor.immediate),
+                    decoded_opcode,
+                    decoded_function
+                );
+            end
+        end
+
+    end
+
+    initial begin
+        #1;
+        forever #5 begin
+            if (!DISPLAY_TOGGLE) begin
+                if(drisc_processor.phase == 3'b001 & clock == 1) begin
+                    $display("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+                end
+                $display("%0sTime %0d | Phi %b clk %b| PC:Addr In %h, Next %h Curr %h| Instruction : Next %h | Bus A: %h (R[%d]), Bus B: %h (R[%d]), Bus C: %h (R[%d]), imm %h| IO bus: %h, Ram Addr %h %h, W_A/W/R %b%b%b | Opcode: %0s | cnzv: %b %b %b", 
+                    clock == 1? "\033[0m" : "\033[1;30m",
+                    $time,
+                    drisc_processor.phase,
+                    clock,
+                    drisc_processor.pc_address_in,
+                    drisc_processor.pc_next_out,
+                    drisc_processor.pc_current_out,
+                    drisc_processor.operation_controller_0.next_instruction,
+                    drisc_processor.a_bus,
+                    drisc_processor.registers_addresses[9:5],
+                    drisc_processor.b_bus,
+                    drisc_processor.registers_addresses[14:10],
+                    drisc_processor.c_bus,
+                    drisc_processor.registers_addresses[4:0],
+                    drisc_processor.immediate,
+                    io_bus_drisc,
+                    address_bus,
+                    ram_inst.stored_address,
+                    write_address,
+                    write,
+                    read,
+                    decoded_opcode,
+                    drisc_processor.cnzv,
+                    drisc_processor.operation_controller_0.decoded_cnzv,
+                    drisc_processor.operation_controller_0.pc_jump
+                );
+            end        
+        end
+    end
+    
+    initial begin
+        #60
+        forever #30 begin
+            if (drisc_processor.pc_current_out == drisc_processor.pc_next_out) begin
+                $display("\33[1;31mInfinite loop detected, exiting simulation");
+                $display("\33[0m");
+                dump_registers();
+                dump_ram();
+                $finish;
+            end else if (decoded_opcode == "UNKNOWN") begin
+                $display("\33[1;31mIllegal instruction detected, exiting simulation");
+                $display("\33[0m");
+                dump_registers();
+                dump_ram();
+                $finish;
+            end
+        end
+    end
+
+    // Test sequence
+    initial begin
+        // Initialize signals
+        reset = 1;
+        #20;
+        reset = 0; 
+        #SIMULATION_TIME;
+
+        $display("\33[0m");
+        dump_registers();
+        dump_ram();
+        $finish;
+    end
+
+    // Task to dump register values
+    task dump_registers;
+        integer i;
+        reg [8*4:1] reg_name;
+        begin
+            $display("Register values:");
+            for (i = 0; i < 32; i = i + 1) begin
+                case (i)
+                    0: reg_name = "zero";
+                    1: reg_name = "ra ";
+                    2: reg_name = "sp ";
+                    3: reg_name = "gp ";
+                    4: reg_name = "tp ";
+                    5: reg_name = "t0 ";
+                    6: reg_name = "t1 ";
+                    7: reg_name = "t2 ";
+                    8: reg_name = "s0 ";
+                    9: reg_name = "s1 ";
+                    10: reg_name = "a0 ";
+                    11: reg_name = "a1 ";
+                    12: reg_name = "a2 ";
+                    13: reg_name = "a3 ";
+                    14: reg_name = "a4 ";
+                    15: reg_name = "a5 ";
+                    16: reg_name = "a6 ";
+                    17: reg_name = "a7 ";
+                    18: reg_name = "s2 ";
+                    19: reg_name = "s3 ";
+                    20: reg_name = "s4 ";
+                    21: reg_name = "s5 ";
+                    22: reg_name = "s6 ";
+                    23: reg_name = "s7 ";
+                    24: reg_name = "s8 ";
+                    25: reg_name = "s9 ";
+                    26: reg_name = "s10";
+                    27: reg_name = "s11";
+                    28: reg_name = "t3 ";
+                    29: reg_name = "t4 ";
+                    30: reg_name = "t5 ";
+                    31: reg_name = "t6 ";
+                    default: reg_name = "???";
+                endcase
+                $display("R[%0d] (%s) = %h", i, reg_name, drisc_processor.register_file_0.registers[i]);
+            end
+        end
+    endtask
+
+    task dump_ram;
+        integer i, j;
+        logic [7:0] mem [0:(1 << ADDR_WIDTH)-1];
+        for (int i = 0; i < (1 << ADDR_WIDTH); i = i + 1) begin
+            mem[i] = 8'h00;
+        end
+        $readmemh(RAM_DATA, mem, 0, PROGRAM_SIZE-1);
+
+        begin
+            $display("RAM values:");
+            for (i = 0; i < (1 << ADDR_WIDTH)/16 ; i = i + 1) begin
+                $write("\033[0mAddress %h: ", i*16);
+                for (j = 0; j < 16; j = j + 1) begin
+                    $write("%0s%h",(mem[i*16 + j] === ram_inst.mem[i*16 + j])? "\033[0m" : "\033[1;31m", ram_inst.mem[i*16 + j]);
+                    if ( ((j + 1) % 4) == 0 && j < 15) $write(".");
+                    else $write(" ");
+                end
+                $display("");
+            end
+        end
+    endtask
+
+    function bit [31:0] decode_register(input [4:0] register);
+        case (register)
+            5'b00000: decode_register = "zero";
+            5'b00001: decode_register = "ra ";
+            5'b00010: decode_register = "sp ";
+            5'b00011: decode_register = "gp ";
+            5'b00100: decode_register = "tp ";
+            5'b00101: decode_register = "t0 ";
+            5'b00110: decode_register = "t1 ";
+            5'b00111: decode_register = "t2 ";
+            5'b01000: decode_register = "s0 ";
+            5'b01001: decode_register = "s1 ";
+            5'b01010: decode_register = "a0 ";
+            5'b01011: decode_register = "a1 ";
+            5'b01100: decode_register = "a2 ";
+            5'b01101: decode_register = "a3 ";
+            5'b01110: decode_register = "a4 ";
+            5'b01111: decode_register = "a5 ";
+            5'b10000: decode_register = "a6 ";
+            5'b10001: decode_register = "a7 ";
+            5'b10010: decode_register = "s2 ";
+            5'b10011: decode_register = "s3 ";
+            5'b10100: decode_register = "s4 ";
+            5'b10101: decode_register = "s5 ";
+            5'b10110: decode_register = "s6 ";
+            5'b10111: decode_register = "s7 ";
+            5'b11000: decode_register = "s8 ";
+            5'b11001: decode_register = "s9 ";
+            5'b11010: decode_register = "s10";
+            5'b11011: decode_register = "s11";
+            5'b11100: decode_register = "t3 ";
+            5'b11101: decode_register = "t4 ";
+            5'b11110: decode_register = "t5 ";
+            5'b11111: decode_register = "t6 ";
+            default: decode_register = "????";
+        endcase        
+    endfunction
+
+
+
+    // decodes the opcode for debugging purposes
+    wire [63:0] decoded_opcode = decode_opcode(opcode_debug);
+    function bit [63:0] decode_opcode(input [6:0] opcode);
+        case (opcode)
+            7'h03: decode_opcode = "LOAD";
+            7'h07: decode_opcode = "LOAD_FP";
+            7'h13: decode_opcode = "OP_IMM";
+            7'h17: decode_opcode = "AUIPC";
+            7'h23: decode_opcode = "STORE";
+            7'h2f: decode_opcode = "STORE_FP";
+            7'h33: decode_opcode = "OP";
+            7'h37: decode_opcode = "LUI";
+            7'h53: decode_opcode = "OP_FP";
+            7'h63: decode_opcode = "BRANCH";
+            7'h67: decode_opcode = "JALR";
+            7'h6f: decode_opcode = "JAL";
+            7'h73: decode_opcode = "SYSTEM";
+            default: decode_opcode = "UNKNOWN";
+        endcase
+    endfunction
+
+    //decodes the function
+    wire [8*15-1:0] decoded_function = decode_op_function(drisc_processor.op_function,drisc_processor.funct_3, opcode_debug);
+    function bit [8*15-1:0] decode_op_function(input [4:0] op_function,input [2:0]funct_3, input [6:0] opcode);
+        if(opcode != 7'h13 && opcode != 7'h33 && opcode != 7'h03 && opcode != 7'h23 && opcode != 7'h63) begin
+            return "--------";
+        end
+        
+        if(opcode == 7'h13 || opcode == 7'h33) begin
+            case ((opcode == 7'h13 & ~(op_function == 1 | op_function == 5 | op_function == 21)) ? 
+                    {2'b0, op_function[2:0]} : op_function)
+                0: decode_op_function = "ADD";
+                1: decode_op_function = "SLL";
+                2: decode_op_function = "SLT";
+                3: decode_op_function = "SLTU";
+                4: decode_op_function = "XOR";
+                5: decode_op_function = "SRL";
+                6: decode_op_function = "OR";
+                7: decode_op_function = "AND";
+                8: decode_op_function = "MUL";
+                9: decode_op_function = "MULH";
+                10: decode_op_function = "MULHSU";
+                11: decode_op_function = "MULHU";
+                12: decode_op_function = "DIV";
+                13: decode_op_function = "DIVU";
+                14: decode_op_function = "REM";
+                15: decode_op_function = "REMU";
+                16: decode_op_function = "SUB";
+                21: decode_op_function = "SRA";
+                default: decode_op_function = "UNKNOWN";
+            endcase
+        end
+        else if(opcode == 7'h03 || opcode == 7'h23) begin
+            case (funct_3)
+                3'b000: decode_op_function = "BYTE";
+                3'b001: decode_op_function = "HALF";
+                3'b010: decode_op_function = "WORD";
+                3'b100: decode_op_function = "U_BYTE";
+                3'b101: decode_op_function = "U_HALF";
+                default: decode_op_function = "INVALID";
+            endcase
+        end else if(opcode == 7'h63) begin
+            case (funct_3)
+                3'b000: decode_op_function = "EQUAL";
+                3'b001: decode_op_function = "NOT_EQUAL";
+                3'b100: decode_op_function = "LESS_THAN";
+                3'b101: decode_op_function = "GREATER_EQUAL";
+                3'b110: decode_op_function = "LESS_THAN_U";
+                3'b111: decode_op_function = "GREATER_EQUAL_U";
+                default: decode_op_function = "INVALID";
+            endcase
+        end        
+    endfunction
+endmodule
+\end{lstlisting}
