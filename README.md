@@ -26,3 +26,7 @@ To support simulation and experimentation, a custom assembler written in C# has 
 
 - **Educational Focus**  
   Built as a comprehensive teaching tool for learning computer architecture, ideal for students, educators, and enthusiasts.
+
+## How to Use
+
+The full documentation on the architecture and on how to run the simulations is available at the [wiki](https://github.com/Diogo-Valadares/Didactic-RISC-V/wiki) of this repository.
