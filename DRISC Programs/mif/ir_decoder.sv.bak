@@ -1,0 +1,59 @@
+module ir_decoder (
+    input logic clk,
+    input logic reset,
+    input logic IRDA_RXD,
+    input logic read_enable,
+    output logic [8:0] read_data  // [8] = valid bit, [7:0] = command
+);
+
+    // Internal buffer (4 entries)
+    logic [7:0] buffer [3:0];
+    logic [1:0] write_ptr, read_ptr;
+    logic [8:0] output_reg;
+    logic buffer_valid;
+
+    // IR decoder state machine (simplified placeholder)
+    logic [31:0] ir_shift;
+    logic [5:0] bit_count;
+    logic decoding;
+
+    always_ff @(posedge clk or posedge reset) begin
+        if (reset) begin
+            write_ptr <= 0;
+            read_ptr <= 0;
+            buffer_valid <= 0;
+            bit_count <= 0;
+            decoding <= 0;
+            output_reg <= 9'b0;
+        end else begin
+            // IR decoding logic (placeholder for NEC protocol)
+            if (IRDA_RXD == 0 && !decoding) begin
+                decoding <= 1;
+                bit_count <= 0;
+                ir_shift <= 0;
+            end else if (decoding) begin
+                ir_shift <= {ir_shift[30:0], IRDA_RXD};
+                bit_count <= bit_count + 1;
+
+                if (bit_count == 31) begin
+                    decoding <= 0;
+                    buffer[write_ptr] <= ir_shift[15:8]; // Command byte
+                    write_ptr <= write_ptr + 1;
+                    buffer_valid <= 1;
+                end
+            end
+
+            // Read logic
+            if (read_enable && buffer_valid) begin
+                output_reg <= {1'b1, buffer[read_ptr]};
+                read_ptr <= read_ptr + 1;
+                if (read_ptr == write_ptr) buffer_valid <= 0;
+            end else begin
+                output_reg[8] <= 1'b0; // Clear valid bit
+            end
+        end
+    end
+
+    assign read_data = output_reg;
+
+endmodule

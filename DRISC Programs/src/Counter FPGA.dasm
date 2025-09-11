@@ -1,0 +1,42 @@
+.define addr7Seg s4
+.define rtc s5
+
+.define seconds s0
+.define minutes s1
+
+li addr7Seg 0x01100010
+
+:wait
+
+call :get_seconds
+sw a0 addr7Seg 0
+
+j :wait
+
+
+:get_seconds
+    // Read mtime (low 32 bits) into a0
+    csrr a0 time
+    // Read mtimeh (high 32 bits) into a1
+    csrr a1 timeh
+    
+    // Now we have 64-bit timer value: a1:a0
+    
+    // Multiply by 86 using 32x32->64 multiplication
+    li t0 86          // Load multiplier
+    
+    // Multiply low part (a0 * 86)
+    mulhu t2 a0 t0   // t2 = a0 * 86 (high 32 bits)
+    
+    // Multiply high part (a1 * 86) and add to result
+    mul t3 a1 t0     // t3 = a1 * 86 (low 32 bits)
+    add t2 t2 t3     // Add to high part of low multiplication
+    
+    // Now we have 64-bit result: t2:t1
+    // The seconds value is in t2 (upper 32 bits equivalent to >>32)
+    
+    mv a0 t2          // Return seconds value
+    ret
+	
+	
+.string ascii_buffer "ffff"

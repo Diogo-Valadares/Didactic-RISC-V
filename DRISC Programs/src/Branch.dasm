@@ -2,12 +2,12 @@ nop
 lui x20 0xFFFFFFFF
 lui x21 0xF
 
-addi x1 x1 0xffffffff
-addi x2 x2 0xffffffff
-addi x3 x3 0xffffffff
-addi x4 x5 0xffffffff
-addi x5 x5 0xffffffff
-addi x6 x6 0xffffffff
+addi x1 x0 0xffffffff
+addi x2 x0 0xffffffff
+addi x3 x0 0xffffffff
+addi x4 x0 0xffffffff
+addi x5 x0 0xffffffff
+addi x6 x0 0xffffffff
 
 beq x0 x0 :label1
 andi x1 x1 0
@@ -29,21 +29,22 @@ andi x6 x6 0
 :label6
 //jump should not be taken bellow
 beq x0 x20 :label7
-addi x7 x7 0xffffffff
+addi x7 x0 0xffffffff
 :label7
 bne x0 x0 :label8
-addi x8 x8 0xffffffff
+addi x8 x0 0xffffffff
 :label8
 blt x21 x0 :label9
-addi x9 x9 0xffffffff
+addi x9 x0 0xffffffff
 :label9
 bltu x20 x0 :label10
-addi x10 x10 0xffffffff
+addi x10 x0 0xffffffff
 :label10
 bge x0 x21 :label11
-addi x11 x11 0xffffffff
+addi x11 x0 0xffffffff
 :label11
 bgeu x0 x20 :label12
-addi x12 x12 0xffffffff
+addi x12 x0 0xffffffff
 :label12
 beq x0 x0 :label12
+nop

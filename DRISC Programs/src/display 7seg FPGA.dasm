@@ -1,0 +1,23 @@
+.define counter7Seg s0
+.define addr7Seg s1
+.define counterTimer s2
+.define timerThreshold s3
+
+//inicializing counters
+li addr7Seg 0x01100010
+li counter7Seg 0x00010203
+li s4 0x04040404
+li s5 0x01020303
+li timerThreshold 0x00000050
+mv counterTimer timerThreshold
+
+:wait
+dec counterTimer 1
+bne counterTimer zero :wait
+mv counterTimer timerThreshold // reset timer
+
+sw counter7Seg addr7Seg 0
+add s0 s0 s4   //for some reason counter7seg define isn't working here
+bne s0 s5 :wait// using s0 instead
+li counter7Seg 0x00010203
+j :wait

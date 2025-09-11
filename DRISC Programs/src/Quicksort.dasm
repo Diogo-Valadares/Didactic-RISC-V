@@ -1,17 +1,35 @@
+.define print_wait_time 200 //for logisim simulation set this number to 200, for FPGA at 25MHz set to 12500000
 	nop
-	lw t0 zero .basePointer
-	lw t1 zero .arrayEnd
 	lui sp 0xf				//inicializing stack pointer
+:program_start
+	la a0 .arr			    //"arr=" string
+	li a1 4 				//size
+	call :print_data
 
-	mv a0 t0				//array address
+	la a0 .array			//array address
+	li a1 16				//size
+	call :print_data
+
+	la a0 .array			//array address
 	mv a1 zero				//low index, starts as 0
-	sub a2 t1 t0			//high index, starts as the last index
-	dec a2 1
+	li a2 15				//high index, starts as the last index	
+	call :quickSort			//
+	
+	la a0 .result			//"res=" string
+	li a1 4 				//size
+	call :print_data
+	
+	la a0 .array			//array address
+	li a1 16				//size
+	call :print_data
+	
+	//reset the array
+	la a0 .backup_array
+	la a1 .array
+	li a2 16
+	call :copy_data
 
-call :quickSort			//
-
-
-	jump 0 					//program end
+	jump :program_start		//program end
 
 
 #REGION quicksort
@@ -91,14 +109,50 @@ call :quickSort			//
 
 #ENDREGION
 
-#REGION data
+#REGION print_data
+	//print_data (int source_addr, int size)
+:print_data
+	mv t0 a0	     //source_addr
+	li t1 0x01100010 //hex display address
+	li t2 print_wait_time		 //counter between prints
+	mv t3 t0
+	add t3 t3 a1	 //final source_addr offset
+	inc t3 4 		 //hack to clear the screen after printing
+:print_data_loop	 //wait
+	dec t2 1
+	bne t2 zero :print_data_loop 	
+	lw t5 t0 0 
+	sw t5 t1 0 	//prints
+	
+	li t2 print_wait_time	//reset counter
+	inc t0 4 	//shift one byte
+	blt t0 t3 :print_data_loop
+:print_data_end
+	ret
+#ENDREGION
 
-	.word basePointer :arrayStart
-	.word arrayEnd :arrayEnd
-	.word 0x00000000 0x00000000 0x00000000 0x00000000
-:arrayStart
-	.word element0 0xAA99CC77
-	.word element1 0xEE33FF00
-	.word element2 0xDD112244
-	.word element3 0x8855BB66
-:arrayEnd
+#REGION copy_data
+:copy_data
+    //reset_data(int source_addr, int target_addr, int size)
+	mv t0 a0 //t0 = endereço original
+	mv t2 a1 //t2 = endereço alvo
+	mv t3 zero //contador
+:copy_data_loop
+	lw t1 t0 0 //t1 = valor[endereço original]
+ 	sw t1 t2 0 //[endereço alvo] <= valor	
+	inc t0 4
+	inc t2 4
+	inc t3 4 //endereço string ++
+	beq t3 a2 :copy_data_end //enquanto menor que o tamanho
+	jump :copy_data_loop
+:copy_data_end
+	ret
+#ENDREGION
+
+#REGION data
+	.word 0x00000000 0x00000000 0x000000000 0x00000000
+	.string array "e63fdc79b41a0258"
+	.word 0x00000000 0x00000000 0x00000000
+	.string backup_array "e63fdc79b41a0258"
+	.string arr "arr="
+	.string result "res="

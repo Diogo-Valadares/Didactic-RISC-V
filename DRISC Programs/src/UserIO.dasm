@@ -54,13 +54,9 @@
 	li s3 0xff000000 //address bits
 	li s4 1 //snake size
 	li s5 0 //current head offset
-	setVector s0 s1 0x1f 0x1f //setting starting position to center of the display	
-	
-	//first we set a loop that first test if user has set any input(loaded to t1).
-	//if so we set the point speed, then move the position based on the speed.
-	//the loop ends once the input key is 'q'(t6)
+	setVector s0 s1 0x7c 0x7c //setting starting position to center of the display	
 
-	setVector t2 t3 1 0 //setting initial speed
+	setVector t2 t3 4 0 //setting initial speed
 
 :loopStart
 	lb t1 gp -1
@@ -74,16 +70,16 @@
 	beqi t1 0x71 :loopEnd a0
 
 	:w
-	setVector t2 t3 0 -1
+	setVector t2 t3 0 -4
 	jump :draw
 	:a
-	setVector t2 t3 -1 0
+	setVector t2 t3 -4 0
 	jump :draw
 	:s
-	setVector t2 t3 0 1
+	setVector t2 t3 0 4
 	jump :draw
 	:d
-	setVector t2 t3 1 0
+	setVector t2 t3 4 0
 #ENDREGION
 	
 	:draw
@@ -91,9 +87,9 @@
 	
 	addVector s0 s1 s0 s1 t2 t3			//apply velocity to position
 	
-	drawPoint s0 s1 colorRegister 0x3f 6 s3	//draw head
+	drawPoint s0 s1 colorRegister 0xfc 6 s3	//draw head
 	
-	drawPoint a0 a1 zero 0x3f 6 s3	//erase tail
+	drawPoint a0 a1 zero 0xfc 6 s3	//erase tail
 
 	jump :loopStart
 :loopEnd
