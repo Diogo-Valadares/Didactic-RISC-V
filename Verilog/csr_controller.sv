@@ -232,7 +232,6 @@ module csr_controller(
             illegal_instruction <= 0;
             is_mret <= 0;
             system_load <= 0;
-            exception <= 0;
         end
         else if(phase[2]) begin
             if((interrupt | exception )) begin

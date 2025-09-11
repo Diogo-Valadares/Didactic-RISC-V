@@ -7,8 +7,8 @@
 `timescale 1s/1s
 
 module test_drisc;
-    parameter RAM_DATA = "programs/quicksort.mem";
-    parameter ADDR_WIDTH = 12;
+    parameter RAM_DATA = "programs/load_store.mem";
+    parameter ADDR_WIDTH = 16;
     parameter PROGRAM_SIZE = 512;
 
     parameter CLOCK_UPDATE_TIME = 1; //half clock cycle
@@ -89,12 +89,13 @@ module test_drisc;
     video_controller #(
         .SCREEN_WIDTH_BIT_WIDTH(6),
         .SCREEN_HEIGHT_BIT_WIDTH(6),
-        .SCREEN_FILE("interface/screen.mem")
+        .SCREEN_FILE("interface/screen.mem"),
+        .WRITE_INTERVAL(50)
     ) video_controller_inst (
         .clock(clock),
         .reset(reset),
         .write(write_video_controller),
-        .address(address_bus[11:0]),
+        .address(address_bus[13:2]),
         .data(data_bus)
     );
 
@@ -119,7 +120,7 @@ module test_drisc;
         .write(1'b0),
         .read(read_trap_handler),
         .data_size(2'b11),
-        .address(address_bus[ADDR_WIDTH-1:0]),
+        .address(address_bus[TRAP_HANDLER_ADDR_WIDTH-1:0]),
         .data(data_bus)
     );
 
