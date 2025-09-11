@@ -5,16 +5,16 @@
 \providecommand{\abntbstabout}[1]{}
 \abntbstabout{v-1.9.7 }
 
-\bibitem[{ARM}]{arm_building_nodate}
-\abntrefinfo{{ARM}}{{ARM}}{}
-{{ARM}. \emph{Building the {Future} of {Computing}}.
-Dispon{\'\i}vel em: \url{https://www.arm.com/}.}
-
 \bibitem[{ARM} 2014]{arm_arm_2014}
 \abntrefinfo{{ARM}}{{ARM}}{2014}
 {{ARM}. \emph{{ARM} {Cortex}-{A} {Series} {Programmer}'s {Guide} for
   {ARMv7}-{A}}. 2014.
 Dispon{\'\i}vel em: \url{https://developer.arm.com/documentation/den0013/d}.}
+
+\bibitem[{ARM} S.D.]{arm_building_nodate}
+\abntrefinfo{{ARM}}{{ARM}}{S.D.}
+{{ARM}. \emph{Building the {Future} of {Computing}}. S.D.
+Dispon{\'\i}vel em: \url{https://www.arm.com/}.}
 
 \bibitem[Burch et al. 2014]{burch_logisim_2014}
 \abntrefinfo{Burch et al.}{BURCH et al.}{2014}
@@ -184,6 +184,12 @@ Berkeley, 1983. 59~p. Dispon{\'\i}vel em:
 Dispon{\'\i}vel em:
   \url{https://www.researchgate.net/publication/266878017\_Processadores\_para\_Ensino\_de\_Conceitos\_Basicos\_de\_Arquitetura\_de\_Computadores}.}
 
+\bibitem[Ramseyer 2025]{ramseyer_vaporview_2025}
+\abntrefinfo{Ramseyer}{RAMSEYER}{2025}
+{RAMSEYER, L. \emph{{VaporView}}. 2025.
+Dispon{\'\i}vel em:
+  \url{https://marketplace.visualstudio.com/items?itemName=lramseyer.vaporview}.}
+
 \bibitem[{RISC-V} 2022]{risc-v_risc-v_2022}
 \abntrefinfo{{RISC-V}}{{RISC-V}}{2022}
 {{RISC-V}. \emph{{RISC}-{V} {Advanced} {Core} {Local} {Interruptor}
@@ -244,13 +250,6 @@ ISBN 978-0-13-291652-3.}
 \abntrefinfo{Valadares}{VALADARES}{2024}
 {VALADARES, D. \emph{Didactic-{RISC}-{I}}. 2024.
 Dispon{\'\i}vel em: \url{https://github.com/Diogo-Valadares/Didactic-RISC-I}.}
-
-\bibitem[Valadares 2025]{valadares_uma_2025}
-\abntrefinfo{Valadares}{VALADARES}{2025}
-{VALADARES, D. \emph{Uma {Implementação} do {RISC} {I} {Utilizando} o
-  {Simulador} {Logisim} {Evolution}}.
-[S.l.], 2025. Dispon{\'\i}vel em:
-  \url{https://github.com/Diogo-Valadares/Didactic-RISC-I/blob/main/Documentation/Technical\%20Report\%20RISC-I/Uma\_Implementa\%C3\%A7\%C3\%A3o\_do\_RISC\_I\_utilizando\_o\_simulador\_Logisim\_Evolution.pdf}.}
 
 \bibitem[Williams 1998]{williams_icarus_1998}
 \abntrefinfo{Williams}{WILLIAMS}{1998}

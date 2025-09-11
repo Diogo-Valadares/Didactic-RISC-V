@@ -196,6 +196,8 @@ INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\tex\latex\caption\caption-mem
 INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\tex\latex\caption\caption-memoir.sto
 INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\tex\latex\caption\ltcaption.sty
 INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\tex\latex\caption\ltcaption.sty
+INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\tex\latex\framed\framed.sty
+INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\tex\latex\framed\framed.sty
 INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\tex\latex\lipsum\lipsum.sty
 INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\tex\latex\lipsum\lipsum.sty
 INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\tex\latex\l3packages\l3keys2e\l3keys2e.sty
@@ -421,6 +423,7 @@ INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\tex\latex\lm\omxlmex.fd
 INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\tex\latex\lm\omxlmex.fd
 INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\tex\latex\lm\omxlmex.fd
 INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\lmex10.tfm
+INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\ec-lmbx12.tfm
 INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\ec-lmss17.tfm
 INPUT .\abntex2-modelo-projeto-pesquisa.lof
 INPUT .\abntex2-modelo-projeto-pesquisa.lof
@@ -429,6 +432,9 @@ INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\ec-lmri12
 INPUT .\abntex2-modelo-projeto-pesquisa.lot
 INPUT .\abntex2-modelo-projeto-pesquisa.lot
 INPUT abntex2-modelo-projeto-pesquisa.lot
+INPUT .\abntex2-modelo-projeto-pesquisa.loa
+INPUT .\abntex2-modelo-projeto-pesquisa.loa
+INPUT abntex2-modelo-projeto-pesquisa.loa
 INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\tex\latex\lm\ts1lmr.fd
 INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\tex\latex\lm\ts1lmr.fd
 INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\tex\latex\lm\ts1lmr.fd
@@ -456,7 +462,6 @@ INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\lmsy10.tf
 INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\lmsy7.tfm
 INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\ec-lmss17.tfm
 INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\ec-lmr10.tfm
-INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\ec-lmbx12.tfm
 INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\ec-lmri10.tfm
 INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\tex\generic\pgf\frontendlayer\tikz\libraries\tikzlibrarypositioning.code.tex
 INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\tex\generic\pgf\frontendlayer\tikz\libraries\tikzlibrarypositioning.code.tex
@@ -464,8 +469,8 @@ INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\tex\generic\pgf\frontendlayer
 INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\tex\generic\pgf\frontendlayer\tikz\libraries\tikzlibraryfit.code.tex
 INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\ec-lmr17.tfm
 INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\ec-lmsso12.tfm
-INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\ec-lmsso17.tfm
 INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\ec-lmbxi10.tfm
+INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\ec-lmsso17.tfm
 INPUT .\Planejamento monografia.png
 INPUT .\Planejamento monografia.png
 INPUT .\Planejamento monografia.png
@@ -825,15 +830,6 @@ INPUT .\ProcessoDesenvolvimento\Arquitetura\CSR_Controller_Pipeline_Fix1.png
 INPUT .\ProcessoDesenvolvimento\Arquitetura\CSR_Controller_Pipeline_Fix1.png
 INPUT .\ProcessoDesenvolvimento\Arquitetura\CSR_Controller_Pipeline_Fix1.png
 INPUT .\ProcessoDesenvolvimento\Arquitetura\CSR_Controller_Pipeline_Fix1.png
-INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\tex\latex\listings\lstlang1.sty
-INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\tex\latex\listings\lstlang1.sty
-INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\tex\latex\listings\lstlang1.sty
-INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\tex\latex\listings\lstlang2.sty
-INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\tex\latex\listings\lstlang2.sty
-INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\tex\latex\listings\lstlang2.sty
-INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\tex\latex\listings\lstlang3.sty
-INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\tex\latex\listings\lstlang3.sty
-INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\tex\latex\listings\lstlang3.sty
 INPUT .\ProcessoDesenvolvimento\Arquitetura\SV_Print_Upgrade.png
 INPUT .\ProcessoDesenvolvimento\Arquitetura\SV_Print_Upgrade.png
 INPUT .\ProcessoDesenvolvimento\Arquitetura\SV_Print_Upgrade.png
@@ -841,6 +837,20 @@ INPUT .\ProcessoDesenvolvimento\Arquitetura\SV_Print_Upgrade.png
 INPUT .\ProcessoDesenvolvimento\Arquitetura\SV_Print_Upgrade.png
 INPUT .\ProcessoDesenvolvimento\Arquitetura\SV_Print_Upgrade.png
 INPUT .\ProcessoDesenvolvimento\Arquitetura\SV_Print_Upgrade.png
+INPUT .\quartus_1PORT_RAM.png
+INPUT .\quartus_1PORT_RAM.png
+INPUT .\quartus_1PORT_RAM.png
+INPUT .\quartus_1PORT_RAM.png
+INPUT .\quartus_1PORT_RAM.png
+INPUT .\quartus_1PORT_RAM.png
+INPUT .\quartus_1PORT_RAM.png
+INPUT .\ProcessoDesenvolvimento\Arquitetura\HexDisplay.png
+INPUT .\ProcessoDesenvolvimento\Arquitetura\HexDisplay.png
+INPUT .\ProcessoDesenvolvimento\Arquitetura\HexDisplay.png
+INPUT .\ProcessoDesenvolvimento\Arquitetura\HexDisplay.png
+INPUT .\ProcessoDesenvolvimento\Arquitetura\HexDisplay.png
+INPUT .\ProcessoDesenvolvimento\Arquitetura\HexDisplay.png
+INPUT .\ProcessoDesenvolvimento\Arquitetura\HexDisplay.png
 INPUT .\ProcessoDesenvolvimento\Assembler\InstructionFormat.png
 INPUT .\ProcessoDesenvolvimento\Assembler\InstructionFormat.png
 INPUT .\ProcessoDesenvolvimento\Assembler\InstructionFormat.png
@@ -862,6 +872,34 @@ INPUT .\ProcessoDesenvolvimento\Assembler\assemblyProcess.png
 INPUT .\ProcessoDesenvolvimento\Assembler\assemblyProcess.png
 INPUT .\ProcessoDesenvolvimento\Assembler\assemblyProcess.png
 INPUT .\ProcessoDesenvolvimento\Assembler\assemblyProcess.png
+INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\ec-lmr10.tfm
+INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\ec-lmbx10.tfm
+INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\rm-lmr10.tfm
+INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\lmmi10.tfm
+INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\lmsy10.tfm
+INPUT .\tabelaTrabalhosRelacionados.png
+INPUT .\tabelaTrabalhosRelacionados.png
+INPUT .\tabelaTrabalhosRelacionados.png
+INPUT .\tabelaTrabalhosRelacionados.png
+INPUT .\riscInternal.png
+INPUT .\riscInternal.png
+INPUT .\riscInternal.png
+INPUT .\riscInternal.png
+INPUT .\ProcessoDesenvolvimento\arquitetura.png
+INPUT .\ProcessoDesenvolvimento\arquitetura.png
+INPUT .\ProcessoDesenvolvimento\arquitetura.png
+INPUT .\ProcessoDesenvolvimento\arquitetura.png
+INPUT .\ProcessoDesenvolvimento\arquitetura.png
+INPUT .\ProcessoDesenvolvimento\arquitetura.png
+INPUT .\ProcessoDesenvolvimento\arquitetura.png
+INPUT .\ProcessoDesenvolvimento\arquitetura_sem_csr.png
+INPUT .\ProcessoDesenvolvimento\arquitetura_sem_csr.png
+INPUT .\ProcessoDesenvolvimento\arquitetura_sem_csr.png
+INPUT .\ProcessoDesenvolvimento\arquitetura_sem_csr.png
+INPUT .\ProcessoDesenvolvimento\arquitetura_sem_csr.png
+INPUT .\ProcessoDesenvolvimento\arquitetura_sem_csr.png
+INPUT .\ProcessoDesenvolvimento\arquitetura_sem_csr.png
+INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\ec-lmtk10.tfm
 INPUT .\abntex2-modelo-projeto-pesquisa.bbl
 INPUT .\abntex2-modelo-projeto-pesquisa.bbl
 INPUT abntex2-modelo-projeto-pesquisa.bbl
@@ -873,6 +911,7 @@ INPUT .\abntex2-modelo-projeto-pesquisa.brf
 OUTPUT abntex2-modelo-projeto-pesquisa.brf
 OUTPUT abntex2-modelo-projeto-pesquisa.lof
 OUTPUT abntex2-modelo-projeto-pesquisa.lot
+OUTPUT abntex2-modelo-projeto-pesquisa.loa
 OUTPUT abntex2-modelo-projeto-pesquisa.toc
 INPUT abntex2-modelo-projeto-pesquisa.aux
 INPUT .\abntex2-modelo-projeto-pesquisa.brf
@@ -913,6 +952,8 @@ INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\fonts\type1\public\lm\lmsso17
 INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\fonts\type1\public\lm\lmsso17.pfb
 INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\fonts\type1\public\lm\lmsy10.pfb
 INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\fonts\type1\public\lm\lmsy10.pfb
+INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\fonts\type1\public\lm\lmtk10.pfb
+INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\fonts\type1\public\lm\lmtk10.pfb
 INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\fonts\type1\public\lm\lmtt10.pfb
 INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\fonts\type1\public\lm\lmtt10.pfb
 INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\fonts\type1\public\lm\lmtt12.pfb

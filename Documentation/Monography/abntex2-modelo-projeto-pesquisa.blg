@@ -16,12 +16,10 @@ Reallocating 'singl_function' (item size: 4) to 100 items.
 Reallocating 'wiz_functions' (item size: 4) to 9000 items.
 Database file #1: abntex2-options.bib
 Database file #2: references.bib
-Warning--I didn't find a database entry for "("
 Reallocating 'singl_function' (item size: 4) to 100 items.
 Reallocating 'glb_str_end' (item size: 4) to 20 items.
 Reallocating 'glb_str_ptr' (item size: 4) to 20 items.
 Reallocating 'global_strs' (item size: 1) to 4000000 items.
-Warning--campo year vazio ou faltando em arm_building_nodate
 +---------------------------------------------------------+
 | Estilo bibliográfico abntex2-alf.bst versão v-1.9.7           |
 | Em caso de dúvidas ou problemas com este estilo procure |
@@ -29,43 +27,42 @@ Warning--campo year vazio ou faltando em arm_building_nodate
 +---------------------------------------------------------+
 You've used 42 entries,
             6714 wiz_defined-function locations,
-            1461 strings with 17064 characters,
-and the built_in function-call counts, 65359 in all, are:
-= -- 8016
+            1461 strings with 16872 characters,
+and the built_in function-call counts, 63280 in all, are:
+= -- 7682
 > -- 939
-< -- 1900
-+ -- 2236
+< -- 1786
++ -- 2122
 - -- 290
-* -- 3886
-:= -- 8004
-add.period$ -- 194
+* -- 3777
+:= -- 7783
+add.period$ -- 195
 call.type$ -- 42
 change.case$ -- 354
 chr.to.int$ -- 107
-cite$ -- 42
-duplicate$ -- 6999
-empty$ -- 2459
+cite$ -- 41
+duplicate$ -- 6660
+empty$ -- 2473
 format.name$ -- 1372
-if$ -- 12830
+if$ -- 12511
 int.to.chr$ -- 1
 int.to.str$ -- 0
-missing$ -- 740
+missing$ -- 743
 newline$ -- 224
 num.names$ -- 205
-pop$ -- 977
+pop$ -- 972
 preamble$ -- 1
 purify$ -- 146
 quote$ -- 0
-skip$ -- 7059
+skip$ -- 6731
 stack$ -- 1
-substring$ -- 2809
-swap$ -- 2506
+substring$ -- 2707
+swap$ -- 2395
 text.length$ -- 55
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 2
-warning$ -- 1
-while$ -- 297
+warning$ -- 0
+while$ -- 298
 width$ -- 0
 write$ -- 665
-(There were 2 warnings)
