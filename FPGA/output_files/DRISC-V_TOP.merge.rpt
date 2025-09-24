@@ -1,0 +1,539 @@
+Partition Merge report for DRISC-V_TOP
+Tue Sep  9 12:46:30 2025
+Quartus Prime Version 24.1std.0 Build 1077 03/04/2025 SC Standard Edition
+
+
+---------------------
+; Table of Contents ;
+---------------------
+  1. Legal Notice
+  2. Partition Merge Summary
+  3. Partition Merge Netlist Types Used
+  4. Connections to In-System Debugging Instance "auto_signaltap_4"
+  5. Connections to In-System Debugging Instance "reg_file"
+  6. Partition Merge Partition Statistics
+  7. Partition Merge Partition Pin Processing
+  8. Partition Merge Resource Usage Summary
+  9. Partition Merge RAM Summary
+ 10. Partition Merge Messages
+
+
+
+----------------
+; Legal Notice ;
+----------------
+Copyright (C) 2025  Altera Corporation. All rights reserved.
+Your use of Altera Corporation's design tools, logic functions 
+and other software and tools, and any partner logic 
+functions, and any output files from any of the foregoing 
+(including device programming or simulation files), and any 
+associated documentation or information are expressly subject 
+to the terms and conditions of the Altera Program License 
+Subscription Agreement, the Altera Quartus Prime License Agreement,
+the Altera IP License Agreement, or other applicable license
+agreement, including, without limitation, that your use is for
+the sole purpose of programming logic devices manufactured by
+Altera and sold by Altera or its authorized distributors.  Please
+refer to the Altera Software License Subscription Agreements 
+on the Quartus Prime software download page.
+
+
+
++------------------------------------------------------------------------------------------+
+; Partition Merge Summary                                                                  ;
++------------------------------------+-----------------------------------------------------+
+; Partition Merge Status             ; Successful - Tue Sep  9 12:46:30 2025               ;
+; Quartus Prime Version              ; 24.1std.0 Build 1077 03/04/2025 SC Standard Edition ;
+; Revision Name                      ; DRISC-V_TOP                                         ;
+; Top-level Entity Name              ; DRISCV_TOP                                          ;
+; Family                             ; Cyclone IV E                                        ;
+; Total logic elements               ; 1,862                                               ;
+;     Total combinational functions  ; 1,173                                               ;
+;     Dedicated logic registers      ; 1,336                                               ;
+; Total registers                    ; 1336                                                ;
+; Total pins                         ; 24                                                  ;
+; Total virtual pins                 ; 0                                                   ;
+; Total memory bits                  ; 9,856                                               ;
+; Embedded Multiplier 9-bit elements ; 0                                                   ;
+; Total PLLs                         ; 1                                                   ;
++------------------------------------+-----------------------------------------------------+
+
+
++-------------------------------------------------------------------------------------------------------------------------------+
+; Partition Merge Netlist Types Used                                                                                            ;
++--------------------------------+----------------+-------------------+------------------------+--------------------------------+
+; Partition Name                 ; Partition Type ; Netlist Type Used ; Netlist Type Requested ; Partition Contents             ;
++--------------------------------+----------------+-------------------+------------------------+--------------------------------+
+; Top                            ; User-created   ; Source File       ; Post-Fit               ;                                ;
+; sld_hub:auto_hub               ; Auto-generated ; Post-Synthesis    ; Post-Synthesis         ; sld_hub:auto_hub               ;
+; sld_signaltap:auto_signaltap_4 ; Auto-generated ; Post-Synthesis    ; Post-Synthesis         ; sld_signaltap:auto_signaltap_4 ;
+; sld_signaltap:reg_file         ; Auto-generated ; Post-Synthesis    ; Post-Synthesis         ; sld_signaltap:reg_file         ;
+; hard_block:auto_generated_inst ; Auto-generated ; Source File       ; Source File            ; hard_block:auto_generated_inst ;
++--------------------------------+----------------+-------------------+------------------------+--------------------------------+
+
+
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Connections to In-System Debugging Instance "auto_signaltap_4"                                                                                                                                                                 ;
++--------------------------------+---------------+-----------+--------------------------------+-------------------+----------------------------------------------------------------------------------------------------+---------+
+; Name                           ; Type          ; Status    ; Partition Name                 ; Netlist Type Used ; Actual Connection                                                                                  ; Details ;
++--------------------------------+---------------+-----------+--------------------------------+-------------------+----------------------------------------------------------------------------------------------------+---------+
+; IRDA_RXD                       ; pre-synthesis ; connected ; Top                            ; post-synthesis    ; IRDA_RXD                                                                                           ; N/A     ;
+; IRDA_RXD                       ; pre-synthesis ; connected ; Top                            ; post-synthesis    ; IRDA_RXD                                                                                           ; N/A     ;
+; clock_divider:clk_div|c0       ; pre-synthesis ; connected ; Top                            ; post-synthesis    ; clock_divider:clk_div|altpll:altpll_component|clock_divider_altpll:auto_generated|wire_pll1_clk[0] ; N/A     ;
+; irReceiver:ir|dataCode[0]~reg0 ; pre-synthesis ; connected ; Top                            ; post-synthesis    ; irReceiver:ir|dataCode[0]                                                                          ; N/A     ;
+; irReceiver:ir|dataCode[0]~reg0 ; pre-synthesis ; connected ; Top                            ; post-synthesis    ; irReceiver:ir|dataCode[0]                                                                          ; N/A     ;
+; irReceiver:ir|dataCode[1]~reg0 ; pre-synthesis ; connected ; Top                            ; post-synthesis    ; irReceiver:ir|dataCode[1]                                                                          ; N/A     ;
+; irReceiver:ir|dataCode[1]~reg0 ; pre-synthesis ; connected ; Top                            ; post-synthesis    ; irReceiver:ir|dataCode[1]                                                                          ; N/A     ;
+; irReceiver:ir|dataCode[2]~reg0 ; pre-synthesis ; connected ; Top                            ; post-synthesis    ; irReceiver:ir|dataCode[2]                                                                          ; N/A     ;
+; irReceiver:ir|dataCode[2]~reg0 ; pre-synthesis ; connected ; Top                            ; post-synthesis    ; irReceiver:ir|dataCode[2]                                                                          ; N/A     ;
+; irReceiver:ir|dataCode[3]~reg0 ; pre-synthesis ; connected ; Top                            ; post-synthesis    ; irReceiver:ir|dataCode[3]                                                                          ; N/A     ;
+; irReceiver:ir|dataCode[3]~reg0 ; pre-synthesis ; connected ; Top                            ; post-synthesis    ; irReceiver:ir|dataCode[3]                                                                          ; N/A     ;
+; irReceiver:ir|dataCode[4]~reg0 ; pre-synthesis ; connected ; Top                            ; post-synthesis    ; irReceiver:ir|dataCode[4]                                                                          ; N/A     ;
+; irReceiver:ir|dataCode[4]~reg0 ; pre-synthesis ; connected ; Top                            ; post-synthesis    ; irReceiver:ir|dataCode[4]                                                                          ; N/A     ;
+; irReceiver:ir|dataCode[5]~reg0 ; pre-synthesis ; connected ; Top                            ; post-synthesis    ; irReceiver:ir|dataCode[5]                                                                          ; N/A     ;
+; irReceiver:ir|dataCode[5]~reg0 ; pre-synthesis ; connected ; Top                            ; post-synthesis    ; irReceiver:ir|dataCode[5]                                                                          ; N/A     ;
+; irReceiver:ir|dataCode[6]~reg0 ; pre-synthesis ; connected ; Top                            ; post-synthesis    ; irReceiver:ir|dataCode[6]                                                                          ; N/A     ;
+; irReceiver:ir|dataCode[6]~reg0 ; pre-synthesis ; connected ; Top                            ; post-synthesis    ; irReceiver:ir|dataCode[6]                                                                          ; N/A     ;
+; irReceiver:ir|dataCode[7]~reg0 ; pre-synthesis ; connected ; Top                            ; post-synthesis    ; irReceiver:ir|dataCode[7]                                                                          ; N/A     ;
+; irReceiver:ir|dataCode[7]~reg0 ; pre-synthesis ; connected ; Top                            ; post-synthesis    ; irReceiver:ir|dataCode[7]                                                                          ; N/A     ;
+; auto_signaltap_4|gnd           ; post-fitting  ; connected ; sld_signaltap:auto_signaltap_4 ; post-synthesis    ; sld_signaltap:auto_signaltap_4|~GND                                                                ; N/A     ;
+; auto_signaltap_4|gnd           ; post-fitting  ; connected ; sld_signaltap:auto_signaltap_4 ; post-synthesis    ; sld_signaltap:auto_signaltap_4|~GND                                                                ; N/A     ;
+; auto_signaltap_4|gnd           ; post-fitting  ; connected ; sld_signaltap:auto_signaltap_4 ; post-synthesis    ; sld_signaltap:auto_signaltap_4|~GND                                                                ; N/A     ;
+; auto_signaltap_4|gnd           ; post-fitting  ; connected ; sld_signaltap:auto_signaltap_4 ; post-synthesis    ; sld_signaltap:auto_signaltap_4|~GND                                                                ; N/A     ;
+; auto_signaltap_4|gnd           ; post-fitting  ; connected ; sld_signaltap:auto_signaltap_4 ; post-synthesis    ; sld_signaltap:auto_signaltap_4|~GND                                                                ; N/A     ;
+; auto_signaltap_4|gnd           ; post-fitting  ; connected ; sld_signaltap:auto_signaltap_4 ; post-synthesis    ; sld_signaltap:auto_signaltap_4|~GND                                                                ; N/A     ;
+; auto_signaltap_4|gnd           ; post-fitting  ; connected ; sld_signaltap:auto_signaltap_4 ; post-synthesis    ; sld_signaltap:auto_signaltap_4|~GND                                                                ; N/A     ;
+; auto_signaltap_4|gnd           ; post-fitting  ; connected ; sld_signaltap:auto_signaltap_4 ; post-synthesis    ; sld_signaltap:auto_signaltap_4|~GND                                                                ; N/A     ;
+; auto_signaltap_4|gnd           ; post-fitting  ; connected ; sld_signaltap:auto_signaltap_4 ; post-synthesis    ; sld_signaltap:auto_signaltap_4|~GND                                                                ; N/A     ;
+; auto_signaltap_4|gnd           ; post-fitting  ; connected ; sld_signaltap:auto_signaltap_4 ; post-synthesis    ; sld_signaltap:auto_signaltap_4|~GND                                                                ; N/A     ;
+; auto_signaltap_4|gnd           ; post-fitting  ; connected ; sld_signaltap:auto_signaltap_4 ; post-synthesis    ; sld_signaltap:auto_signaltap_4|~GND                                                                ; N/A     ;
+; auto_signaltap_4|gnd           ; post-fitting  ; connected ; sld_signaltap:auto_signaltap_4 ; post-synthesis    ; sld_signaltap:auto_signaltap_4|~GND                                                                ; N/A     ;
+; auto_signaltap_4|gnd           ; post-fitting  ; connected ; sld_signaltap:auto_signaltap_4 ; post-synthesis    ; sld_signaltap:auto_signaltap_4|~GND                                                                ; N/A     ;
+; auto_signaltap_4|gnd           ; post-fitting  ; connected ; sld_signaltap:auto_signaltap_4 ; post-synthesis    ; sld_signaltap:auto_signaltap_4|~GND                                                                ; N/A     ;
+; auto_signaltap_4|gnd           ; post-fitting  ; connected ; sld_signaltap:auto_signaltap_4 ; post-synthesis    ; sld_signaltap:auto_signaltap_4|~GND                                                                ; N/A     ;
+; auto_signaltap_4|gnd           ; post-fitting  ; connected ; sld_signaltap:auto_signaltap_4 ; post-synthesis    ; sld_signaltap:auto_signaltap_4|~GND                                                                ; N/A     ;
+; auto_signaltap_4|gnd           ; post-fitting  ; connected ; sld_signaltap:auto_signaltap_4 ; post-synthesis    ; sld_signaltap:auto_signaltap_4|~GND                                                                ; N/A     ;
+; auto_signaltap_4|gnd           ; post-fitting  ; connected ; sld_signaltap:auto_signaltap_4 ; post-synthesis    ; sld_signaltap:auto_signaltap_4|~GND                                                                ; N/A     ;
+; auto_signaltap_4|vcc           ; post-fitting  ; connected ; sld_signaltap:auto_signaltap_4 ; post-synthesis    ; sld_signaltap:auto_signaltap_4|~VCC                                                                ; N/A     ;
+; auto_signaltap_4|vcc           ; post-fitting  ; connected ; sld_signaltap:auto_signaltap_4 ; post-synthesis    ; sld_signaltap:auto_signaltap_4|~VCC                                                                ; N/A     ;
+; auto_signaltap_4|vcc           ; post-fitting  ; connected ; sld_signaltap:auto_signaltap_4 ; post-synthesis    ; sld_signaltap:auto_signaltap_4|~VCC                                                                ; N/A     ;
+; auto_signaltap_4|vcc           ; post-fitting  ; connected ; sld_signaltap:auto_signaltap_4 ; post-synthesis    ; sld_signaltap:auto_signaltap_4|~VCC                                                                ; N/A     ;
+; auto_signaltap_4|vcc           ; post-fitting  ; connected ; sld_signaltap:auto_signaltap_4 ; post-synthesis    ; sld_signaltap:auto_signaltap_4|~VCC                                                                ; N/A     ;
+; auto_signaltap_4|vcc           ; post-fitting  ; connected ; sld_signaltap:auto_signaltap_4 ; post-synthesis    ; sld_signaltap:auto_signaltap_4|~VCC                                                                ; N/A     ;
+; auto_signaltap_4|vcc           ; post-fitting  ; connected ; sld_signaltap:auto_signaltap_4 ; post-synthesis    ; sld_signaltap:auto_signaltap_4|~VCC                                                                ; N/A     ;
+; auto_signaltap_4|vcc           ; post-fitting  ; connected ; sld_signaltap:auto_signaltap_4 ; post-synthesis    ; sld_signaltap:auto_signaltap_4|~VCC                                                                ; N/A     ;
+; auto_signaltap_4|vcc           ; post-fitting  ; connected ; sld_signaltap:auto_signaltap_4 ; post-synthesis    ; sld_signaltap:auto_signaltap_4|~VCC                                                                ; N/A     ;
+; auto_signaltap_4|vcc           ; post-fitting  ; connected ; sld_signaltap:auto_signaltap_4 ; post-synthesis    ; sld_signaltap:auto_signaltap_4|~VCC                                                                ; N/A     ;
+; auto_signaltap_4|vcc           ; post-fitting  ; connected ; sld_signaltap:auto_signaltap_4 ; post-synthesis    ; sld_signaltap:auto_signaltap_4|~VCC                                                                ; N/A     ;
+; auto_signaltap_4|vcc           ; post-fitting  ; connected ; sld_signaltap:auto_signaltap_4 ; post-synthesis    ; sld_signaltap:auto_signaltap_4|~VCC                                                                ; N/A     ;
+; auto_signaltap_4|vcc           ; post-fitting  ; connected ; sld_signaltap:auto_signaltap_4 ; post-synthesis    ; sld_signaltap:auto_signaltap_4|~VCC                                                                ; N/A     ;
+; auto_signaltap_4|vcc           ; post-fitting  ; connected ; sld_signaltap:auto_signaltap_4 ; post-synthesis    ; sld_signaltap:auto_signaltap_4|~VCC                                                                ; N/A     ;
+; irReceiver:ir|valid            ; post-fitting  ; connected ; Top                            ; post-synthesis    ; irReceiver:ir|valid                                                                                ; N/A     ;
+; irReceiver:ir|valid            ; post-fitting  ; connected ; Top                            ; post-synthesis    ; irReceiver:ir|valid                                                                                ; N/A     ;
++--------------------------------+---------------+-----------+--------------------------------+-------------------+----------------------------------------------------------------------------------------------------+---------+
+
+
++----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Connections to In-System Debugging Instance "reg_file"                                                                                                                                                                                                                                                                                       ;
++----------------------------------------------------------------------+---------------+-----------+------------------------+-------------------+-----------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Name                                                                 ; Type          ; Status    ; Partition Name         ; Netlist Type Used ; Actual Connection           ; Details                                                                                                                                                        ;
++----------------------------------------------------------------------+---------------+-----------+------------------------+-------------------+-----------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; drisc:drisc_processor|register_file:register_file|debug_address[0]   ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_address[0]   ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_address[1]   ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_address[1]   ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_address[2]   ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_address[2]   ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_address[3]   ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_address[3]   ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_address[4]   ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_address[4]   ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_register[0]  ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_register[0]  ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_register[10] ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_register[10] ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_register[11] ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_register[11] ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_register[12] ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_register[12] ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_register[13] ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_register[13] ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_register[14] ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_register[14] ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_register[15] ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_register[15] ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_register[16] ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_register[16] ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_register[17] ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_register[17] ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_register[18] ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_register[18] ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_register[19] ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_register[19] ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_register[1]  ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_register[1]  ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_register[20] ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_register[20] ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_register[21] ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_register[21] ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_register[22] ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_register[22] ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_register[23] ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_register[23] ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_register[24] ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_register[24] ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_register[25] ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_register[25] ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_register[26] ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_register[26] ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_register[27] ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_register[27] ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_register[28] ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_register[28] ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_register[29] ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_register[29] ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_register[2]  ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_register[2]  ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_register[30] ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_register[30] ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_register[31] ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_register[31] ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_register[3]  ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_register[3]  ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_register[4]  ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_register[4]  ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_register[5]  ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_register[5]  ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_register[6]  ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_register[6]  ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_register[7]  ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_register[7]  ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_register[8]  ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_register[8]  ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_register[9]  ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; drisc:drisc_processor|register_file:register_file|debug_register[9]  ; pre-synthesis ; missing   ; Top                    ; post-synthesis    ; GND                         ; The name does not exist in your design or refers to an invalid hierarchy or bus element.  You may have modified your design after creating the debug instance. ;
+; CLOCK_50                                                             ; post-fitting  ; connected ; Top                    ; post-synthesis    ; CLOCK_50                    ; N/A                                                                                                                                                            ;
+; reg_file|gnd                                                         ; post-fitting  ; connected ; sld_signaltap:reg_file ; post-synthesis    ; sld_signaltap:reg_file|~GND ; N/A                                                                                                                                                            ;
+; reg_file|gnd                                                         ; post-fitting  ; connected ; sld_signaltap:reg_file ; post-synthesis    ; sld_signaltap:reg_file|~GND ; N/A                                                                                                                                                            ;
+; reg_file|gnd                                                         ; post-fitting  ; connected ; sld_signaltap:reg_file ; post-synthesis    ; sld_signaltap:reg_file|~GND ; N/A                                                                                                                                                            ;
+; reg_file|gnd                                                         ; post-fitting  ; connected ; sld_signaltap:reg_file ; post-synthesis    ; sld_signaltap:reg_file|~GND ; N/A                                                                                                                                                            ;
+; reg_file|gnd                                                         ; post-fitting  ; connected ; sld_signaltap:reg_file ; post-synthesis    ; sld_signaltap:reg_file|~GND ; N/A                                                                                                                                                            ;
+; reg_file|gnd                                                         ; post-fitting  ; connected ; sld_signaltap:reg_file ; post-synthesis    ; sld_signaltap:reg_file|~GND ; N/A                                                                                                                                                            ;
+; reg_file|gnd                                                         ; post-fitting  ; connected ; sld_signaltap:reg_file ; post-synthesis    ; sld_signaltap:reg_file|~GND ; N/A                                                                                                                                                            ;
+; reg_file|gnd                                                         ; post-fitting  ; connected ; sld_signaltap:reg_file ; post-synthesis    ; sld_signaltap:reg_file|~GND ; N/A                                                                                                                                                            ;
+; reg_file|gnd                                                         ; post-fitting  ; connected ; sld_signaltap:reg_file ; post-synthesis    ; sld_signaltap:reg_file|~GND ; N/A                                                                                                                                                            ;
+; reg_file|gnd                                                         ; post-fitting  ; connected ; sld_signaltap:reg_file ; post-synthesis    ; sld_signaltap:reg_file|~GND ; N/A                                                                                                                                                            ;
+; reg_file|gnd                                                         ; post-fitting  ; connected ; sld_signaltap:reg_file ; post-synthesis    ; sld_signaltap:reg_file|~GND ; N/A                                                                                                                                                            ;
+; reg_file|gnd                                                         ; post-fitting  ; connected ; sld_signaltap:reg_file ; post-synthesis    ; sld_signaltap:reg_file|~GND ; N/A                                                                                                                                                            ;
+; reg_file|gnd                                                         ; post-fitting  ; connected ; sld_signaltap:reg_file ; post-synthesis    ; sld_signaltap:reg_file|~GND ; N/A                                                                                                                                                            ;
+; reg_file|gnd                                                         ; post-fitting  ; connected ; sld_signaltap:reg_file ; post-synthesis    ; sld_signaltap:reg_file|~GND ; N/A                                                                                                                                                            ;
+; reg_file|vcc                                                         ; post-fitting  ; connected ; sld_signaltap:reg_file ; post-synthesis    ; sld_signaltap:reg_file|~VCC ; N/A                                                                                                                                                            ;
+; reg_file|vcc                                                         ; post-fitting  ; connected ; sld_signaltap:reg_file ; post-synthesis    ; sld_signaltap:reg_file|~VCC ; N/A                                                                                                                                                            ;
+; reg_file|vcc                                                         ; post-fitting  ; connected ; sld_signaltap:reg_file ; post-synthesis    ; sld_signaltap:reg_file|~VCC ; N/A                                                                                                                                                            ;
+; reg_file|vcc                                                         ; post-fitting  ; connected ; sld_signaltap:reg_file ; post-synthesis    ; sld_signaltap:reg_file|~VCC ; N/A                                                                                                                                                            ;
+; reg_file|vcc                                                         ; post-fitting  ; connected ; sld_signaltap:reg_file ; post-synthesis    ; sld_signaltap:reg_file|~VCC ; N/A                                                                                                                                                            ;
+; reg_file|vcc                                                         ; post-fitting  ; connected ; sld_signaltap:reg_file ; post-synthesis    ; sld_signaltap:reg_file|~VCC ; N/A                                                                                                                                                            ;
+; reg_file|vcc                                                         ; post-fitting  ; connected ; sld_signaltap:reg_file ; post-synthesis    ; sld_signaltap:reg_file|~VCC ; N/A                                                                                                                                                            ;
+; reg_file|vcc                                                         ; post-fitting  ; connected ; sld_signaltap:reg_file ; post-synthesis    ; sld_signaltap:reg_file|~VCC ; N/A                                                                                                                                                            ;
+; reg_file|vcc                                                         ; post-fitting  ; connected ; sld_signaltap:reg_file ; post-synthesis    ; sld_signaltap:reg_file|~VCC ; N/A                                                                                                                                                            ;
+; reg_file|vcc                                                         ; post-fitting  ; connected ; sld_signaltap:reg_file ; post-synthesis    ; sld_signaltap:reg_file|~VCC ; N/A                                                                                                                                                            ;
+; reg_file|vcc                                                         ; post-fitting  ; connected ; sld_signaltap:reg_file ; post-synthesis    ; sld_signaltap:reg_file|~VCC ; N/A                                                                                                                                                            ;
+; reg_file|vcc                                                         ; post-fitting  ; connected ; sld_signaltap:reg_file ; post-synthesis    ; sld_signaltap:reg_file|~VCC ; N/A                                                                                                                                                            ;
+; reg_file|vcc                                                         ; post-fitting  ; connected ; sld_signaltap:reg_file ; post-synthesis    ; sld_signaltap:reg_file|~VCC ; N/A                                                                                                                                                            ;
+; reg_file|vcc                                                         ; post-fitting  ; connected ; sld_signaltap:reg_file ; post-synthesis    ; sld_signaltap:reg_file|~VCC ; N/A                                                                                                                                                            ;
+; reg_file|vcc                                                         ; post-fitting  ; connected ; sld_signaltap:reg_file ; post-synthesis    ; sld_signaltap:reg_file|~VCC ; N/A                                                                                                                                                            ;
+; reg_file|vcc                                                         ; post-fitting  ; connected ; sld_signaltap:reg_file ; post-synthesis    ; sld_signaltap:reg_file|~VCC ; N/A                                                                                                                                                            ;
+; reg_file|vcc                                                         ; post-fitting  ; connected ; sld_signaltap:reg_file ; post-synthesis    ; sld_signaltap:reg_file|~VCC ; N/A                                                                                                                                                            ;
+; reg_file|vcc                                                         ; post-fitting  ; connected ; sld_signaltap:reg_file ; post-synthesis    ; sld_signaltap:reg_file|~VCC ; N/A                                                                                                                                                            ;
++----------------------------------------------------------------------+---------------+-----------+------------------------+-------------------+-----------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+
++------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Partition Merge Partition Statistics                                                                                                                             ;
++---------------------------------------------+------+------------------+--------------------------------+------------------------+--------------------------------+
+; Statistic                                   ; Top  ; sld_hub:auto_hub ; sld_signaltap:auto_signaltap_4 ; sld_signaltap:reg_file ; hard_block:auto_generated_inst ;
++---------------------------------------------+------+------------------+--------------------------------+------------------------+--------------------------------+
+; Estimated Total logic elements              ; 229  ; 201              ; 558                            ; 875                    ; 0                              ;
+;                                             ;      ;                  ;                                ;                        ;                                ;
+; Total combinational functions               ; 221  ; 185              ; 351                            ; 416                    ; 0                              ;
+; Logic element usage by number of LUT inputs ;      ;                  ;                                ;                        ;                                ;
+;     -- 4 input functions                    ; 118  ; 67               ; 130                            ; 200                    ; 0                              ;
+;     -- 3 input functions                    ; 19   ; 78               ; 103                            ; 118                    ; 0                              ;
+;     -- <=2 input functions                  ; 84   ; 40               ; 118                            ; 98                     ; 0                              ;
+;                                             ;      ;                  ;                                ;                        ;                                ;
+; Logic elements by mode                      ;      ;                  ;                                ;                        ;                                ;
+;     -- normal mode                          ; 197  ; 177              ; 277                            ; 349                    ; 0                              ;
+;     -- arithmetic mode                      ; 24   ; 8                ; 74                             ; 67                     ; 0                              ;
+;                                             ;      ;                  ;                                ;                        ;                                ;
+; Total registers                             ; 67   ; 122              ; 430                            ; 717                    ; 0                              ;
+;     -- Dedicated logic registers            ; 67   ; 122              ; 430                            ; 717                    ; 0                              ;
+;     -- I/O registers                        ; 0    ; 0                ; 0                              ; 0                      ; 0                              ;
+;                                             ;      ;                  ;                                ;                        ;                                ;
+; Virtual pins                                ; 0    ; 0                ; 0                              ; 0                      ; 0                              ;
+; I/O pins                                    ; 24   ; 0                ; 0                              ; 0                      ; 0                              ;
+; Embedded Multiplier 9-bit elements          ; 0    ; 0                ; 0                              ; 0                      ; 0                              ;
+; Total memory bits                           ; 0    ; 0                ; 5120                           ; 4736                   ; 0                              ;
+; Total RAM block bits                        ; 0    ; 0                ; 0                              ; 0                      ; 0                              ;
+; JTAG                                        ; 1    ; 0                ; 0                              ; 0                      ; 0                              ;
+; PLL                                         ; 0    ; 0                ; 0                              ; 0                      ; 1                              ;
+;                                             ;      ;                  ;                                ;                        ;                                ;
+; Connections                                 ;      ;                  ;                                ;                        ;                                ;
+;     -- Input Connections                    ; 4    ; 177              ; 652                            ; 1071                   ; 1                              ;
+;     -- Registered Input Connections         ; 2    ; 132              ; 478                            ; 815                    ; 0                              ;
+;     -- Output Connections                   ; 1289 ; 333              ; 34                             ; 34                     ; 215                            ;
+;     -- Registered Output Connections        ; 18   ; 333              ; 0                              ; 0                      ; 0                              ;
+;                                             ;      ;                  ;                                ;                        ;                                ;
+; Internal Connections                        ;      ;                  ;                                ;                        ;                                ;
+;     -- Total Connections                    ; 2157 ; 1336             ; 2703                           ; 4205                   ; 217                            ;
+;     -- Registered Connections               ; 263  ; 988              ; 1579                           ; 2840                   ; 0                              ;
+;                                             ;      ;                  ;                                ;                        ;                                ;
+; External Connections                        ;      ;                  ;                                ;                        ;                                ;
+;     -- Top                                  ; 0    ; 154              ; 264                            ; 871                    ; 4                              ;
+;     -- sld_hub:auto_hub                     ; 154  ; 40               ; 146                            ; 170                    ; 0                              ;
+;     -- sld_signaltap:auto_signaltap_4       ; 264  ; 146              ; 64                             ; 0                      ; 212                            ;
+;     -- sld_signaltap:reg_file               ; 871  ; 170              ; 0                              ; 64                     ; 0                              ;
+;     -- hard_block:auto_generated_inst       ; 4    ; 0                ; 212                            ; 0                      ; 0                              ;
+;                                             ;      ;                  ;                                ;                        ;                                ;
+; Partition Interface                         ;      ;                  ;                                ;                        ;                                ;
+;     -- Input Ports                          ; 10   ; 78               ; 99                             ; 180                    ; 1                              ;
+;     -- Output Ports                         ; 27   ; 95               ; 35                             ; 89                     ; 2                              ;
+;     -- Bidir Ports                          ; 0    ; 0                ; 0                              ; 0                      ; 0                              ;
+;                                             ;      ;                  ;                                ;                        ;                                ;
+; Registered Ports                            ;      ;                  ;                                ;                        ;                                ;
+;     -- Registered Input Ports               ; 0    ; 3                ; 26                             ; 80                     ; 0                              ;
+;     -- Registered Output Ports              ; 0    ; 57               ; 21                             ; 75                     ; 0                              ;
+;                                             ;      ;                  ;                                ;                        ;                                ;
+; Port Connectivity                           ;      ;                  ;                                ;                        ;                                ;
+;     -- Input Ports driven by GND            ; 0    ; 0                ; 18                             ; 88                     ; 0                              ;
+;     -- Output Ports driven by GND           ; 0    ; 28               ; 2                              ; 2                      ; 0                              ;
+;     -- Input Ports driven by VCC            ; 0    ; 0                ; 14                             ; 18                     ; 0                              ;
+;     -- Output Ports driven by VCC           ; 0    ; 0                ; 1                              ; 1                      ; 0                              ;
+;     -- Input Ports with no Source           ; 0    ; 46               ; 14                             ; 41                     ; 0                              ;
+;     -- Output Ports with no Source          ; 0    ; 0                ; 0                              ; 0                      ; 0                              ;
+;     -- Input Ports with no Fanout           ; 0    ; 51               ; 28                             ; 55                     ; 0                              ;
+;     -- Output Ports with no Fanout          ; 0    ; 30               ; 23                             ; 77                     ; 0                              ;
++---------------------------------------------+------+------------------+--------------------------------+------------------------+--------------------------------+
+Note: Resource usage numbers presented for Partitions containing post-synthesis logic are estimates.  For Partitions containing post-fit logic, resource usage numbers are accurate based on previous placement information.  Actual Fitter results may vary depending on current Fitter Preservation Level assignments.
+
+
++----------------------------------------------------------------------------------------+
+; Partition Merge Partition Pin Processing                                               ;
++-----------------------------------+-----------+---------------+----------+-------------+
+; Name                              ; Partition ; Type          ; Location ; Status      ;
++-----------------------------------+-----------+---------------+----------+-------------+
+; BEEP                              ; Top       ; Output Port   ; n/a      ;             ;
+;     -- BEEP                       ; Top       ; Output Pad    ; Unplaced ; Synthesized ;
+;     -- BEEP~output                ; Top       ; Output Buffer ; Unplaced ; Synthesized ;
+;                                   ;           ;               ;          ;             ;
+; CLOCK_50                          ; Top       ; Input Port    ; n/a      ;             ;
+;     -- CLOCK_50                   ; Top       ; Input Pad     ; Unplaced ; Synthesized ;
+;     -- CLOCK_50~input             ; Top       ; Input Buffer  ; Unplaced ; Synthesized ;
+;                                   ;           ;               ;          ;             ;
+; DIG[0]                            ; Top       ; Output Port   ; n/a      ;             ;
+;     -- DIG[0]                     ; Top       ; Output Pad    ; Unplaced ; Synthesized ;
+;     -- DIG[0]~output              ; Top       ; Output Buffer ; Unplaced ; Synthesized ;
+;                                   ;           ;               ;          ;             ;
+; DIG[1]                            ; Top       ; Output Port   ; n/a      ;             ;
+;     -- DIG[1]                     ; Top       ; Output Pad    ; Unplaced ; Synthesized ;
+;     -- DIG[1]~output              ; Top       ; Output Buffer ; Unplaced ; Synthesized ;
+;                                   ;           ;               ;          ;             ;
+; DIG[2]                            ; Top       ; Output Port   ; n/a      ;             ;
+;     -- DIG[2]                     ; Top       ; Output Pad    ; Unplaced ; Synthesized ;
+;     -- DIG[2]~output              ; Top       ; Output Buffer ; Unplaced ; Synthesized ;
+;                                   ;           ;               ;          ;             ;
+; DIG[3]                            ; Top       ; Output Port   ; n/a      ;             ;
+;     -- DIG[3]                     ; Top       ; Output Pad    ; Unplaced ; Synthesized ;
+;     -- DIG[3]~output              ; Top       ; Output Buffer ; Unplaced ; Synthesized ;
+;                                   ;           ;               ;          ;             ;
+; IRDA_RXD                          ; Top       ; Input Port    ; n/a      ;             ;
+;     -- IRDA_RXD                   ; Top       ; Input Pad     ; Unplaced ; Synthesized ;
+;     -- IRDA_RXD~input             ; Top       ; Input Buffer  ; Unplaced ; Synthesized ;
+;                                   ;           ;               ;          ;             ;
+; KEY[0]                            ; Top       ; Input Port    ; n/a      ;             ;
+;     -- KEY[0]                     ; Top       ; Input Pad     ; Unplaced ; Synthesized ;
+;     -- KEY[0]~input               ; Top       ; Input Buffer  ; Unplaced ; Synthesized ;
+;                                   ;           ;               ;          ;             ;
+; KEY[1]                            ; Top       ; Input Port    ; n/a      ;             ;
+;     -- KEY[1]                     ; Top       ; Input Pad     ; Unplaced ; Synthesized ;
+;     -- KEY[1]~input               ; Top       ; Input Buffer  ; Unplaced ; Synthesized ;
+;                                   ;           ;               ;          ;             ;
+; KEY[2]                            ; Top       ; Input Port    ; n/a      ;             ;
+;     -- KEY[2]                     ; Top       ; Input Pad     ; Unplaced ; Synthesized ;
+;     -- KEY[2]~input               ; Top       ; Input Buffer  ; Unplaced ; Synthesized ;
+;                                   ;           ;               ;          ;             ;
+; KEY[3]                            ; Top       ; Input Port    ; n/a      ;             ;
+;     -- KEY[3]                     ; Top       ; Input Pad     ; Unplaced ; Synthesized ;
+;     -- KEY[3]~input               ; Top       ; Input Buffer  ; Unplaced ; Synthesized ;
+;                                   ;           ;               ;          ;             ;
+; KEY[4]                            ; Top       ; Input Port    ; n/a      ;             ;
+;     -- KEY[4]                     ; Top       ; Input Pad     ; Unplaced ; Synthesized ;
+;     -- KEY[4]~input               ; Top       ; Input Buffer  ; Unplaced ; Synthesized ;
+;                                   ;           ;               ;          ;             ;
+; LEDG[0]                           ; Top       ; Output Port   ; n/a      ;             ;
+;     -- LEDG[0]                    ; Top       ; Output Pad    ; Unplaced ; Synthesized ;
+;     -- LEDG[0]~output             ; Top       ; Output Buffer ; Unplaced ; Synthesized ;
+;                                   ;           ;               ;          ;             ;
+; LEDG[1]                           ; Top       ; Output Port   ; n/a      ;             ;
+;     -- LEDG[1]                    ; Top       ; Output Pad    ; Unplaced ; Synthesized ;
+;     -- LEDG[1]~output             ; Top       ; Output Buffer ; Unplaced ; Synthesized ;
+;                                   ;           ;               ;          ;             ;
+; LEDG[2]                           ; Top       ; Output Port   ; n/a      ;             ;
+;     -- LEDG[2]                    ; Top       ; Output Pad    ; Unplaced ; Synthesized ;
+;     -- LEDG[2]~output             ; Top       ; Output Buffer ; Unplaced ; Synthesized ;
+;                                   ;           ;               ;          ;             ;
+; LEDG[3]                           ; Top       ; Output Port   ; n/a      ;             ;
+;     -- LEDG[3]                    ; Top       ; Output Pad    ; Unplaced ; Synthesized ;
+;     -- LEDG[3]~output             ; Top       ; Output Buffer ; Unplaced ; Synthesized ;
+;                                   ;           ;               ;          ;             ;
+; SEG[0]                            ; Top       ; Output Port   ; n/a      ;             ;
+;     -- SEG[0]                     ; Top       ; Output Pad    ; Unplaced ; Synthesized ;
+;     -- SEG[0]~output              ; Top       ; Output Buffer ; Unplaced ; Synthesized ;
+;                                   ;           ;               ;          ;             ;
+; SEG[1]                            ; Top       ; Output Port   ; n/a      ;             ;
+;     -- SEG[1]                     ; Top       ; Output Pad    ; Unplaced ; Synthesized ;
+;     -- SEG[1]~output              ; Top       ; Output Buffer ; Unplaced ; Synthesized ;
+;                                   ;           ;               ;          ;             ;
+; SEG[2]                            ; Top       ; Output Port   ; n/a      ;             ;
+;     -- SEG[2]                     ; Top       ; Output Pad    ; Unplaced ; Synthesized ;
+;     -- SEG[2]~output              ; Top       ; Output Buffer ; Unplaced ; Synthesized ;
+;                                   ;           ;               ;          ;             ;
+; SEG[3]                            ; Top       ; Output Port   ; n/a      ;             ;
+;     -- SEG[3]                     ; Top       ; Output Pad    ; Unplaced ; Synthesized ;
+;     -- SEG[3]~output              ; Top       ; Output Buffer ; Unplaced ; Synthesized ;
+;                                   ;           ;               ;          ;             ;
+; SEG[4]                            ; Top       ; Output Port   ; n/a      ;             ;
+;     -- SEG[4]                     ; Top       ; Output Pad    ; Unplaced ; Synthesized ;
+;     -- SEG[4]~output              ; Top       ; Output Buffer ; Unplaced ; Synthesized ;
+;                                   ;           ;               ;          ;             ;
+; SEG[5]                            ; Top       ; Output Port   ; n/a      ;             ;
+;     -- SEG[5]                     ; Top       ; Output Pad    ; Unplaced ; Synthesized ;
+;     -- SEG[5]~output              ; Top       ; Output Buffer ; Unplaced ; Synthesized ;
+;                                   ;           ;               ;          ;             ;
+; SEG[6]                            ; Top       ; Output Port   ; n/a      ;             ;
+;     -- SEG[6]                     ; Top       ; Output Pad    ; Unplaced ; Synthesized ;
+;     -- SEG[6]~output              ; Top       ; Output Buffer ; Unplaced ; Synthesized ;
+;                                   ;           ;               ;          ;             ;
+; SEG[7]                            ; Top       ; Output Port   ; n/a      ;             ;
+;     -- SEG[7]                     ; Top       ; Output Pad    ; Unplaced ; Synthesized ;
+;     -- SEG[7]~output              ; Top       ; Output Buffer ; Unplaced ; Synthesized ;
+;                                   ;           ;               ;          ;             ;
+; altera_reserved_tck               ; Top       ; Input Port    ; n/a      ;             ;
+;     -- altera_reserved_tck        ; Top       ; Input Pad     ; Unplaced ; Synthesized ;
+;     -- altera_reserved_tck~input  ; Top       ; Input Buffer  ; Unplaced ; Synthesized ;
+;                                   ;           ;               ;          ;             ;
+; altera_reserved_tdi               ; Top       ; Input Port    ; n/a      ;             ;
+;     -- altera_reserved_tdi        ; Top       ; Input Pad     ; Unplaced ; Synthesized ;
+;     -- altera_reserved_tdi~input  ; Top       ; Input Buffer  ; Unplaced ; Synthesized ;
+;                                   ;           ;               ;          ;             ;
+; altera_reserved_tdo               ; Top       ; Output Port   ; n/a      ;             ;
+;     -- altera_reserved_tdo        ; Top       ; Output Pad    ; Unplaced ; Synthesized ;
+;     -- altera_reserved_tdo~output ; Top       ; Output Buffer ; Unplaced ; Synthesized ;
+;                                   ;           ;               ;          ;             ;
+; altera_reserved_tms               ; Top       ; Input Port    ; n/a      ;             ;
+;     -- altera_reserved_tms        ; Top       ; Input Pad     ; Unplaced ; Synthesized ;
+;     -- altera_reserved_tms~input  ; Top       ; Input Buffer  ; Unplaced ; Synthesized ;
+;                                   ;           ;               ;          ;             ;
+; pre_syn.bp.clk_div_c0             ; Top       ; Output Port   ; n/a      ;             ;
+;                                   ;           ;               ;          ;             ;
+; pre_syn.bp.ir_dataCode_0_~reg0    ; Top       ; Output Port   ; n/a      ;             ;
+;                                   ;           ;               ;          ;             ;
+; pre_syn.bp.ir_dataCode_1_~reg0    ; Top       ; Output Port   ; n/a      ;             ;
+;                                   ;           ;               ;          ;             ;
+; pre_syn.bp.ir_dataCode_2_~reg0    ; Top       ; Output Port   ; n/a      ;             ;
+;                                   ;           ;               ;          ;             ;
+; pre_syn.bp.ir_dataCode_3_~reg0    ; Top       ; Output Port   ; n/a      ;             ;
+;                                   ;           ;               ;          ;             ;
+; pre_syn.bp.ir_dataCode_4_~reg0    ; Top       ; Output Port   ; n/a      ;             ;
+;                                   ;           ;               ;          ;             ;
+; pre_syn.bp.ir_dataCode_5_~reg0    ; Top       ; Output Port   ; n/a      ;             ;
+;                                   ;           ;               ;          ;             ;
+; pre_syn.bp.ir_dataCode_6_~reg0    ; Top       ; Output Port   ; n/a      ;             ;
+;                                   ;           ;               ;          ;             ;
+; pre_syn.bp.ir_dataCode_7_~reg0    ; Top       ; Output Port   ; n/a      ;             ;
+;                                   ;           ;               ;          ;             ;
++-----------------------------------+-----------+---------------+----------+-------------+
+
+
++------------------------------------------------------------------------+
+; Partition Merge Resource Usage Summary                                 ;
++---------------------------------------------+--------------------------+
+; Resource                                    ; Usage                    ;
++---------------------------------------------+--------------------------+
+; Estimated Total logic elements              ; 1,862                    ;
+;                                             ;                          ;
+; Total combinational functions               ; 1173                     ;
+; Logic element usage by number of LUT inputs ;                          ;
+;     -- 4 input functions                    ; 515                      ;
+;     -- 3 input functions                    ; 318                      ;
+;     -- <=2 input functions                  ; 340                      ;
+;                                             ;                          ;
+; Logic elements by mode                      ;                          ;
+;     -- normal mode                          ; 1000                     ;
+;     -- arithmetic mode                      ; 173                      ;
+;                                             ;                          ;
+; Total registers                             ; 1336                     ;
+;     -- Dedicated logic registers            ; 1336                     ;
+;     -- I/O registers                        ; 0                        ;
+;                                             ;                          ;
+; I/O pins                                    ; 24                       ;
+; Total memory bits                           ; 9856                     ;
+;                                             ;                          ;
+; Embedded Multiplier 9-bit elements          ; 0                        ;
+;                                             ;                          ;
+; Total PLLs                                  ; 1                        ;
+;     -- PLLs                                 ; 1                        ;
+;                                             ;                          ;
+; Maximum fan-out node                        ; altera_internal_jtag~TDO ;
+; Maximum fan-out                             ; 746                      ;
+; Total fan-out                               ; 8718                     ;
+; Average fan-out                             ; 3.34                     ;
++---------------------------------------------+--------------------------+
+
+
++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Partition Merge RAM Summary                                                                                                                                                                                                                                                                               ;
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------+------------------+--------------+--------------+--------------+--------------+------+------+
+; Name                                                                                                                                                                                                  ; Type ; Mode             ; Port A Depth ; Port A Width ; Port B Depth ; Port B Width ; Size ; MIF  ;
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------+------------------+--------------+--------------+--------------+--------------+------+------+
+; sld_signaltap:auto_signaltap_4|sld_signaltap_impl:sld_signaltap_body|sld_signaltap_implb:sld_signaltap_body|altsyncram:\stp_non_zero_ram_gen:stp_buffer_ram|altsyncram_m424:auto_generated|ALTSYNCRAM ; AUTO ; Simple Dual Port ; 512          ; 10           ; 512          ; 10           ; 5120 ; None ;
+; sld_signaltap:reg_file|sld_signaltap_impl:sld_signaltap_body|sld_signaltap_implb:sld_signaltap_body|altsyncram:\stp_non_zero_ram_gen:stp_buffer_ram|altsyncram_f524:auto_generated|ALTSYNCRAM         ; AUTO ; Simple Dual Port ; 128          ; 37           ; 128          ; 37           ; 4736 ; None ;
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------+------------------+--------------+--------------+--------------+--------------+------+------+
+
+
++--------------------------+
+; Partition Merge Messages ;
++--------------------------+
+Info: *******************************************************************
+Info: Running Quartus Prime Partition Merge
+    Info: Version 24.1std.0 Build 1077 03/04/2025 SC Standard Edition
+    Info: Processing started: Tue Sep  9 12:46:28 2025
+Info: Command: quartus_cdb --read_settings_files=off --write_settings_files=off DRISC-V -c DRISC-V_TOP --merge=on
+Warning (18236): Number of processors has not been specified which may cause overloading on shared machines.  Set the global assignment NUM_PARALLEL_PROCESSORS in your QSF to an appropriate value for best performance.
+Warning (35010): Previously generated Fitter netlist for partition "Top" is older than current Synthesis netlist -- using the current Synthesis netlist instead to ensure that the latest source changes are included
+    Info (35011): Set the option to Ignore source file changes to force the Quartus Prime software to always use a previously generated Fitter netlist
+Info (35007): Using synthesis netlist for partition "Top"
+Info (35007): Using synthesis netlist for partition "sld_hub:auto_hub"
+Info (35007): Using synthesis netlist for partition "sld_signaltap:auto_signaltap_4"
+Info (35007): Using synthesis netlist for partition "sld_signaltap:reg_file"
+Info (35024): Successfully connected in-system debug instance "auto_signaltap_4" to all 53 required data inputs, trigger inputs, acquisition clocks, and dynamic pins
+Critical Warning (35025): Partially connected in-system debug instance "reg_file" to 33 of its 107 required data inputs, trigger inputs, acquisition clocks, and dynamic pins.  There were 0 illegal, 0 inaccessible, and 74 missing sources or connections.
+Info (35002): Resolved and merged 4 partition(s)
+Info (16010): Generating hard_block partition "hard_block:auto_generated_inst"
+    Info (16011): Adding 1 node(s), including 0 DDIO, 1 PLL, 0 transceiver and 0 LCELL
+Warning (15899): PLL "clock_divider:clk_div|altpll:altpll_component|clock_divider_altpll:auto_generated|pll1" has parameters clk1_multiply_by and clk1_divide_by specified but port CLK[1] is not connected File: C:/Users/diogo/AppData/Local/quartus/db/clock_divider_altpll.v Line: 44
+Warning (21074): Design contains 2 input pin(s) that do not drive logic
+    Warning (15610): No output dependent on input pin "KEY[3]" File: C:/Users/diogo/AppData/Local/quartus/DRISCV_TOP.sv Line: 4
+    Warning (15610): No output dependent on input pin "KEY[4]" File: C:/Users/diogo/AppData/Local/quartus/DRISCV_TOP.sv Line: 4
+Info (21057): Implemented 1964 device resources after synthesis - the final resource count might be different
+    Info (21058): Implemented 10 input pins
+    Info (21059): Implemented 18 output pins
+    Info (21061): Implemented 1887 logic cells
+    Info (21064): Implemented 47 RAM segments
+    Info (21065): Implemented 1 PLLs
+Info: Quartus Prime Partition Merge was successful. 0 errors, 7 warnings
+    Info: Peak virtual memory: 4714 megabytes
+    Info: Processing ended: Tue Sep  9 12:46:30 2025
+    Info: Elapsed time: 00:00:02
+    Info: Total CPU time (on all processors): 00:00:02
+
+

@@ -1,0 +1,91 @@
+module top_drisc_fpga (
+    input logic CLOCK_50,
+    input logic RESET_N,
+    
+    input  logic [3:0] SW,
+    input  logic [3:0] KEY,
+    output logic [7:0] LED,
+    output logic [6:0] HEX0,
+    output logic [6:0] HEX1,
+
+    input  logic UART_RX,
+    output logic UART_TX,
+
+    input  logic IR_IN                // Sensor infravermelho
+);
+
+    logic reset;
+    logic [31:0] data_bus_in;
+    logic [31:0] data_bus_out;
+    logic [31:0] address_bus;
+    logic [1:0]  data_size;
+    logic        write, read;
+
+    logic external_interrupt;
+    logic timer_interrupt;
+    logic software_interrupt;
+
+    logic [31:0] ir_code;
+    logic ir_ready;
+
+    assign reset = ~RESET_N;
+    assign external_interrupt = ~KEY[0];
+    assign timer_interrupt    = ~KEY[1];
+    assign software_interrupt = ~KEY[2];
+
+    // Entrada de dados combinando switches e código IR
+    assign data_bus_in = ir_ready ? ir_code : {28'b0, SW};
+
+    assign LED  = data_bus_out[7:0];
+    assign HEX0 = display_decoder(data_bus_out[3:0]);
+    assign HEX1 = display_decoder(data_bus_out[7:4]);
+
+    drisc #(.GENERATE_CSR_CONTROLLER(1)) cpu (
+        .clock(CLOCK_50),
+        .reset(reset),
+        .data_bus_in(data_bus_in),
+        .external_interrupt(external_interrupt),
+        .timer_interrupt(timer_interrupt),
+        .software_interrupt(software_interrupt),
+        .data_bus_out(data_bus_out),
+        .address_bus(address_bus),
+        .data_size(data_size),
+        .write(write),
+        .read(read)
+    );
+
+    ram_module ram (
+        .clk(CLOCK_50),
+        .addr(address_bus[9:0]),
+        .data_in(data_bus_out),
+        .data_out(), // opcional: pode conectar ao data_bus_in se quiser leitura
+        .we(write),
+        .re(read)
+    );
+
+    // Módulo decodificador IR
+    ir_decoder ir (
+        .clk(CLOCK_50),
+        .reset(reset),
+        .ir_signal(IR_IN),
+        .code_out(ir_code),
+        .code_ready(ir_ready)
+    );
+
+    function logic [6:0] display_decoder(input logic [3:0] value);
+        case (value)
+            4'h0: display_decoder = 7'b1000000;
+            4'h1: display_decoder = 7'b1111001;
+            4'h2: display_decoder = 7'b0100100;
+            4'h3: display_decoder = 7'b0110000;
+            4'h4: display_decoder = 7'b0011001;
+            4'h5: display_decoder = 7'b0010010;
+            4'h6: display_decoder = 7'b0000010;
+            4'h7: display_decoder = 7'b1111000;
+            4'h8: display_decoder = 7'b0000000;
+            4'h9: display_decoder = 7'b0010000;
+            default: display_decoder = 7'b1111111;
+        endcase
+    endfunction
+
+endmodule

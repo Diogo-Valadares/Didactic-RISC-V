@@ -1,0 +1,16 @@
+Fitter Status : Successful - Thu Sep 11 15:24:25 2025
+Quartus Prime Version : 24.1std.0 Build 1077 03/04/2025 SC Standard Edition
+Revision Name : DRISC-V_TOP
+Top-level Entity Name : DRISCV_TOP
+Family : Cyclone IV E
+Device : EP4CE6E22C8
+Timing Models : Final
+Total logic elements : 6,141 / 6,272 ( 98 % )
+    Total combinational functions : 5,666 / 6,272 ( 90 % )
+    Dedicated logic registers : 2,457 / 6,272 ( 39 % )
+Total registers : 2457
+Total pins : 24 / 92 ( 26 % )
+Total virtual pins : 0
+Total memory bits : 135,808 / 276,480 ( 49 % )
+Embedded Multiplier 9-bit elements : 24 / 30 ( 80 % )
+Total PLLs : 1 / 2 ( 50 % )

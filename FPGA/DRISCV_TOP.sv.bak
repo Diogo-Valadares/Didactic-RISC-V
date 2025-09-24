@@ -1,0 +1,116 @@
+module DRISCV_TOP(
+    input          CLOCK_50,
+    input   [4:0]  KEY,
+    output  [3:0]  LEDG,
+    output  [7:0]  SEG,
+    output  [3:0]  DIG,
+    output         BEEP
+ //   output         UART_TXD,
+ //   input          UART_RXD,
+ //   output         SCL,
+ //   inout          SDA,
+ //   output         I2C_SCL,
+ //   inout          I2C_SDA,
+ //   input          PS2_CLK,
+ //   input          PS2_DAT,
+ //   input          IRDA_RXD,
+ //   output         VGA_HS,
+ //   output         VGA_VS,
+ //   output         VGA_B,
+ //   output         VGA_G,
+ //   output         VGA_R,
+ //   output         LCD_RS,
+ //   output         LCD_RW,
+ //   output         LCD_EN,
+ //   output  [7:0]  LCD_DATA,
+ //   inout  [15:0] SDRAM_DQ,
+ //   output  [11:0] SDRAM_A,
+ //   output         SDRAM_BS0,
+ //   output         SDRAM_BS1,
+ //   output         SDRAM_LDQM,
+ //   output         SDRAM_UDQM,
+ //   output         SDRAM_CKE,
+ //   output         SDRAM_CLK,
+ //   output         SDRAM_CS,
+ //   output         SDRAM_RAS,
+ //   output         SDRAM_CAS,
+ //   output         SDRAM_WE
+);
+
+    parameter ADDR_WIDTH = 12;
+	 
+    parameter CSR_ENABLED = 0;
+
+    wire [31:0] data_bus;
+    wire external_interrupt = 0;
+    wire timer_interrupt;
+    wire software_interrupt;
+    wire [31:0] data_bus_drisc;
+    wire [1:0] data_size;
+	 wire [3:0] byte_enable = {data_size[1], data_size[1], data_size[0], 1'b1};
+    wire write;
+    wire read;
+	 wire clock;
+    wire [31:0] address_bus;
+	 
+    assign data_bus = write ? data_bus_drisc :
+                      read_ram ? ram_data_out :
+                      32'h0;
+							 
+   clock_divider clk_div(
+		.inclk0(CLOCK_50),
+		.c0(clock)
+	);
+//The processor
+    drisc #(
+        .GENERATE_CSR_CONTROLLER(CSR_ENABLED)
+    ) drisc_processor (
+        .clock(clock),
+        .reset(~KEY[3]),
+        .data_bus_in(data_bus),
+        .external_interrupt(external_interrupt),
+        .timer_interrupt(timer_interrupt),
+        .software_interrupt(software_interrupt),
+        .data_bus_out(data_bus_drisc),
+        .address_bus(address_bus),
+        .data_size(data_size),
+        .write(write),
+        .read(read)
+    );
+
+
+	 
+//IO devices
+    wire is_ram_address = (address_bus < 32'h00fffffc);
+    wire write_ram = write && is_ram_address;
+    wire read_ram = read && is_ram_address;
+	 
+    ram_custom ram_inst (
+    .address(address_bus[ADDR_WIDTH-1:0]),
+    .byteena(byte_enable),
+    .clock(clock),                       
+    .data(data_bus),                        
+    .wren(write_ram),                        
+    .q(ram_data_out)                            
+	);
+	 
+
+	wire write_disp = write && address_bus == 32'h01000000;
+
+	hex_display_controller #(
+		 .REFRESH_DIV(2_000),      // ~500 Hz refresh at 1 MHz
+		 .TOGGLE_DIV (2_000_000)   // toggle high/low half every 2 s
+	) disp0 (
+		 .clk       (clock),
+		 .write     (write_disp),
+		 .data_in   (data_bus),
+		 .seg       (SEG),
+		 .digit_sel (DIG)
+	);
+	 
+    // Debug outputs
+    assign LEDG = ~address_bus[3:0];
+	 
+    assign BEEP = 1'b0;
+    
+endmodule

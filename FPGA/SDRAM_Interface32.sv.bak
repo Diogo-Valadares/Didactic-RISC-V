@@ -1,0 +1,120 @@
+module SDRAM_Interface32 (
+    input  logic        clock,
+    input  logic        write,
+    input  logic        read,
+    input  logic [1:0]  data_size,   // 00 = byte, 01 = short, 1x = word
+    input  logic [31:0] address,
+    inout  logic [31:0] data,
+
+    // SDRAM signals
+    inout  logic [15:0] SDRAM_DQ,
+    output logic [11:0] SDRAM_A,
+    output logic        SDRAM_BS0,
+    output logic        SDRAM_BS1,
+    output logic        SDRAM_LDQM,
+    output logic        SDRAM_UDQM,
+    output logic        SDRAM_CKE,
+    output logic        SDRAM_CLK,
+    output logic        SDRAM_CS,
+    output logic        SDRAM_RAS,
+    output logic        SDRAM_CAS,
+    output logic        SDRAM_WE
+);
+
+    typedef enum logic [1:0] {
+        IDLE,
+        READ_LO,
+        READ_HI,
+        WRITE_LO,
+        WRITE_HI
+    } state_t;
+
+    state_t state;
+    logic [15:0] temp_lo;
+    logic [15:0] temp_hi;
+    logic [31:0] addr_reg;
+    logic [1:0]  size_reg;
+    logic        write_reg;
+
+    // Endereço SDRAM
+    assign SDRAM_A   = addr_reg[13:2]; // simplificado
+    assign SDRAM_BS0 = ~addr_reg[14];
+    assign SDRAM_BS1 =  addr_reg[14];
+
+    // Clock enable e chip select sempre ativos
+    assign SDRAM_CKE = 1;
+    assign SDRAM_CS  = 0;
+
+    // Estado principal
+    always_ff @(posedge clock) begin
+        case (state)
+            IDLE: begin
+                if (read) begin
+                    addr_reg  <= address;
+                    state     <= READ_LO;
+                end else if (write) begin
+                    addr_reg  <= address;
+                    size_reg  <= data_size;
+                    write_reg <= 1;
+                    state     <= WRITE_LO;
+                end
+            end
+
+            // Leitura de 32 bits
+            READ_LO: begin
+                SDRAM_WE   <= 0;
+                SDRAM_RAS  <= 0;
+                SDRAM_CAS  <= 0;
+                temp_lo    <= SDRAM_DQ;
+                state      <= READ_HI;
+            end
+            READ_HI: begin
+                addr_reg   <= addr_reg + 2; // próximo endereço
+                SDRAM_RAS  <= 0;
+                SDRAM_CAS  <= 0;
+                temp_hi    <= SDRAM_DQ;
+                data       <= {temp_hi, temp_lo};
+                state      <= IDLE;
+            end
+
+            // Escrita com controle de tamanho
+            WRITE_LO: begin
+                SDRAM_WE   <= 1;
+                SDRAM_RAS  <= 0;
+                SDRAM_CAS  <= 0;
+                case (size_reg)
+                    2'b00: begin // byte
+                        SDRAM_DQ   <= address[1] ? data[15:8] : data[7:0];
+                        SDRAM_LDQM <= ~address[1];
+                        SDRAM_UDQM <=  address[1];
+                        state      <= IDLE;
+                    end
+                    2'b01: begin // short
+                        SDRAM_DQ   <= data[15:0];
+                        SDRAM_LDQM <= 1;
+                        SDRAM_UDQM <= 1;
+                        state      <= IDLE;
+                    end
+                    default: begin // word
+                        SDRAM_DQ   <= data[15:0];
+                        SDRAM_LDQM <= 1;
+                        SDRAM_UDQM <= 1;
+                        state      <= WRITE_HI;
+                    end
+                endcase
+            end
+
+            WRITE_HI: begin
+                addr_reg   <= addr_reg + 2;
+                SDRAM_DQ   <= data[31:16];
+                SDRAM_LDQM <= 1;
+                SDRAM_UDQM <= 1;
+                SDRAM_WE   <= 1;
+                SDRAM_RAS  <= 0;
+                SDRAM_CAS  <= 0;
+                state      <= IDLE;
+            end
+        endcase
+    end
+
+endmodule

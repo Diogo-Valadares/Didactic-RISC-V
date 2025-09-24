@@ -1,0 +1,97 @@
+{
+	"partitions" : [
+		{
+			"name" : "Top",
+			"pins" : [
+				{
+					"name" : "LEDG[0]",
+					"strict" : false
+				},
+				{
+					"name" : "LEDG[2]",
+					"strict" : false
+				},
+				{
+					"name" : "LEDG[3]",
+					"strict" : false
+				},
+				{
+					"name" : "SEG[0]",
+					"strict" : false
+				},
+				{
+					"name" : "SEG[1]",
+					"strict" : false
+				},
+				{
+					"name" : "SEG[2]",
+					"strict" : false
+				},
+				{
+					"name" : "SEG[3]",
+					"strict" : false
+				},
+				{
+					"name" : "SEG[4]",
+					"strict" : false
+				},
+				{
+					"name" : "SEG[5]",
+					"strict" : false
+				},
+				{
+					"name" : "SEG[6]",
+					"strict" : false
+				},
+				{
+					"name" : "SEG[7]",
+					"strict" : false
+				},
+				{
+					"name" : "DIG[0]",
+					"strict" : false
+				},
+				{
+					"name" : "DIG[1]",
+					"strict" : false
+				},
+				{
+					"name" : "DIG[2]",
+					"strict" : false
+				},
+				{
+					"name" : "DIG[3]",
+					"strict" : false
+				},
+				{
+					"name" : "IRDA_RXD",
+					"strict" : false
+				},
+				{
+					"name" : "CLOCK_50",
+					"strict" : false
+				},
+				{
+					"name" : "KEY[3]",
+					"strict" : false
+				},
+				{
+					"name" : "altera_reserved_tms",
+					"strict" : false
+				},
+				{
+					"name" : "altera_reserved_tck",
+					"strict" : false
+				},
+				{
+					"name" : "altera_reserved_tdi",
+					"strict" : false
+				},
+				{
+					"name" : "altera_reserved_tdo",
+					"strict" : false
+				}
+			]
+		}
+	]
+}

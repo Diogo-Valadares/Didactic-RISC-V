@@ -1,0 +1,32 @@
+# Clock constraints
+create_clock -name CLOCK_50 -period 20.000 [get_ports {CLOCK_50}]
+
+set_clock_uncertainty -setup 0.5 [all_clocks]
+set_clock_uncertainty -hold 0.2 [all_clocks]
+
+# Generated clock for processor
+create_generated_clock -name proc_clock -source [get_ports CLOCK_50] [get_pins {processor_clock_gate|gated_clock}]
+
+# SDRAM clock output
+create_clock -name SDRAM_CLK -period 20.000 [get_ports {SDRAM_CLK}]
+
+# Input/output delays
+set_input_delay -clock CLOCK_50 5 [all_inputs]
+set_output_delay -clock CLOCK_50 5 [all_outputs]
+
+# False paths for asynchronous signals
+set_false_path -from [get_ports {UART_RXD PS2_CLK PS2_DAT IRDA_RXD KEY[*]}]
+set_false_path -to [get_ports {LEDG[*] SEG[*] DIG BEEP UART_TXD SCL I2C_SCL VGA_*}]
+
+# Multicycle paths for SDRAM interface
+set_multicycle_path -setup 4 -through [get_cells {sdram_if|*}]
+set_multicycle_path -hold 3 -through [get_cells {sdram_if|*}]
+
+# Clock domain crossings
+set_clock_groups -asynchronous \
+    -group {CLOCK_50 proc_clock} \
+    -group {SDRAM_CLK}
+
+# Timing exceptions for memory interface
+set_false_path -from [get_registers {sdram_if|saved_addr*}] -to [get_ports {SDRAM_A*}]
+set_false_path -from [get_registers {sdram_if|data_out_reg*}] -to [get_ports {SDRAM_DQ*}]

@@ -1,0 +1,6 @@
+Warning (10273): Verilog HDL warning at DRISCV_TOP.sv(90): extended using "x" or "z" File: C:/Users/diogo/AppData/Local/quartus/DRISCV_TOP.sv Line: 90
+Warning (10268): Verilog HDL information at register_file.sv(24): always construct contains both blocking and non-blocking assignments File: C:/Users/diogo/AppData/Local/quartus/register_file.sv Line: 24
+Warning (10273): Verilog HDL warning at DRISC_SDRAM_INTERFACE.sv(98): extended using "x" or "z" File: C:/Users/diogo/AppData/Local/quartus/output_files/DRISC_SDRAM_INTERFACE.sv Line: 98
+Warning (10273): Verilog HDL warning at DRISC_SDRAM_INTERFACE.sv(101): extended using "x" or "z" File: C:/Users/diogo/AppData/Local/quartus/output_files/DRISC_SDRAM_INTERFACE.sv Line: 101
+Warning (10273): Verilog HDL warning at RAM.sv(18): extended using "x" or "z" File: C:/Users/diogo/AppData/Local/quartus/RAM.sv Line: 18
+Warning (10273): Verilog HDL warning at real_time_clock.sv(19): extended using "x" or "z" File: C:/Users/diogo/Documents/GitHub/Didactic-RISC-I/DRISC Programs/mif/real_time_clock.sv Line: 19

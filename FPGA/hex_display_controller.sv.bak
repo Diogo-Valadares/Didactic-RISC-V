@@ -1,0 +1,95 @@
+module hex_display_controller #(
+    // Refresh rate divider: clk toggles digit every REFRESH_DIV cycles
+    // At 1 MHz clk, REFRESH_DIV=2000 → 500 Hz multiplex rate
+    parameter integer REFRESH_DIV = 2_000,
+    // Toggle divider: show_high flips every TOGGLE_DIV cycles
+    // At 1 MHz clk, TOGGLE_DIV=2_000_000 → flip every 2 s
+    parameter integer TOGGLE_DIV  = 2_000_000
+)(
+    input  wire        clk,        // 1 MHz display clock
+    input  wire        write,      // pulse to latch data_in
+    input  wire [31:0] data_in,    // data bus input
+
+    output reg  [7:0]  seg,        // {dot, g, f, e, d, c, b, a}
+    output reg  [3:0]  digit_sel   // active-low digit enables
+);
+
+    //--- Storage and control registers ---
+    reg [31:0] stored_value;
+    reg        show_high;
+    reg [21:0] toggle_cnt;
+    reg [11:0] refresh_cnt;
+    reg  [1:0] digit_idx;
+
+    // Latch on any asserted write
+    always @(posedge clk) begin
+        if (write)
+            stored_value <= data_in;
+    end
+
+    // Toggle between low and high halfwords every TOGGLE_DIV cycles
+    always @(posedge clk) begin
+        if (toggle_cnt == TOGGLE_DIV-1) begin
+            toggle_cnt  <= 0;
+            show_high   <= ~show_high;
+        end else begin
+            toggle_cnt <= toggle_cnt + 1;
+        end
+    end
+
+    // Cycle digit index at REFRESH_DIV → time-multiplex 4 digits
+    always @(posedge clk) begin
+        if (refresh_cnt == REFRESH_DIV-1) begin
+            refresh_cnt <= 0;
+            digit_idx   <= digit_idx + 1;
+        end else begin
+            refresh_cnt <= refresh_cnt + 1;
+        end
+    end
+
+    //--- Helper: select which halfword to display ---
+    wire [15:0] half_value = show_high 
+                             ? stored_value[31:16] 
+                             : stored_value[15:0];
+
+    //--- Extract current nibble ---
+    wire [3:0] current_nibble = half_value >> (digit_idx * 4);
+
+    //--- 7-segment lookup (abcdefg, active-high) ---
+    function [6:0] hex_to_7seg;
+        input [3:0] h;
+        case (h)
+            4'h0: hex_to_7seg = 7'b0111111;
+            4'h1: hex_to_7seg = 7'b0000110;
+            4'h2: hex_to_7seg = 7'b1011011;
+            4'h3: hex_to_7seg = 7'b1001111;
+            4'h4: hex_to_7seg = 7'b1100110;
+            4'h5: hex_to_7seg = 7'b1101101;
+            4'h6: hex_to_7seg = 7'b1111101;
+            4'h7: hex_to_7seg = 7'b0000111;
+            4'h8: hex_to_7seg = 7'b1111111;
+            4'h9: hex_to_7seg = 7'b1101111;
+            4'hA: hex_to_7seg = 7'b1110111;
+            4'hB: hex_to_7seg = 7'b1111100;
+            4'hC: hex_to_7seg = 7'b0111001;
+            4'hD: hex_to_7seg = 7'b1011110;
+            4'hE: hex_to_7seg = 7'b1111001;
+            4'hF: hex_to_7seg = 7'b1110001;
+            default: hex_to_7seg = 7'b0000000;
+        endcase
+    endfunction
+
+    //--- Drive outputs ---
+    always @(*) begin
+        // 1) Segment data: [7]=dot, [6:0]=abcdefg
+        // dot = 1 only when showing high half on MS digit (digit_idx=3)
+        seg[6:0] = hex_to_7seg(current_nibble);
+        seg[7]   = (show_high && (digit_idx == 2));  
+        // Note: if your board’s MS digit is digit_idx==3, change to (digit_idx==3)
+
+        // 2) Digit enable (active-low)
+        // digit_idx=0 → rightmost, =3 → leftmost
+        digit_sel = ~(4'b0001 << digit_idx);
+    end
+
+endmodule

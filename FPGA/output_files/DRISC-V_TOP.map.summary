@@ -1,0 +1,14 @@
+Analysis & Synthesis Status : Successful - Thu Sep 11 15:09:50 2025
+Quartus Prime Version : 24.1std.0 Build 1077 03/04/2025 SC Standard Edition
+Revision Name : DRISC-V_TOP
+Top-level Entity Name : DRISCV_TOP
+Family : Cyclone IV E
+Total logic elements : 7,107
+    Total combinational functions : 5,664
+    Dedicated logic registers : 2,457
+Total registers : 2457
+Total pins : 24
+Total virtual pins : 0
+Total memory bits : 135,808
+Embedded Multiplier 9-bit elements : 24
+Total PLLs : 1

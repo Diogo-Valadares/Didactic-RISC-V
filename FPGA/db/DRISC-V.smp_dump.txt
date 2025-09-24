@@ -1,0 +1,7 @@
+
+State Machine - |DRISCV_TOP|irReceiver:ir|current_state
+Name current_state.FINISH current_state.DECODING current_state.START current_state.IDLE 
+current_state.IDLE 0 0 0 0 
+current_state.START 0 0 1 1 
+current_state.DECODING 0 1 0 1 
+current_state.FINISH 1 0 0 1 

@@ -1,0 +1,140 @@
+module clock_gate (
+    input  logic clk_in,
+    input  logic enable,
+    output logic clk_out
+);
+    logic gated_clock;
+    always_latch begin
+        if (!clk_in) 
+            gated_clock <= enable & clk_in;
+    end
+    assign clk_out = gated_clock;
+endmodule
+
+module sdram_interface (
+    input  logic        clock,
+    input  logic        reset,
+    // Processor Interface
+    input  logic        read,
+    input  logic        write,
+    input  logic [1:0]  data_size,
+    input  logic [23:0] address,
+    input  logic [31:0] data_in,
+    output logic [31:0] data_out,
+    output logic        proc_clock_enable,  // Controls processor clock
+    // SDRAM Controller Interface
+    output logic        sdram_rd_req,
+    output logic        sdram_wr_req,
+    output logic [22:0] sdram_addr,
+    output logic [15:0] sdram_data_out,
+    output logic [1:0]  sdram_dqm,
+    input  logic [15:0] sdram_data_in,
+    input  logic        sdram_ready
+);
+
+    typedef enum {
+        IDLE,
+        READ_WORD0, READ_WORD1, READ_DONE,
+        WRITE_BYTE, WRITE_HALF, WRITE_WORD0, WRITE_WORD1
+    } state_t;
+
+    state_t state;
+    logic [31:0] read_buffer;
+    logic [22:0] base_addr;
+    logic [1:0]  byte_offset;
+
+    assign base_addr = address[23:1];
+    assign byte_offset = address[1:0];
+    assign proc_clock_enable = (state == IDLE);
+
+    always_ff @(posedge clock or posedge reset) begin
+        if (reset) begin
+            state <= IDLE;
+            sdram_rd_req <= 0;
+            sdram_wr_req <= 0;
+            read_buffer <= 0;
+        end else begin
+            case (state)
+                IDLE: begin
+                    if (read && !write) begin
+                        state <= READ_WORD0;
+                        sdram_addr <= base_addr;
+                        sdram_rd_req <= 1;
+                    end else if (write) begin
+                        case (data_size)
+                            2'b00: state <= WRITE_BYTE;
+                            2'b01: state <= WRITE_HALF;
+                            2'b11: state <= WRITE_WORD0;
+                            default: state <= IDLE;
+                        endcase
+                        sdram_addr <= base_addr;
+                    end
+                end
+
+                READ_WORD0: begin
+                    if (sdram_ready) begin
+                        read_buffer[15:0] <= sdram_data_in;
+                        sdram_addr <= base_addr + 1;
+                        state <= READ_WORD1;
+                        sdram_rd_req <= 0;
+                    end
+                end
+                
+                READ_WORD1: begin
+                    if (sdram_ready) begin
+                        read_buffer[31:16] <= sdram_data_in;
+                        state <= READ_DONE;
+                    end
+                end
+                
+                READ_DONE: begin
+                    data_out <= read_buffer;
+                    state <= IDLE;
+                end
+
+                WRITE_BYTE: begin
+                    sdram_dqm <= (byte_offset[0]) ? 2'b10 : 2'b01;
+                    sdram_data_out <= (byte_offset[0]) ? 
+                                      {data_in[7:0], 8'b0} : 
+                                      {8'b0, data_in[7:0]};
+                    sdram_wr_req <= 1;
+                    if (sdram_ready) begin
+                        sdram_wr_req <= 0;
+                        state <= IDLE;
+                    end
+                end
+
+                WRITE_HALF: begin
+                    sdram_dqm <= 2'b00;
+                    sdram_data_out <= data_in[15:0];
+                    sdram_wr_req <= 1;
+                    if (sdram_ready) begin
+                        sdram_wr_req <= 0;
+                        state <= IDLE;
+                    end
+                end
+
+                WRITE_WORD0: begin
+                    sdram_dqm <= 2'b00;
+                    sdram_data_out <= data_in[15:0];
+                    sdram_wr_req <= 1;
+                    if (sdram_ready) begin
+                        sdram_wr_req <= 0;
+                        state <= WRITE_WORD1;
+                        sdram_addr <= base_addr + 1;
+                    end
+                end
+
+                WRITE_WORD1: begin
+                    sdram_dqm <= 2'b00;
+                    sdram_data_out <= data_in[31:16];
+                    sdram_wr_req <= 1;
+                    if (sdram_ready) begin
+                        sdram_wr_req <= 0;
+                        state <= IDLE;
+                    end
+                end
+            endcase
+        end
+    end
+endmodule
