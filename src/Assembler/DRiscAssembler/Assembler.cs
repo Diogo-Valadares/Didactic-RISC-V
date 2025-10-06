@@ -403,7 +403,7 @@ public class Assembler
                 break;
             case ".string":
                 hasLabel = parts[1][0] != '"';
-                int charCount = string.Join(' ', parts[(hasLabel ? 2 : 1)..^0])[1..^1].Length;
+                int charCount = string.Join(' ', parts[(hasLabel ? 2 : 1)..^0])[1..^1].Replace("\\n", "\n").Length;
                 size = ((charCount + 3) / 4) + (charCount % 4 == 0 ? 1 : 0);
                 break;
             default:

@@ -243,7 +243,7 @@ internal static class Instruction
         {".STRING", (p) => {
             List<Func<uint>> generators = [];
             bool hasLabel = p[0][0] != '"';
-            var str = string.Join(' ', p[(hasLabel ? 1 : 0)..^0])[1..^1];
+            var str = string.Join(' ', p[(hasLabel ? 1 : 0)..^0])[1..^1].Replace("\\n","\n");
             int i;
             for(i = 0; i + 3 < str.Length; i += 4)
             {
@@ -308,12 +308,17 @@ internal static class Instruction
     public static HashSet<string> PCRelativeInstructions =>
     [
         "BEQ",
+        "BEQZ",
         "BNE",
+        "BNEZ",
         "BLT",
+        "BLTZ",
         "BGT",
+        "BGTZ",
         "BLTU",
         "BGTU",
         "BLE",
+        "BGEZ",
         "BGE",
         "BLEU",
         "BGEU",

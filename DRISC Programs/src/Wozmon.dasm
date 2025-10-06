@@ -1,0 +1,536 @@
+// Wozmon for RISC-V (32-bit)
+// Adapted from x86-64 version by Ian Seyler
+// Converted for RISC-V with M and U extensions
+
+// Terminal memory-mapped I/O addresses (can be changed later)
+.define TERMINAL_BASE 0x01100000  // Base address for terminal
+.define KEYBOARD_BASE 0x00ffffff  // Base address for terminal
+.define INPUT_BUFFER_SIZE 256
+
+// Constants
+.define BACKSPACE 0x08
+.define RETURN 0x0A
+.define ESC 0x1B
+.define PROMPT 0x3E
+
+:_start
+    // Initialize stack pointer (adjust based on your memory map)
+    li sp 0x10000
+    
+    // Print welcome message
+    la a0 .welcome_msg
+    call :print_string
+    
+:main_loop
+    // Print prompt
+    li a0 PROMPT
+    call :print_char
+    li a0 0x20
+    call :print_char
+    
+    // Read and process command line
+    la a0 .input_buffer
+    li a1 INPUT_BUFFER_SIZE
+    call :read_line
+
+    // Process the command
+    la a0 .input_buffer
+    call :process_command
+    
+    j :main_loop
+
+// Read a line from terminal into buffer
+// a0 = buffer pointer a1 = buffer size
+:read_line
+    addi sp sp -12
+    sw ra sp 0
+    sw s0 sp 4  // buffer pointer
+    sw s1 sp 8  // buffer counter
+    
+    mv s0 a0     // Save buffer pointer
+    li s1 0      // Character counter
+    
+:read_loop
+    call :read_char
+    
+    // Check for return/enter
+    li t0 RETURN
+    beq a0 t0 :read_done
+    
+    // Check for backspace
+    li t0 BACKSPACE
+    beq a0 t0 :handle_backspace
+    
+    // Check if buffer is full
+    bge s1 a1 :read_loop
+    
+    // Store character in buffer
+    add t1 s0 s1
+    sb a0 t1 0
+    addi s1 s1 1
+    
+    // Echo character
+    call :print_char
+    j :read_loop
+
+:handle_backspace
+    beqz s1 :read_loop  // No characters to delete
+    
+    // Delete character from buffer
+    addi s1 s1 -1
+    
+    // Echo backspace sequence
+    li a0 BACKSPACE
+    call :print_char
+    li a0 0x20
+    call :print_char
+    li a0 BACKSPACE
+    call :print_char
+    
+    j :read_loop
+
+:read_done
+    // Null terminate the string
+    add t1 s0 s1
+    sb zero t1 0
+    
+    // Print newline
+    li a0 0x0A
+    call :print_char
+    
+    lw ra sp 0
+    lw s0 sp 4
+    lw s1 sp 8
+    addi sp sp 12
+    ret
+#region Process command
+// Process command from input buffer
+// a0 = command buffer pointer
+:process_command
+    addi sp sp -12
+    sw ra sp 0
+    sw s0 sp 4
+    sw s1 sp 8
+	
+    mv s0 a0
+	
+    // Skip leading whitespace
+:skip_whitespace
+    lb t0 s0 0
+    beqz t0 :process_done
+    li t1 0x20
+    bgt t0 t1 :check_command  // ASCII > ' ' means not whitespace
+    addi s0 s0 1
+    j :skip_whitespace
+
+:check_command
+    // Check for 'R' command (Run) - lowercase 'r'
+    li t0 0x72
+    lb t1 s0 0
+    beq t1 t0 :cmd_run
+    
+    // Check for 'L' command (List) - lowercase 'l'  
+    li t0 0x6C
+    beq t1 t0 :cmd_list
+    
+    // Default: treat as memory examine/modify
+    call :cmd_memory
+    
+    j :process_done
+
+:cmd_run
+    // Parse address after 'R'
+    addi s0 s0 1  // Skip 'R'
+    call :skip_whitespace_cmd
+    
+    // Parse hex address
+    call :parse_hex
+    beqz a1 :run_error  // If no valid address parsed
+    
+    // a0 contains the address to run
+    mv a1 a0
+    la a0 .run_msg
+    call :print_string
+    
+    // Print the address we're jumping to
+    mv a0 a1
+    call :print_hex_word
+    li a0 0x0A  // newline
+    call :print_char
+    
+    jr a1
+    
+    j :process_done
+
+:run_error
+    la a0 .run_error_msg
+    call :print_string
+    j :process_done
+
+:cmd_list
+    // Parse starting address after 'L'
+    addi s0 s0 1  // Skip 'L'
+    call :skip_whitespace_cmd
+    
+    // Parse hex address or use default
+    call :parse_hex
+    bnez a1 :list_has_address
+    li a0 0x0000  // Default start address
+    
+:list_has_address
+    mv s1 a0  // Starting address
+    
+    // List 16 lines of memory
+    li t2 16   // Line counter
+    
+:list_loop
+    // Print address
+    mv a0 s1
+    call :print_hex_word
+    li a0 0x3A  // colon
+    call :print_char
+    li a0 0x20  // space
+    call :print_char
+    
+    // Print 16 bytes in hex
+    li t3 16    // Bytes per line
+    mv a2 s1    // Current address
+    
+:list_bytes_loop
+    lb a0 a2 0  // Load byte from memory
+    call :print_hex_byte
+    li a0 0x20  // space
+    call :print_char
+    
+    addi a2 a2 1
+    addi t3 t3 -1
+    bnez t3 :list_bytes_loop
+    
+    // Print newline
+    li a0 0x0A
+    call :print_char
+    
+    addi s1 s1 16  // Next line
+    addi t2 t2 -1
+    bnez t2 :list_loop
+    
+    j :process_done
+
+:cmd_memory
+    // Parse address
+    call :parse_hex
+    beqz a1 :memory_error
+    
+    mv s1 a0  // Save address
+    
+    // Check if there's a colon for modify operation
+    call :skip_whitespace_cmd
+    lb t0 s0 0
+    li t1 0x3A  // colon
+    bne t0 t1 :memory_examine
+    
+:memory_modify
+    // Skip colon
+    addi s0 s0 1
+    
+    // Parse and store bytes
+    mv a2 s1  // Current address
+    
+:modify_loop
+    call :skip_whitespace_cmd
+    lb t0 s0 0
+    beqz t0 :modify_done  // End of input
+    
+    // Parse hex byte
+    call :parse_hex_byte
+    beqz a1 :modify_done  // Invalid hex
+    
+    // Store byte to memory
+    sb a0 a2 0
+    addi a2 a2 1
+    
+    j :modify_loop
+    
+:modify_done
+    j :process_done
+
+:memory_examine
+    // Print address and byte value
+    mv a0 s1
+    call :print_hex_word
+    li a0 0x3A  // colon
+    call :print_char
+    li a0 0x20  // space
+    call :print_char
+    
+    lb a0 s1 0  // Load byte from address
+    call :print_hex_byte
+    li a0 0x0A  // newline
+    call :print_char
+    
+    j :process_done
+
+:memory_error
+    la a0 .memory_error_msg
+    call :print_string
+    j :process_done
+
+:skip_whitespace_cmd
+    lb t0 s0 0
+    beqz t0 :skip_whitespace_done
+    li t1 0x20
+    bgt t0 t1 :skip_whitespace_done
+    addi s0 s0 1
+    j :skip_whitespace_cmd
+:skip_whitespace_done
+    ret
+
+// Parse hex number from string
+// Input: s0 = string pointer
+// Output: a0 = value, a1 = success (0 = fail, 1 = success)
+:parse_hex
+    addi sp sp -12
+    sw ra sp 0
+    sw s2 sp 4
+    sw s3 sp 8
+    
+    li a0 0       // Result
+    li a1 0       // Success flag
+    li s2 0       // Digit count
+    
+:parse_hex_loop
+    lb t0 s0 0
+    beqz t0 :parse_hex_done
+    
+    // Convert character to nibble
+    call :char_to_nibble
+    bltz a2 :parse_hex_done  // Invalid character
+    
+    // Shift and add nibble
+    slli a0 a0 4
+    add a0 a0 a2
+    
+    addi s0 s0 1
+    addi s2 s2 1
+    li t0 8       // Max 8 digits for 32-bit
+    blt s2 t0 :parse_hex_loop
+
+:parse_hex_done
+    // Set success if we parsed at least one digit
+    beqz s2 :parse_hex_fail
+    li a1 1
+    
+:parse_hex_fail
+    lw ra sp 0
+    lw s2 sp 4
+    lw s3 sp 8
+    addi sp sp 12
+    ret
+
+// Parse single hex byte (2 characters)
+// Input: s0 = string pointer  
+// Output: a0 = byte, a1 = success
+:parse_hex_byte
+    addi sp sp -12
+    sw ra sp 0
+    sw s2 sp 4
+    sw a2 sp 8
+    
+    li a0 0
+    li a1 0
+    
+    // Parse first nibble
+    lb t0 s0 0
+    beqz t0 :parse_byte_done
+    call :char_to_nibble
+    bltz a2 :parse_byte_done
+    slli a0 a0 4
+    add a0 a0 a2
+    addi s0 s0 1
+    
+    // Parse second nibble
+    lb t0 s0 0
+    beqz t0 :parse_byte_single
+    call :char_to_nibble
+    bltz a2 :parse_byte_single
+    slli a0 a0 4
+    add a0 a0 a2
+    addi s0 s0 1
+    li a1 1
+    j :parse_byte_done
+    
+:parse_byte_single
+    // Only one nibble parsed, that's ok
+    li a1 1
+    
+:parse_byte_done
+    lw a2 sp 8
+    lw ra sp 0
+    lw s2 sp 4
+    addi sp sp 12
+    ret
+
+// Convert character to 4-bit nibble
+// Input: t0 = character
+// Output: a2 = nibble (-1 if invalid)
+:char_to_nibble
+    li a2 -1
+    
+    // Check '0'-'9'
+    li t1 0x30
+    blt t0 t1 :char_check_upper
+    li t1 0x39  
+    bgt t0 t1 :char_check_upper
+    addi a2 t0 0xFFD0
+    ret
+    
+:char_check_upper
+    // Check 'A'-'F'
+    li t1 0x41
+    blt t0 t1 :char_check_lower
+    li t1 0x46
+    bgt t0 t1 :char_check_lower
+    addi a2 t0 0xFFC9  // 'A' - 10
+    ret
+    
+:char_check_lower  
+    // Check 'a'-'f'
+    li t1 0x61
+    blt t0 t1 :char_done
+    li t1 0x66
+    bgt t0 t1 :char_done
+    addi a2 t0 0xFFA9  // 'a' - 10
+    
+:char_done
+    ret
+
+// Print byte as hex
+// Input: a0 = byte
+:print_hex_byte
+    addi sp sp -12
+    sw ra sp 0
+    sw s0 sp 4
+    sw s1 sp 8
+    
+    mv s0 a0
+    
+    // Print upper nibble
+    srli a0 s0 4
+	andi a0 a0 0x0F
+    call :nibble_to_hex
+    call :print_char
+    
+    // Print lower nibble  
+    mv a0 s0
+    andi a0 a0 0x0F
+    call :nibble_to_hex
+    call :print_char
+    
+    lw ra sp 0
+    lw s0 sp 4
+    lw s1 sp 8
+    addi sp sp 12
+    ret
+
+// Print word as hex (32-bit)
+// Input: a0 = word  
+:print_hex_word
+    addi sp sp -12
+    sw ra sp 0
+    sw s0 sp 4
+    sw s1 sp 8
+    
+    mv s0 a0
+    
+    // Print 8 hex digits
+    li s1 28  // Shift amount for first digit
+    
+:hex_word_loop
+    bltz s1 :hex_word_done
+    srl a0 s0 s1
+    andi a0 a0 0x0F
+    call :nibble_to_hex
+    call :print_char
+    addi s1 s1 -4
+    j :hex_word_loop
+    
+:hex_word_done
+    lw ra sp 0
+    lw s0 sp 4
+    lw s1 sp 8
+    addi sp sp 12
+    ret
+
+// Convert nibble to hex character
+// Input: a0 = nibble (0-15)
+// Output: a0 = hex character
+:nibble_to_hex
+    li t0 10
+    bge a0 t0 :nibble_letter
+    addi a0 a0 0x30  // '0'-'9'
+    ret
+:nibble_letter
+    addi a0 a0 0x37  // 'A'-'F' (0x41 - 10)
+    ret
+
+:process_done
+    lw ra sp 0
+    lw s0 sp 4
+    lw s1 sp 8
+    addi sp sp 12
+    ret
+#ENDREGION
+// Print null-terminated string
+// a0 = string pointer
+:print_string
+    addi sp sp -8
+    sw ra sp 0
+    sw s0 sp 4
+    
+    mv s0 a0
+    
+:print_loop
+    lb a0 s0 0
+    beqz a0 :print_done
+    call :print_char
+    addi s0 s0 1
+    j :print_loop
+
+:print_done
+    lw ra sp 0
+    lw s0 sp 4
+    addi sp sp 8
+    ret
+
+// Print single character
+// a0 = character to print
+
+//IMPORTANT, waiting was disabled because in simulation the terminal char printing is instantanious
+:print_char
+    // Output character
+    li t0 TERMINAL_BASE
+    sb a0 t0 0    
+    ret
+
+// Read single character
+// Returns: a0 = character read
+:read_char
+    li t0 KEYBOARD_BASE
+    
+:read_wait
+    lb t1 t0 0
+    bltz t1 :read_wait  // Wait for data available
+    
+    // Read character
+    mv a0 t1
+    
+    ret
+
+    .string welcome_msg "WOZMON for RISC-V\n"
+    .string list_msg "List command\n"
+    .string memory_msg "Memory command\n"
+    .string run_msg "Running at address: "
+    .string run_error_msg "Invalid address for run command\n"
+    .string memory_error_msg "Invalid memory address\n"
+
+    .word input_buffer 0x00000000
