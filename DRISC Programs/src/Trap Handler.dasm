@@ -13,7 +13,7 @@
 	csrw mscratch sp
 	li sp -64	
 	sw ra sp 0
-	sw a0 sp 4
+	sw a3 sp 4
 	sw a4 sp 8
 	sw a5 sp 16
 	
@@ -48,42 +48,237 @@
     .word :cause_ecall_from_machine_mode
 :cause_unknown
 	la a0 .cause_unknown_message
-	call :load_text
+	call :print_string
 	j 0 //unknown causes halt the system;
 :cause_instruction_address_misaligned
-	la a0 .cause_inst_addr_misaligned
 	jump :switch_end
 :cause_illegal_instruction
-	la a0 .cause_illegal_inst
 	jump :switch_end
+//The breakpoint default behavior is to print out the value of every
+//general purpose register, along with some csr;
 :cause_breakpoint
+	mv a3 a0
+	
 	la a0 .cause_breakpoint
-	//imprimir registradores talvez?
+	call :print_string	
+
+	la a0 .text_ra
+	call :print_string	
+	lw a0 sp 0			//stored at the stack in the start of the handler
+	call :print_hex_word
+	
+	la a0 .text_sp
+	call :print_string		
+	csrr a0 mscratch	//stored at scratch csr in the start of the handler
+	call :print_hex_word
+	
+	la a0 .text_gp
+	call :print_string
+	mv a0 gp
+	call :print_hex_word
+	
+	la a0 .text_tp
+	call :print_string
+	mv a0 tp
+	call :print_hex_word
+	
+	la a0 .text_t0
+	call :print_string
+	lw a0 sp 24			//stored at the stack in the start of the handler
+	call :print_hex_word
+	
+	la a0 .text_t1
+	call :print_string
+	lw a0 sp 28			//stored at the stack in the start of the handler
+	call :print_hex_word
+	
+	la a0 .text_t2
+	call :print_string
+	lw a0 sp 32			//stored at the stack in the start of the handler
+	call :print_hex_word
+	
+	la a0 .text_s0
+	call :print_string
+	mv a0 s0
+	call :print_hex_word
+	
+	la a0 .text_s1
+	call :print_string
+	mv a0 s1
+	call :print_hex_word
+	
+	la a0 .text_a0
+	call :print_string
+	mv a0 a3			//a3 contains the a0 value during this routine
+	call :print_hex_word
+	
+	la a0 .text_a1
+	call :print_string
+	mv a0 a1
+	call :print_hex_word
+	
+	la a0 .text_a2
+	call :print_string
+	mv a0 a2
+	call :print_hex_word
+	
+	la a0 .text_a3
+	call :print_string
+	lw a0 sp 4			//stored at the stack in the start of the handler
+	call :print_hex_word
+		
+	la a0 .text_a4
+	call :print_string	
+	lw a0 sp 8			//stored at the stack in the start of the handler
+	call :print_hex_word
+
+	la a0 .text_a5
+	call :print_string
+	lw a0 sp 16			//stored at the stack in the start of the handler
+	call :print_hex_word
+	
+	la a0 .text_a6
+	call :print_string
+	mv a0 a6
+	call :print_hex_word
+	
+	la a0 .text_a7
+	call :print_string
+	mv a0 a7
+	call :print_hex_word
+	
+	la a0 .text_s2
+	call :print_string
+	mv a0 s2
+	call :print_hex_word
+	
+	la a0 .text_s3
+	call :print_string
+	mv a0 s3
+	call :print_hex_word
+	
+	la a0 .text_s4
+	call :print_string
+	mv a0 s4
+	call :print_hex_word
+	
+	la a0 .text_s5
+	call :print_string
+	mv a0 s5
+	call :print_hex_word
+	
+	la a0 .text_s6
+	call :print_string
+	mv a0 s6
+	call :print_hex_word
+	
+	la a0 .text_s7
+	call :print_string
+	mv a0 s7
+	call :print_hex_word
+	
+	la a0 .text_s8
+	call :print_string
+	mv a0 s8
+	call :print_hex_word
+	
+	la a0 .text_s9
+	call :print_string
+	mv a0 s9
+	call :print_hex_word
+	
+	la a0 .text_s10
+	call :print_string
+	mv a0 s10
+	call :print_hex_word
+	
+	la a0 .text_s11
+	call :print_string
+	mv a0 s11
+	call :print_hex_word
+	
+	la a0 .text_t3
+	call :print_string
+	mv a0 t3
+	call :print_hex_word
+	
+	la a0 .text_t4
+	call :print_string
+	mv a0 t4
+	call :print_hex_word
+	
+	la a0 .text_t5
+	call :print_string
+	mv a0 t5
+	call :print_hex_word
+	
+	la a0 .text_t6
+	call :print_string
+	mv a0 t6
+	call :print_hex_word
+
+	la a0 .text_mepc
+	call :print_string
+	csrr a0 mepc
+	call :print_hex_word
+	
+	la a0 .text_mstatus
+	call :print_string
+	csrr a0 mstatus
+	call :print_hex_word
+	
+	la a0 .text_mie 
+	call :print_string
+	csrr a0 mie
+	call :print_hex_word
+	
+	la a0 .text_mip
+	call :print_string
+	csrr a0 mip
+	call :print_hex_word
+
+	mv a0 a3
 	jump :switch_end
 :cause_load_address_misaligned
-	la a0 .cause_load_addr_misaligned
 	jump :switch_end
 :cause_store_address_misaligned
-	la a0 .cause_store_addr_misaligned
 	jump :switch_end	
-:cause_ecall_from_user_mode
-	la a0 .cause_ecall_from_user_mode	
-	call :load_text
-	csrr t6 mepc
-	inc t6 4
-	jump :no_mret_return
+//In this version both ecalls allows changing the address of the interrupt handlers.
+// a0 - option argument   a1 - value argument 
+// Options:
+// 0 - prints the string contained in a1
+// 1 - Change software interrupt handler address to a1
+// 2 - Change timer interrupt handler address to a1
+// 3 - Change external interrupt handler address to a1
+:cause_ecall_from_user_mode 
 :cause_ecall_from_machine_mode
-	la a0 .cause_ecall_from_machine_mode	
+	li t0 0
+	bne a0 t0 :ecall_software
+	mv a3 a1
+	call :print_string
+	j :switch_end
+:ecall_software
+	li t0 1
+	bne a0 t0 :ecall_timer
+	sw a1 sp 36	
+	j :switch_end
+:ecall_timer
+	li t0 2
+	bne a0 t0 :ecall_external
+	sw a1 sp 40	
+	j :switch_end
+:ecall_external
+	li t0 3
+	bne a0 t0 :switch_end
+	sw a1 sp 44	
 :switch_end
-	call :load_text
-	
 	//incrementing the mepc so we don't return to the broken instruction
 	csrr t0 mepc
 	inc t0 4
 	csrw mepc t0
 	
 	lw ra sp 0
-	lw a0 sp 4
+	lw a3 sp 4
 	lw a4 sp 8
 	lw a5 sp 16
 	
@@ -93,43 +288,149 @@
 	csrr sp mscratch
 	mret
 	
-:no_mret_return
-	lw ra sp 0
-	lw a0 sp 4
-	lw a4 sp 8
-	lw a5 sp 16
+:machine_software_interrupt
+	csrw mscratch sp
+	li sp -64 
+	sw t0 sp 0
+	sw ra sp 4
 	
-	lw t0 sp 24
-	lw t1 sp 28
-	lw t2 sp 32
+	lw t0 sp 36
+	jalr ra t0 0
+	
+	lw t0 sp 0
+	lw ra sp 4	
 	csrr sp mscratch
-	jr t6 0
+	mret
+:machine_timer_interrupt
+	csrw mscratch sp
+	li sp -64 
+	sw t0 sp 0
+	sw ra sp 4
 	
+	lw t0 sp 40
+	jalr ra t0 0
 	
-//print(char[a0])
-:load_text 
+	lw t0 sp 0
+	lw ra sp 4	
+	csrr sp mscratch
+	mret
+	
+:machine_external_interrupt
+	csrw mscratch sp
+	li sp -64 
+	sw t0 sp 0
+	sw ra sp 4
+	
+	lw t0 sp 44
+	jalr ra t0 0
+	
+	lw t0 sp 0
+	lw ra sp 4	
+	csrr sp mscratch
+	mret
+	
+// Print string
+// Input: a0 = string pointer  
+:print_string 
 	mv t0 a0 //t0 = string address
 	la t2 terminal_address //t2 = terminal address
-:load_text_loop
+:print_string_loop
 	lb t1 t0 0 //t1 = value[string address]
  	sb t1 t2 0 //[terminal address] <= value
-	beq t1 zero :load_text_end
+	beq t1 zero :print_string_end
 	inc t0 1 //endereço string ++
-	jump :load_text_loop
-:load_text_end
-	jr ra
+	jump :print_string_loop
+:print_string_end
+	ret
 	
-:machine_software_interrupt
-:machine_timer_interrupt
-:machine_external_interrupt
+// Print word as hex (32-bit)
+// Input: a0 = word  
+:print_hex_word
+    addi sp sp -12
+    sw ra sp 0
+    sw s0 sp 4
+    sw s1 sp 8
+    
+    mv s0 a0
+    
+    // Print 8 hex digits
+    li s1 28  // Shift amount for first digit
+    
+:hex_word_loop
+    bltz s1 :hex_word_done
+    srl a0 s0 s1
+    andi a0 a0 0x0F
+    call :nibble_to_hex
+    li t0 terminal_address
+    sb a0 t0 0   
+    addi s1 s1 -4
+    j :hex_word_loop
+    
+:hex_word_done
+	mv a0 s0
+    lw ra sp 0
+    lw s0 sp 4
+    lw s1 sp 8
+    addi sp sp 12
+    ret
 
-	.string cause_unknown_message "error: cause unknown"
+// Convert nibble to hex character
+// Input: a0 = nibble (0-15)
+// Output: a0 = hex character
+:nibble_to_hex
+    li t0 10
+    bge a0 t0 :nibble_letter
+    addi a0 a0 0x30  // '0'-'9'
+    ret
+:nibble_letter
+    addi a0 a0 0x37  // 'A'-'F' (0x41 - 10)
+    ret
+	
+	.string cause_unknown_message "Fatal error: cause unknown"
+	
 	.string cause_inst_addr_misaligned "error: instruction address misaligned"
 	.string cause_illegal_inst "error: illegal instruction"
-	.string cause_breakpoint "breakpoint triggered"
+	
+	.string cause_breakpoint "Breakpoint reached\n"
+	
 	.string cause_load_addr_misaligned "error: load address misaligned"
 	.string cause_store_addr_misaligned "error: store address misaligned"
+	
 	.string cause_ecall_from_user_mode "Environment call from user"
 	.string cause_ecall_from_machine_mode "Environment call from machine"
 
-	
+	.string text_ra "\nra = "
+	.string text_sp " sp = "
+	.string text_gp " gp = "
+	.string text_tp " tp = "
+	.string text_t0 "\nt0 = "
+	.string text_t1 " t1 = "
+	.string text_t2 " t2 = "
+	.string text_s0 " s0 = "
+	.string text_s1 "\ns1 = "
+	.string text_a0 " a0 = "
+	.string text_a1 " a1 = "
+	.string text_a2 " a2 = "
+	.string text_a3 "\na3 = "
+	.string text_a4 " a4 = "
+	.string text_a5 " a5 = "
+	.string text_a6 " a6 = "
+	.string text_a7 "\na7 = "
+	.string text_s2 " s2 = "
+	.string text_s3 " s3 = "
+	.string text_s4 " s4 = "
+	.string text_s5 "\ns5 = "
+	.string text_s6 " s6 = "
+	.string text_s7 " s7 = "
+	.string text_s8 " s8 = "
+	.string text_s9 "\ns9 = "
+	.string text_s10 " s10= "
+	.string text_s11 " s11= "
+	.string text_t3 " t3 = "
+	.string text_t4 "\nt4 = "
+	.string text_t5 " t5 = "
+	.string text_t6 " t6 = "
+	.string text_mepc "\n\nm_e_pc = "
+	.string text_mstatus " m_status = "
+	.string text_mie "\nm_i_e = "
+	.string text_mip " m_i_p = "

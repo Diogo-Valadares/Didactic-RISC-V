@@ -1,0 +1,109 @@
+.define time_cmp_addr 0x81000008
+.define terminal 0x01100000  // Base address for terminal
+.define keyboard 0x00ffffff  // Base address for terminal
+.define time_to_add 0x1000   // time that will be added each timer interrupt to the time cmp
+:_main	
+	//reseting the timer
+	li t1 time_cmp_addr
+	li t2 time_to_add
+	sw t2 t1 0
+	sw zero t1 4
+
+	//enabling interruptions
+	li t0 0xffffffff
+	csrw mie t0
+
+	li a0 1
+	la a1 :software_interrupt_handler_override
+	ecall
+
+	li a0 2
+	la a1 :timer_interrupt_handler_override
+	ecall
+	
+	li a0 3
+	la a1 :external_interrupt_handler_override
+	ecall
+
+	la a0 .type_text
+	call :print_string
+	li s5 0x20
+	li s4 terminal
+	li s11 0x7F //Del char
+:loop
+	sb s5 s4 0
+	inc s5 1	
+	blt s5 s11 :loop
+	li s5 0x20
+	j :loop
+	
+	
+:external_interrupt_handler_override
+	addi sp sp -4
+    sw ra sp 0
+	
+	li t0 keyboard    
+    lb t1 t0 0
+	li t0 terminal
+	sb t1 t0 0
+	li t2 0x40 //the char '@' triggers a software interrupt
+	bne t1 t2 :end_ext_int_handler
+	li t0 0x81000010
+	li t1 1
+	sb t1 t0 0
+:end_ext_int_handler
+    lw ra sp 0
+    addi sp sp 4
+	ret
+	
+:timer_interrupt_handler_override
+	addi sp sp -4
+    sw ra sp 0
+	li t0 time_cmp_addr
+	lw t1 t0 0 
+	li t2 time_to_add
+	add t1 t1 t2
+	sw t1 t0 0
+	la a0 .timer_interrupt
+	call :print_string
+	lw ra sp 0
+    addi sp sp 4
+	ret
+
+:software_interrupt_handler_override
+	addi sp sp -4
+    sw ra sp 0
+	li t0 0x81000010
+	sb zero t0 0
+	la a0 .software_interrupt
+	call :print_string
+	lw ra sp 0
+    addi sp sp 4
+	ret
+	
+// Print null-terminated string
+// a0 = string pointer
+:print_string
+    addi sp sp -8
+    sw ra sp 0
+    sw s0 sp 4
+    
+    mv s0 a0
+    
+:print_loop
+    lb a0 s0 0
+    beqz a0 :print_done
+    li t0 terminal
+    sb a0 t0 0    
+    addi s0 s0 1
+    j :print_loop
+
+:print_done
+    lw ra sp 0
+    lw s0 sp 4
+    addi sp sp 8
+    ret
+
+.string type_text "Type anything...\n"
+.string timer_interrupt "\n\nTimer Interrupt\n\n"
+.string software_interrupt "\n\n\Software Interrupt\n\n"

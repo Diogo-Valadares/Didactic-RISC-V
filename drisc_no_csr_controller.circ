@@ -341,10 +341,6 @@ end type_architecture;&#13;
     <comp lib="0" loc="(2370,1340)" name="Ground">
       <a name="facing" val="north"/>
     </comp>
-    <comp lib="0" loc="(2430,1340)" name="Ground">
-      <a name="facing" val="north"/>
-      <a name="width" val="32"/>
-    </comp>
     <comp lib="0" loc="(2460,1360)" name="Tunnel">
       <a name="facing" val="south"/>
       <a name="label" val="Cl0ck"/>
@@ -2316,10 +2312,6 @@ end type_architecture;&#13;
     <wire from="(2370,1350)" to="(2370,1360)"/>
     <wire from="(2370,1350)" to="(2390,1350)"/>
     <wire from="(2390,1350)" to="(2390,1360)"/>
-    <wire from="(2410,1350)" to="(2410,1360)"/>
-    <wire from="(2410,1350)" to="(2430,1350)"/>
-    <wire from="(2430,1340)" to="(2430,1350)"/>
-    <wire from="(2430,1350)" to="(2430,1360)"/>
     <wire from="(2520,1410)" to="(2780,1410)"/>
     <wire from="(2520,1430)" to="(2560,1430)"/>
     <wire from="(2520,1470)" to="(2560,1470)"/>
@@ -2526,10 +2518,6 @@ end type_architecture;&#13;
       <circ-port dir="out" pin="530,570" x="500" y="400"/>
       <circ-port dir="out" pin="530,710" x="540" y="400"/>
     </appear>
-    <comp lib="0" loc="(1050,610)" name="Ground">
-      <a name="facing" val="west"/>
-      <a name="width" val="32"/>
-    </comp>
     <comp lib="0" loc="(1290,410)" name="Splitter">
       <a name="appear" val="center"/>
       <a name="bit0" val="none"/>
@@ -2959,21 +2947,15 @@ end type_architecture;&#13;
       <a name="shift" val="ar"/>
       <a name="width" val="32"/>
     </comp>
+    <comp lib="3" loc="(720,930)" name="Divider">
+      <a name="mode" val="twosComplement"/>
+      <a name="width" val="32"/>
+    </comp>
+    <comp lib="3" loc="(720,990)" name="Divider">
+      <a name="width" val="32"/>
+    </comp>
     <comp loc="(720,400)" name="Adder_Subtractor"/>
     <comp loc="(720,830)" name="Multiplication"/>
-    <wire from="(1050,610)" to="(1070,610)"/>
-    <wire from="(1070,560)" to="(1070,570)"/>
-    <wire from="(1070,560)" to="(1080,560)"/>
-    <wire from="(1070,570)" to="(1070,580)"/>
-    <wire from="(1070,570)" to="(1080,570)"/>
-    <wire from="(1070,580)" to="(1080,580)"/>
-    <wire from="(1070,590)" to="(1070,600)"/>
-    <wire from="(1070,590)" to="(1080,590)"/>
-    <wire from="(1070,600)" to="(1070,610)"/>
-    <wire from="(1070,600)" to="(1080,600)"/>
-    <wire from="(1070,610)" to="(1070,620)"/>
-    <wire from="(1070,610)" to="(1080,610)"/>
-    <wire from="(1070,620)" to="(1080,620)"/>
     <wire from="(1100,260)" to="(1100,470)"/>
     <wire from="(1120,550)" to="(1330,550)"/>
     <wire from="(1250,390)" to="(1250,440)"/>
@@ -3046,6 +3028,7 @@ end type_architecture;&#13;
     <wire from="(530,570)" to="(630,570)"/>
     <wire from="(530,710)" to="(600,710)"/>
     <wire from="(580,240)" to="(650,240)"/>
+    <wire from="(600,1000)" to="(680,1000)"/>
     <wire from="(600,340)" to="(1270,340)"/>
     <wire from="(600,340)" to="(600,430)"/>
     <wire from="(600,430)" to="(600,490)"/>
@@ -3064,7 +3047,10 @@ end type_architecture;&#13;
     <wire from="(600,760)" to="(680,760)"/>
     <wire from="(600,800)" to="(600,860)"/>
     <wire from="(600,800)" to="(680,800)"/>
+    <wire from="(600,860)" to="(600,940)"/>
     <wire from="(600,860)" to="(680,860)"/>
+    <wire from="(600,940)" to="(600,1000)"/>
+    <wire from="(600,940)" to="(680,940)"/>
     <wire from="(620,490)" to="(680,490)"/>
     <wire from="(620,680)" to="(680,680)"/>
     <wire from="(620,720)" to="(680,720)"/>
@@ -3088,7 +3074,11 @@ end type_architecture;&#13;
     <wire from="(630,740)" to="(680,740)"/>
     <wire from="(630,780)" to="(630,840)"/>
     <wire from="(630,780)" to="(680,780)"/>
+    <wire from="(630,840)" to="(630,920)"/>
     <wire from="(630,840)" to="(680,840)"/>
+    <wire from="(630,920)" to="(630,980)"/>
+    <wire from="(630,920)" to="(680,920)"/>
+    <wire from="(630,980)" to="(680,980)"/>
     <wire from="(650,240)" to="(650,250)"/>
     <wire from="(650,240)" to="(660,240)"/>
     <wire from="(650,270)" to="(650,820)"/>
@@ -3098,6 +3088,8 @@ end type_architecture;&#13;
     <wire from="(670,390)" to="(700,390)"/>
     <wire from="(670,640)" to="(780,640)"/>
     <wire from="(690,260)" to="(1100,260)"/>
+    <wire from="(700,1010)" to="(700,1020)"/>
+    <wire from="(700,1020)" to="(960,1020)"/>
     <wire from="(700,390)" to="(1250,390)"/>
     <wire from="(700,390)" to="(700,400)"/>
     <wire from="(700,440)" to="(700,450)"/>
@@ -3105,6 +3097,8 @@ end type_architecture;&#13;
     <wire from="(700,820)" to="(700,830)"/>
     <wire from="(700,870)" to="(700,880)"/>
     <wire from="(700,880)" to="(880,880)"/>
+    <wire from="(700,950)" to="(700,960)"/>
+    <wire from="(700,960)" to="(940,960)"/>
     <wire from="(710,750)" to="(830,750)"/>
     <wire from="(710,790)" to="(840,790)"/>
     <wire from="(720,420)" to="(870,420)"/>
@@ -3115,6 +3109,8 @@ end type_architecture;&#13;
     <wire from="(720,670)" to="(740,670)"/>
     <wire from="(720,710)" to="(740,710)"/>
     <wire from="(720,850)" to="(860,850)"/>
+    <wire from="(720,930)" to="(900,930)"/>
+    <wire from="(720,990)" to="(920,990)"/>
     <wire from="(730,530)" to="(730,540)"/>
     <wire from="(730,530)" to="(740,530)"/>
     <wire from="(730,580)" to="(730,590)"/>
@@ -3143,8 +3139,20 @@ end type_architecture;&#13;
     <wire from="(860,550)" to="(860,850)"/>
     <wire from="(870,420)" to="(870,470)"/>
     <wire from="(870,470)" to="(1080,470)"/>
-    <wire from="(880,570)" to="(1070,570)"/>
-    <wire from="(880,570)" to="(880,880)"/>
+    <wire from="(880,560)" to="(1080,560)"/>
+    <wire from="(880,560)" to="(880,570)"/>
+    <wire from="(880,570)" to="(1080,570)"/>
+    <wire from="(880,570)" to="(880,580)"/>
+    <wire from="(880,580)" to="(1080,580)"/>
+    <wire from="(880,580)" to="(880,880)"/>
+    <wire from="(900,590)" to="(1080,590)"/>
+    <wire from="(900,590)" to="(900,930)"/>
+    <wire from="(920,600)" to="(1080,600)"/>
+    <wire from="(920,600)" to="(920,990)"/>
+    <wire from="(940,610)" to="(1080,610)"/>
+    <wire from="(940,610)" to="(940,960)"/>
+    <wire from="(960,620)" to="(1080,620)"/>
+    <wire from="(960,620)" to="(960,1020)"/>
   </circuit>
   <circuit name="Program_Counter">
     <a name="appearance" val="custom"/>

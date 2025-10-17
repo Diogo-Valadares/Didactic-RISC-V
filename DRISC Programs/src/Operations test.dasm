@@ -38,5 +38,8 @@ REMU x28 x8 x2			//0x00000003
 LUI x29 1
 LUI x30 2
 LUI x31 3
+
+ebreak
+
 JUMP 0
 NOP
