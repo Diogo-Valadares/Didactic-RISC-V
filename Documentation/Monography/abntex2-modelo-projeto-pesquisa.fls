@@ -424,6 +424,7 @@ INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\tex\latex\lm\omxlmex.fd
 INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\tex\latex\lm\omxlmex.fd
 INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\lmex10.tfm
 INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\ec-lmbx12.tfm
+INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\ec-lmbx8.tfm
 INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\ec-lmss17.tfm
 INPUT .\abntex2-modelo-projeto-pesquisa.lof
 INPUT .\abntex2-modelo-projeto-pesquisa.lof
@@ -742,10 +743,10 @@ INPUT .\ProcessoDesenvolvimento\Arquitetura\NovoTiming_1.png
 INPUT .\ProcessoDesenvolvimento\Arquitetura\NovoTiming_1.png
 INPUT .\ProcessoDesenvolvimento\Arquitetura\NovoTiming_1.png
 INPUT .\ProcessoDesenvolvimento\Arquitetura\NovoTiming_1.png
+INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\fonts\enc\dvips\lm\lm-mathsy.enc
 INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\ec-lmr12.tfm
 INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\ec-lmbx12.tfm
 INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\ec-lmri12.tfm
-INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\fonts\enc\dvips\lm\lm-mathsy.enc
 INPUT .\ProcessoDesenvolvimento\Arquitetura\CSR_Controller.png
 INPUT .\ProcessoDesenvolvimento\Arquitetura\CSR_Controller.png
 INPUT .\ProcessoDesenvolvimento\Arquitetura\CSR_Controller.png
@@ -900,6 +901,10 @@ INPUT .\ProcessoDesenvolvimento\arquitetura_sem_csr.png
 INPUT .\ProcessoDesenvolvimento\arquitetura_sem_csr.png
 INPUT .\ProcessoDesenvolvimento\arquitetura_sem_csr.png
 INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\ec-lmtk10.tfm
+INPUT .\Webibliometria\full.png
+INPUT .\Webibliometria\full.png
+INPUT .\Webibliometria\full.png
+INPUT .\Webibliometria\full.png
 INPUT .\abntex2-modelo-projeto-pesquisa.bbl
 INPUT .\abntex2-modelo-projeto-pesquisa.bbl
 INPUT abntex2-modelo-projeto-pesquisa.bbl
@@ -920,6 +925,8 @@ INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\fonts\type1\public\lm\lmbx10.
 INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\fonts\type1\public\lm\lmbx10.pfb
 INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\fonts\type1\public\lm\lmbx12.pfb
 INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\fonts\type1\public\lm\lmbx12.pfb
+INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\fonts\type1\public\lm\lmbx8.pfb
+INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\fonts\type1\public\lm\lmbx8.pfb
 INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\fonts\type1\public\lm\lmbxi10.pfb
 INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\fonts\type1\public\lm\lmbxi10.pfb
 INPUT C:\Users\diogo\AppData\Local\Programs\MiKTeX\fonts\type1\public\lm\lmr10.pfb

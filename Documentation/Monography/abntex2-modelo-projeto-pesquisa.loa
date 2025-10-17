@@ -1,8 +1,8 @@
-\contentsline {algorithm}{\numberline {1}{\ignorespaces Rotina Síncrona do Controlador de CSR}}{87}{algorithm.1}%
-\contentsline {algorithm}{\numberline {2}{\ignorespaces Função NovoValorCalculado()}}{88}{algorithm.2}%
-\contentsline {algorithm}{\numberline {3}{\ignorespaces Rotina Assíncrona do Controlador de CSR}}{89}{algorithm.3}%
-\contentsline {algorithm}{\numberline {4}{\ignorespaces Rotina de \textit {Trap} (Porção Síncrona)}}{89}{algorithm.4}%
-\contentsline {algorithm}{\numberline {5}{\ignorespaces Rotina do MRET (\textit {Machine Return}) (Porção Síncrona)}}{90}{algorithm.5}%
-\contentsline {algorithm}{\numberline {6}{\ignorespaces Alterações realizadas no Contador de Programa}}{101}{algorithm.6}%
-\contentsline {algorithm}{\numberline {7}{\ignorespaces Interface entre o DRISC-V e a memória RAM do FPGA}}{104}{algorithm.7}%
-\contentsline {algorithm}{\numberline {8}{\ignorespaces Exemplo de macro}}{109}{algorithm.8}%
+\contentsline {algorithm}{\numberline {1}{\ignorespaces Rotina Síncrona do Controlador de CSR}}{89}{algorithm.1}%
+\contentsline {algorithm}{\numberline {2}{\ignorespaces Função NovoValorCalculado()}}{90}{algorithm.2}%
+\contentsline {algorithm}{\numberline {3}{\ignorespaces Rotina Assíncrona do Controlador de CSR}}{91}{algorithm.3}%
+\contentsline {algorithm}{\numberline {4}{\ignorespaces Rotina de \textit {Trap} (Porção Síncrona)}}{92}{algorithm.4}%
+\contentsline {algorithm}{\numberline {5}{\ignorespaces Rotina do MRET (\textit {Machine Return}) (Porção Síncrona)}}{92}{algorithm.5}%
+\contentsline {algorithm}{\numberline {6}{\ignorespaces Alterações realizadas no Contador de Programa}}{103}{algorithm.6}%
+\contentsline {algorithm}{\numberline {7}{\ignorespaces Interface entre o DRISC-V e a memória RAM do FPGA}}{105}{algorithm.7}%
+\contentsline {algorithm}{\numberline {8}{\ignorespaces Exemplo de macro}}{111}{algorithm.8}%

@@ -209,18 +209,10 @@
 % ---
 \titulo{DRISC-V: Uma Arquitetura Didática Integrando RISC-V Sobre RISC~I}
 
-%"DRISC-V: Uma Implementação Didática Baseada no RISC-V e RISC~I"
-%"Do RISC~I ao RISC-V: Uma Arquitetura Didática Evolutiva"
-%"DRISC-V: Aprimorando Arquiteturas Didáticas com RISC-V"
-%"RISC-V Didático: Uma Evolução da Arquitetura RISC~I no Logisim e System Verilog"
-%"Implementação Didática de Arquiteturas Computacionais: Do RISC~I ao RISC-V"
-%"Desenvolvimento de Arquiteturas Didáticas: Integração entre RISC~I e RISC-V"
-%"Uma Arquitetura Didática Moderna: Da Base RISC~I ao Padrão RISC-V"
-%"DRISC-V: Um Modelo de Simulação Didático Integrando RISC~I e RISC-V"
 
 \autor{Diogo Valadares Reis dos Santos}
 \local{Campos dos Goytacazes, RJ}
-\data{xx/09/2025}
+\data{03/10/2025}
 \instituicao{%
   INSTITUTO FEDERAL DE EDUCAÇÃO, CIÊNCIA E TECNOLOGIA FLUMINENSE
   \par
@@ -330,9 +322,9 @@ Trabalho aprovado. \imprimirlocal, \imprimirdata:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Assinaturas
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\assinatura{\textbf{nome banca 1} \\ Instituto Federal Fluminense(IFF)}
+\assinatura{\textbf{Prof\textsuperscript{a}. M.Sc Etelvira Cristina Barreto Rangel Leite} \\ Instituto Federal Fluminense(IFF)}
 
-\assinatura{\textbf{nome banca 2} \\ Instituto Federal Fluminense(IFF)}
+\assinatura{\textbf{Prof. D.Sc Fernando Luiz de Carvalho e Silva} \\ Instituto Federal Fluminense(IFF)}
 
 \assinatura{\textbf{\imprimirorientador} \\ Instituto Federal Fluminense(IFF)}
 
@@ -349,6 +341,25 @@ Trabalho aprovado. \imprimirlocal, \imprimirdata:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Fim da folha de aprovação
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% ---
+% Agradecimentos
+% ---
+\chapter*{Agradecimentos}
+\addcontentsline{toc}{chapter}{Agradecimentos}
+
+Primeiramente agradeço aos meus pais, pelo apoio incondicional, amor e incentivo ao longo de toda a minha jornada acadêmica.
+
+Ao meu orientador, Prof. M.Sc. David Vasconcelos Corrêa da Silva, pela paciência, orientação e valiosas contribuições durante o desenvolvimento deste trabalho.
+
+Aos professores do Instituto Federal Fluminense, que compartilharam seus conhecimentos e me ajudaram a crescer como estudante e profissional.
+
+Aos meus amigos, que estiveram ao meu lado durante os desafios e conquistas, e que tornaram essa caminhada mais leve e significativa.
+
+Por fim, agradeço a todos que, direta ou indiretamente, contribuíram para a realização deste trabalho.
+\cleardoublepage
+% ---
+
 
 % ---
 % NOTA DA ABNT NBR 15287:2011, p. 4:
@@ -431,7 +442,7 @@ Trabalho aprovado. \imprimirlocal, \imprimirdata:
 \noindent
 % Insira aqui o texto do resumo em português, entre 150 e 250 palavras.
 
-Este trabalho apresenta o desenvolvimento de uma arquitetura computacional didática, baseada no RISC~I e adaptada para o padrão RISC-V, com o objetivo de facilitar o ensino de conceitos fundamentais de arquitetura de computadores. O projeto teve como propósito geral criar uma ferramenta educacional que integrasse um modelo de simulação funcional, um \textit{assembler} customizado e uma documentação detalhada, promovendo uma experiência de aprendizado prática e interativa. A implementação incluiu a criação de um modelo de simulação no Logisim Evolution e em SystemVerilog, permitindo a visualização e análise do funcionamento interno do processador. Foram realizadas melhorias significativas na arquitetura, como a remoção das janelas de registradores, a introdução de um novo sistema de interrupções e exceções, e a implementação de dispositivos de entrada e saída, como teclado e tela gráfica. A arquitetura foi otimizada com uma \textit{pipeline} revisada, reduzindo o número de ciclos por instrução, e com suporte a registradores de controle e status (CSRs), alinhando-se às especificações do RISC-V. Além disso, foi desenvolvido um \textit{assembler} customizado, que oferece suporte a pseudoinstruções, macros e variáveis, facilitando a criação de programas para a arquitetura. A integração com ferramentas de simulação permitiu a execução de programas de teste, como algoritmos de ordenação e interação gráfica, demonstrando a aplicabilidade prática do projeto. A arquitetura também foi implementada em FPGA, comprovando sua utilidade em hardware real e tornando o trabalho mais completo. Os resultados destacam a relevância didática da arquitetura desenvolvida, que combina simplicidade e modernidade, proporcionando uma base sólida para o ensino de arquitetura de computadores e servindo como um recurso valioso para estudantes e educadores.
+O ensino de Arquitetura de Computadores enfrenta o desafio de equilibrar a compreensão dos fundamentos com a relevância das arquiteturas modernas. Ferramentas didáticas disponíveis atualmente tendem a se apoiar em modelos obsoletos, como a arquitetura MIPS, ou em implementações complexas de padrões atuais, como o ARM, dificultando a assimilação por parte dos estudantes. Embora existam iniciativas educacionais baseadas em simulações e arquiteturas simplificadas, poucas conseguem combinar acessibilidade com aderência às especificações contemporâneas. Identifica-se, portanto, a ausência de uma arquitetura que preserve a simplicidade didática, ao mesmo tempo em que incorpora os avanços de arquiteturas atuais. O objetivo deste trabalho é preencher essa lacuna por meio do desenvolvimento da arquitetura DRISC-V, uma proposta computacional didática que integra uma arquitetura clássica, o RISC~I, com recursos modernos provenientes do padrão RISC-V, visando facilitar o ensino de arquitetura de computadores. O projeto teve como propósito criar uma ferramenta educacional composta por um modelo de simulação funcional, um \textit{assembler} e uma documentação detalhada, promovendo uma experiência de aprendizado prática e interativa. A implementação incluiu modelos de simulação no Logisim Evolution e em SystemVerilog, permitindo a visualização e análise do funcionamento interno do processador. Foram realizadas melhorias significativas na arquitetura, como a remoção das janelas de registradores, a introdução de um novo sistema de interrupções e exceções, e a implementação de dispositivos de entrada e saída, como teclado e tela gráfica. A arquitetura foi otimizada com uma \textit{pipeline} revisada, reduzindo o número de ciclos por instrução, e passou a oferecer suporte a registradores de controle e status (CSRs), alinhando-se às especificações do RISC-V.Além disso, foi desenvolvido um \textit{assembler} com suporte a pseudoinstruções, macros e variáveis, facilitando a criação de programas para a arquitetura. A integração com ferramentas de simulação permitiu a execução de programas de teste, como algoritmos de ordenação e interação gráfica, demonstrando a aplicabilidade prática do projeto. A arquitetura também foi implementada em FPGA, comprovando sua utilidade em hardware real e tornando o trabalho mais completo. Os resultados destacam a relevância didática da arquitetura desenvolvida, que combina simplicidade e modernidade, proporcionando uma base sólida para o ensino de arquitetura de computadores e servindo como um recurso valioso para estudantes e educadores.
 
 \vspace{1em}
 \noindent
@@ -445,7 +456,7 @@ Este trabalho apresenta o desenvolvimento de uma arquitetura computacional didá
 
 \noindent
 % Insira aqui o texto do abstract em inglês, entre 150 e 250 palavras.
-This work presents the development of a didactic computer architecture based on RISC~I and adapted to the RISC-V standard, aiming to facilitate the teaching of fundamental computer architecture concepts. The project’s overall goal was to create an educational tool that integrates a functional simulation model, a custom assembler, and detailed documentation, fostering a practical and interactive learning experience. The implementation included building a simulation model in Logisim Evolution and in SystemVerilog, enabling visualization and analysis of the processor’s internal operations. Significant enhancements were made to the architecture, such as the removal of register windows, the introduction of a new interrupt and exception system, and the implementation of input/output devices like a keyboard and graphical display. The architecture was optimized with a revised pipeline, reducing the number of cycles per instruction, and with support for control and status registers (CSRs), aligning with the RISC-V specifications. Additionally, a custom assembler was developed, offering support for pseudoinstructions, macros, and variables, thus simplifying program development for the architecture. Integration with simulation tools enabled the execution of test programs—including sorting algorithms and graphical interactions—demonstrating the project’s practical applicability. The architecture was also implemented on FPGA, confirming its real-world utility and making the work more complete. The results underscore the didactic relevance of the proposed architecture, which combines simplicity and modernity to provide a solid foundation for teaching computer architecture and to serve as a valuable resource for students and educators.
+The teaching of Computer Architecture faces the challenge of balancing the understanding of fundamental concepts with the relevance of modern architectures. Current educational tools often rely on outdated models, such as the MIPS architecture, or on complex implementations of contemporary standards, such as ARM, making it difficult for students to assimilate the content. Although there are educational initiatives based on simulations and simplified architectures, few manage to combine accessibility with adherence to modern specifications. Therefore, there is a lack of an architecture that preserves didactic simplicity while incorporating the advances of current architectures. The objective of this work is to fill this gap through the development of the DRISC-V architecture, a didactic computational proposal that integrates a classic architecture, RISC~I, with modern features from the RISC-V standard, aiming to facilitate the teaching of computer architecture. The project aimed to create an educational tool composed of a functional simulation model, an \textit{assembler}, and detailed documentation, promoting a practical and interactive learning experience. The implementation included simulation models in Logisim Evolution and SystemVerilog, allowing visualization and analysis of the processor's internal operation. Significant improvements were made to the architecture, such as the removal of register windows, the introduction of a new system of interrupts and exceptions, and the implementation of input and output devices, such as a keyboard and graphical display. The architecture was optimized with a revised \textit{pipeline}, reducing the number of cycles per instruction, and began to support control and status registers (CSRs), aligning with RISC-V specifications. Furthermore, an \textit{assembler} was developed with support for pseudoinstructions, macros, and variables, facilitating the creation of programs for the architecture. Integration with simulation tools enabled the execution of test programs, such as sorting algorithms and graphical interaction, demonstrating the practical applicability of the project. The architecture was also implemented on FPGA, proving its usefulness in real hardware and making the work more complete. The results highlight the didactic relevance of the developed architecture, which combines simplicity and modernity, providing a solid foundation for teaching computer architecture and serving as a valuable resource for students and educators.
 
 \vspace{1em}
 \noindent
@@ -473,23 +484,25 @@ This work presents the development of a didactic computer architecture based on 
 \chapter{Introdução}
 \index{elementos textuais}
 \section{Problema e Contexto}
-A Organização e Arquitetura de computadores é uma disciplina que explica o funcionamento de diversos componentes internos dos computadores, como estes se comunicam e como ocorre a execução de programas em baixo nível.\cite{soares_simuladores_2015}\cite[p.12]{favero_organizacao_2011}\cite{lourenco_ensino_2005}
+A Organização e Arquitetura de computadores é uma disciplina que explica o funcionamento de diversos componentes internos dos computadores, como estes se comunicam e como ocorre a execução de programas em baixo nível \cite{soares_simuladores_2015};\cite[p.12]{favero_organizacao_2011};\cite{lourenco_ensino_2005}.
 
-Essa compreensão é fundamental para os alunos de computação, que frequentemente encontram desafios durante a introdução de conceitos de programação devido à falta de entendimento das abstrações físicas envolvidas. No entanto, esses conceitos costumam ser assimilados de forma mais completa à medida que os estudantes avançam para a disciplina de Arquitetura de Computadores.\cite{raabe_processadores_2006}
+Essa compreensão é fundamental para os alunos de computação, que frequentemente encontram desafios durante a introdução de conceitos de programação devido à falta de entendimento das abstrações físicas envolvidas. No entanto, esses conceitos costumam ser assimilados de forma mais completa à medida que os estudantes avançam para a disciplina de Arquitetura de Computadores \cite{raabe_processadores_2006}.
 
 Segundo \citeonline{clements_arms_2010}, o conhecimento desta disciplina tem  uma grande importância no entendimento de outras áreas dentro de cursos de computação. Ao usar uma arquitetura de processador específica, os estudantes têm uma compreensão melhor de problemas no mundo real.
 
-Porém, como afirmado por \citeonline{djordjevic_integrated_2000} um desafio significativo no ensino dessas arquiteturas é a dificuldade de estabelecer uma conexão cognitiva entre o conhecimento teórico e a aplicação prática. Isso se agrava porque há situações em que os modelos das operações internas das arquiteturas apresentados aos alunos frequentemente estão errados ou incompletos.\cite[p.60]{yehezkel_three_2001}
+Porém, como afirmado por \citeonline{djordjevic_integrated_2000} um desafio significativo no ensino dessas arquiteturas é a dificuldade de estabelecer uma conexão cognitiva entre o conhecimento teórico e a aplicação prática. Isso se agrava porque há situações em que os modelos das operações internas das arquiteturas apresentados aos alunos frequentemente estão errados ou incompletos \cite[p.60]{yehezkel_three_2001}.
 
 Alguns professores optam por utilizar algumas arquiteturas comerciais, mas \citeonline[p.9]{clements_selecting_1999}(\citeyear{clements_arms_2010}) diz que a utilização de algumas destas arquiteturas no ensino pode complicar o trabalho do professor, pois elas geralmente são mais complexas ao tentar maximizar a entrada no mercado e o lucro das empresas que as criaram.
 
-É possível a utilização de arquiteturas hipotéticas didáticas, mas isso pode desmotivar os alunos, que acabam sentindo que o uso destas arquiteturas não reflete problemas encontrados no mundo real. \cite{clements_arms_2010}
+É possível a utilização de arquiteturas hipotéticas didáticas, mas isso pode desmotivar os alunos, que acabam sentindo que o uso destas arquiteturas não reflete problemas encontrados no mundo real \cite{clements_arms_2010}.
 
 Uma boa solução seria a utilização de uma arquitetura didática baseada em uma arquitetura comercial, como realizado na arquitetura DLX \cite[p. 96-108]{patterson_computer_1996} que foi derivada sobre a arquitetura comercial MIPS, além de tirar inspiração de várias outras. Com uma arquitetura criada desta forma, mantém-se a vantagem de ser feita para o ensino, sendo mais simples, porém se mantendo realista ao usar como base arquiteturas reais.
 
+Embora ofereça uma abordagem simplificada e eficaz para o ensino, a arquitetura DLX, assim como outras com o mesmo propósito, não incorpora integralmente os avanços presentes em arquiteturas modernas, devido à época em que foi desenvolvida. Nesse contexto, identifica-se uma lacuna: até o momento, não há uma ferramenta educacional que combine de forma única a simplicidade estrutural didática com os recursos modernos das arquiteturas atuais.
+
 O constante aumento de conteúdo na área de computação também se torna um obstáculo para o ensino. Uma possível solução é o aumentar o grau de abstração do conteúdo ensinado, no entanto, esta abstração só pode ser executada até certo nível antes que haja um prejuízo na compreensão e aprendizado dos estudantes. \cite[p.176]{wolffe_teaching_2002}
 
-Uma boa opção para o ensino é a utilização de simuladores, pois isso permite que os estudantes visualizem os eventos que ocorrem durante a execução de um programa em diferentes níveis de abstração. Os estudantes ta mbém conseguem criar seus próprios circuitos e arquiteturas através destes simuladores, ajudando o entendimento da operação de máquinas reais.\cite[p.176-177]{wolffe_teaching_2002}
+Uma boa opção para o ensino é a utilização de simuladores, pois isso permite que os estudantes visualizem os eventos que ocorrem durante a execução de um programa em diferentes níveis de abstração. Os estudantes também conseguem criar seus próprios circuitos e arquiteturas através destes simuladores, ajudando o entendimento da operação de máquinas reais \cite[p.176-177]{wolffe_teaching_2002}.
 
 \section{Objetivos}\label{sec-objetivos}
 O objetivo geral deste trabalho é implementar uma arquitetura computacional didática voltada para alunos de cursos superiores na área de computação, fazendo uso de simuladores. Essa arquitetura abrange desde o planejamento do circuito base até a criação de um \textit{assembler}. O propósito dessa implementação é fornecer um conteúdo educacional detalhado para auxiliar nos estudos, incluindo uma documentação completa da arquitetura e do processo de desenvolvimento.
@@ -498,7 +511,7 @@ Para alcançar esse objetivo é necessário completar os seguintes objetivos esp
 \begin{enumerate}[label=\textbf{O\arabic*}]
     \item Catalogar arquiteturas já existentes que possuam baixa complexidade e que se aproximem de arquiteturas atuais. \label{ob:Catalogar}
     \item Criar e disponibilizar um modelo de simulação de uma arquitetura, utilizando como base os trabalhos encontrados. \label{ob:Modelo_Base}
-    \item Executar uma bibliometria sobre uma arquitetura previamente escolhida em comparação a outras. \label{ob:bibliometria}
+    \item Obter uma bibliometria em forma de artigo sobre arquiteturas computacionais.\label{ob:bibliometria}
     \item Aprimorar o modelo de simulação adicionando recursos de interesse e priorizando a clareza e a compreensão didática. \label{ob:Modelo_Aprimorado}
     \item Criar um \textit{assembler} para a compilação de programas específicos para a arquitetura implementada no modelo de simulação.\label{ob:Assembler}
     \item Elaborar uma documentação didática que abranja todos os conceitos principais e os passos de criação da arquitetura.\label{ob:Documentação}
@@ -506,13 +519,13 @@ Para alcançar esse objetivo é necessário completar os seguintes objetivos esp
 \end{enumerate}
 
 \section{Justificativa}
-Ao final deste trabalho, espera-se obter uma arquitetura e seu modelo de simulação completo e funcional, que seja não só fácil de entender, mas que também sirva como uma ferramenta educacional robusta.
+Ao final deste trabalho, espera-se obter uma arquitetura computacional didática completa e funcional, que atenda às necessidades do ensino de Arquitetura de Computadores por meio de uma abordagem acessível, interativa e alinhada às exigências atuais do mercado. A proposta busca suprir a carência de ferramentas educacionais que conciliem simplicidade estrutural com recursos modernos, contribuindo para uma experiência de aprendizado mais eficaz e significativa
 
 A arquitetura desenvolvida integrará recursos relevantes para o mercado atual, proporcionando aos alunos acesso a conteúdos atualizados. Além disso, será simplificada para facilitar a compreensão. O modelo de simulação proposto permitirá que os alunos experimentem e compreendam conceitos avançados de arquitetura de computadores em um ambiente interativo, controlado e acessível.
 
 A documentação detalhada e as ferramentas desenvolvidas servirão como um guia prático para professores e alunos, proporcionando um recurso valioso para o ensino e a aprendizagem da Arquitetura de Computadores.
 
-Além disso, será crucial considerar a usabilidade na apresentação da arquitetura e documentação aos alunos. Se essa usabilidade for aplicada de forma adequada, a experiência de aprendizado e a motivação dos estudantes podem ser melhoradas, tornando o processo mais fácil e afetando positivamente seu progresso.\cite{dimitrijevic_usability_2020}
+Além disso, será crucial considerar a usabilidade na apresentação da arquitetura e documentação aos alunos. Se essa usabilidade for aplicada de forma adequada, a experiência de aprendizado e a motivação dos estudantes podem ser melhoradas, tornando o processo mais fácil e afetando positivamente seu progresso \cite{dimitrijevic_usability_2020}.
 
 Portanto, uma arquitetura computacional didática bem documentada e com boa usabilidade tem valor como ferramenta de ensino em Arquitetura de Computadores. Este projeto visa proporcionar uma compreensão clara e prática dos conceitos fundamentais, preparando os alunos para suas futuras carreiras na área de computação.
 
@@ -531,13 +544,13 @@ O estudo de como desenvolver as partes de um sistema computacional que são vis�
 
 \subsection{A Máquina de von Neumann}\label{sec:maq_von_neumann}
 
-Segundo \citeonline[p.18]{tanenbaum_structured_2013},atualmente, a Máquina de von Neumann é a base para quase todas as arquiteturas computacionais atuais, sendo um design com enorme influência.
+Segundo \citeonline[p.18]{tanenbaum_structured_2013}, atualmente, a Máquina de von Neumann é a base para quase todas as arquiteturas computacionais atuais, sendo um design com enorme influência.
 
 % Define block styles
 \usetikzlibrary{positioning,calc,fit,arrows}
 \tikzset{arrow/.style = {->,> = latex, line width=0.5mm, shorten >=1mm, shorten <=1mm, >={Latex[length=4mm, width=4mm]}}}
 
-\begin{figure}[ht]
+\begin{figure}[H]
 \resizebox{1\textwidth}{!}{%
 \begin{circuitikz}
 \tikzstyle{every node}=[font=\LARGE]
@@ -564,12 +577,12 @@ Segundo \citeonline[p.18]{tanenbaum_structured_2013},atualmente, a Máquina de v
 \end{figure}
 
 
-A Máquina de von Neumann tinha 5 partes básicas: a memória, a unidade lógica e aritmética(ULA), a unidade de controle e os dispositivos de entrada e de saída. Em computadores atuais, estas 5 partes são combinadas em um chip chamado unidade central de processamento(CPU).\cite[p.18]{tanenbaum_structured_2013}
+A Máquina de von Neumann tinha 5 partes básicas: a memória, a unidade lógica e aritmética(ULA), a unidade de controle e os dispositivos de entrada e de saída. Em computadores atuais, estas 5 partes são combinadas em um chip chamado unidade central de processamento(CPU) \cite[p.18]{tanenbaum_structured_2013}.
 
 \subsection{Características de Arquiteturas de Computadores}
 \subsubsection{Níveis de Máquina}\label{sec:niveis_maquina}
 \citeonline[p.5]{tanenbaum_structured_2013} diz que a maioria dos computadores modernos consistem em dois ou mais níveis, como representado na Figura~\ref{fig:machineLevels}. Os níveis mais baixos estão mais próximos do \textit{hardware} real da máquina enquanto os mais altos são abstrações dos níveis abaixo, se aproximando do \textit{software}.
-\begin{figure}[h!]
+\begin{figure}[H]
     \centering
     \begin{tikzpicture}[node distance=2cm]
         % Level 5
@@ -617,10 +630,10 @@ Os dois níveis mais altos são os que os programadores comuns geralmente usam p
 
 O 4° nível está mais diretamente conectado à linguagem de máquina, contendo a linguagem \textit{assembly}, onde cada comando individual pode ser traduzido diretamente para uma instrução nos níveis inferiores. Esta tradução se dá por um programa chamado \textit{assembler}.
 
-Por fim, temos o 5° nível, que contém todas as linguagens em alto nível que precisam ser então traduzidas para os níveis 4 e 3 no processo chamado compilação.\cite[p.5-8]{tanenbaum_structured_2013}
+Por fim, temos o 5° nível, que contém todas as linguagens em alto nível que precisam ser então traduzidas para os níveis 4 e 3 no processo chamado compilação \cite[p.5-8]{tanenbaum_structured_2013}.
 
 \subsubsection{Barramentos}
-Um barramento é um grupo físico de fios que possui uma função relacionada. Eles permitem a comunicação entre as várias partes da microarquitetura, como, por exemplo, um barramento de dados é o grupo de fios que permite a transferência de dados entre a memória e todos os subsistemas que compõem o computador.\cite[p.11-12]{catsoulis_designing_2002}
+Um barramento é um grupo físico de fios que possui uma função relacionada. Eles permitem a comunicação entre as várias partes da microarquitetura, como, por exemplo, um barramento de dados é o grupo de fios que permite a transferência de dados entre a memória e todos os subsistemas que compõem o computador \cite[p.11-12]{catsoulis_designing_2002}.
 Além do barramento de dados, existem o barramento de endereços, responsável por determinar o endereço de memória que está sendo acessado pelo processador, e o barramento de controle, responsável pelos sinais de comandos, que definem o que as partes de uma máquina devem fazer.
 
 \subsubsection{\textit{Pipeline}}
@@ -702,36 +715,36 @@ O diagrama de tempo na Tabela~\ref{tab:pipeline_hazards} ilustra como esses conf
 
 Para mitigar \textit{hazards} de dados, são empregadas técnicas como \textit{forwarding} (encaminhamento de operandos) e inserção automática de \textit{pipeline interlocks}, que atrasam apenas o estágio necessário até que os dados fiquem disponíveis. Já os \textit{hazards} de controle frequentemente utilizam predição de desvios estática ou dinâmica, reduzindo drasticamente o impacto de instruções de salto no desempenho \cite[p.47-51]{stallings_reduced_1988}.
 
-A profundidade do pipeline impacta diretamente a taxa de instruções por ciclo e a latência de cada instrução. Processadores mais profundos aumentam o paralelismo temporal, mas elevam a complexidade de gerenciamento de \textit{hazards} e podem ampliar penalidades em desvios errôneos.\cite[p.47-51]{stallings_reduced_1988}.
+A profundidade do pipeline impacta diretamente a taxa de instruções por ciclo e a latência de cada instrução. Processadores mais profundos aumentam o paralelismo temporal, mas elevam a complexidade de gerenciamento de \textit{hazards} e podem ampliar penalidades em desvios errôneos \cite[p.47-51]{stallings_reduced_1988}.
 
 \subsubsection{Conjunto de instruções}
 Segundo \citeonline[p.195]{monteiro_introducao_2007}, o conjunto de instruções (ISA) de um processador estabelece as operações básicas que a máquina executará e influencia diretamente o desempenho de suas atividades. Ele também define as especificações dos demais componentes, já que as instruções afetam praticamente todos os elementos do processador, como a ULA, os registradores e o barramento interno. O formato e os componentes das instruções determinam a organização e o desempenho do decodificador de instruções, bem como a largura do registrador de instruções.
 
-Complementando essa perspectiva, o nível ISA é definido por como a máquina se apresenta ao programador de linguagem de máquina, ou mais realisticamente, ao compilador. Para que o compilador gere código compatível com a ISA, é necessário conhecer o modelo de memória, os registradores disponíveis, os tipos de dados suportados e o conjunto de instruções. Essa coleção de informações constitui a definição da ISA.\cite[p.345-346]{tanenbaum_structured_2013}
+Complementando essa perspectiva, o nível ISA é definido por como a máquina se apresenta ao programador de linguagem de máquina, ou mais realisticamente, ao compilador. Para que o compilador gere código compatível com a ISA, é necessário conhecer o modelo de memória, os registradores disponíveis, os tipos de dados suportados e o conjunto de instruções. Essa coleção de informações constitui a definição da ISA \cite[p.345-346]{tanenbaum_structured_2013}.
 
-Assim, a partir da especificação das instruções de máquina, o restante do processador começa a ser delineado, sendo uma parte crucial do projeto de processadores e definindo sua arquitetura. Em arquiteturas modernas, a ISA é formalmente definida por documentos normativos que garantem compatibilidade entre diferentes implementações, permitindo que múltiplos fabricantes produzam chips funcionalmente idênticos.\cite[p.346]{tanenbaum_structured_2013}
+Assim, a partir da especificação das instruções de máquina, o restante do processador começa a ser delineado, sendo uma parte crucial do projeto de processadores e definindo sua arquitetura. Em arquiteturas modernas, a ISA é formalmente definida por documentos normativos que garantem compatibilidade entre diferentes implementações, permitindo que múltiplos fabricantes produzam chips funcionalmente idênticos \cite[p.346]{tanenbaum_structured_2013}.
 
 Esses documentos especificam o comportamento esperado das instruções, modos de operação (como modo usuário e modo kernel), e incluem seções normativas e informativas que orientam tanto projetistas quanto desenvolvedores de compiladores. Portanto, a ISA não apenas guia o projeto físico do processador, mas também estabelece uma interface estável entre hardware e software, sendo essencial para garantir interoperabilidade, desempenho e previsibilidade na execução de programas.
 \cite[p.346-347]{tanenbaum_structured_2013}
 
 \subsubsubsection{Modos de Operação}
 
-Em arquiteturas modernas de processadores, os Modos de Operação representam diferentes níveis de privilégio que determinam o grau de acesso que o código em execução possui sobre os recursos do sistema. Essa separação é essencial para garantir segurança, estabilidade e controle adequado do hardware, especialmente em sistemas multitarefa e com suporte a sistemas operacionais.\cite[p.9]{risc-v_risc-v_2024-1}
+Em arquiteturas modernas de processadores, os Modos de Operação representam diferentes níveis de privilégio que determinam o grau de acesso que o código em execução possui sobre os recursos do sistema. Essa separação é essencial para garantir segurança, estabilidade e controle adequado do hardware, especialmente em sistemas multitarefa e com suporte a sistemas operacionais \cite[p.9]{risc-v_risc-v_2024-1}.
 
-Os modos mais comuns incluem o modo usuário, utilizado por aplicações comuns e caracterizado por acesso restrito ao hardware; o modo supervisor, geralmente reservado ao sistema operacional, com permissões para gerenciar memória, dispositivos e interrupções; e o modo de máquina (ou modo kernel), que possui o nível mais alto de privilégio e acesso irrestrito a todos os recursos do sistema. Esse último é utilizado para inicialização, configuração de segurança e controle de ambientes protegidos.\cite[p.9]{risc-v_risc-v_2024-1}
+Os modos mais comuns incluem o modo usuário, utilizado por aplicações comuns e caracterizado por acesso restrito ao hardware; o modo supervisor, geralmente reservado ao sistema operacional, com permissões para gerenciar memória, dispositivos e interrupções; e o modo de máquina (ou modo kernel), que possui o nível mais alto de privilégio e acesso irrestrito a todos os recursos do sistema. Esse último é utilizado para inicialização, configuração de segurança e controle de ambientes protegidos \cite[p.9]{risc-v_risc-v_2024-1}.
 
-Durante a execução normal, o processador opera em modo usuário, executando aplicações. Quando uma operação privilegiada é necessária, como acessar o disco, configurar um temporizador ou manipular registradores de controle, ocorre uma \textit{trap}, que é uma interrupção controlada que transfere a execução para um modo mais privilegiado. Essas transições podem ser verticais, quando há mudança de nível de privilégio, ou horizontais, quando ocorrem dentro do mesmo nível.\cite[p.10]{risc-v_risc-v_2024-1}
+Durante a execução normal, o processador opera em modo usuário, executando aplicações. Quando uma operação privilegiada é necessária, como acessar o disco, configurar um temporizador ou manipular registradores de controle, ocorre uma \textit{trap}, que é uma interrupção controlada que transfere a execução para um modo mais privilegiado. Essas transições podem ser verticais, quando há mudança de nível de privilégio, ou horizontais, quando ocorrem dentro do mesmo nível \cite[p.10]{risc-v_risc-v_2024-1}.
 
-A existência de múltiplos modos permite o isolamento entre aplicações e o sistema operacional, protege contra falhas ou comportamentos maliciosos, viabiliza ambientes seguros e virtualizados, e oferece flexibilidade na execução de diferentes tipos de software. Algumas arquiteturas simplificadas podem implementar apenas o modo máquina, enquanto outras oferecem três ou mais níveis para suportar sistemas operacionais complexos e múltiplos usuários.\cite[p.10]{risc-v_risc-v_2024-1}
+A existência de múltiplos modos permite o isolamento entre aplicações e o sistema operacional, protege contra falhas ou comportamentos maliciosos, viabiliza ambientes seguros e virtualizados, e oferece flexibilidade na execução de diferentes tipos de software. Algumas arquiteturas simplificadas podem implementar apenas o modo máquina, enquanto outras oferecem três ou mais níveis para suportar sistemas operacionais complexos e múltiplos usuários \cite[p.10]{risc-v_risc-v_2024-1}.
 
 \subsubsection{\textit{Assembly}}
-Para facilitar a programação de computadores e o entendimento de código de máquina foram criadas as linguagens \textit{assembly}, que fazem o uso de mnemônicos, como "ADD", "SUB" e "LDA", para representar as instruções que estão sendo utilizadas no programa. Diferentes famílias de processadores utilizam diferentes linguagens \textit{assembly}, geralmente possuindo apenas algumas similaridades entre si. A transformação do código assembly para instruções de máquina se dá em compiladores especiais chamados \textit{assemblers}.\cite[p.6-7]{catsoulis_designing_2002}
+Para facilitar a programação de computadores e o entendimento de código de máquina foram criadas as linguagens \textit{assembly}, que fazem o uso de mnemônicos, como "ADD", "SUB" e "LDA", para representar as instruções que estão sendo utilizadas no programa. Diferentes famílias de processadores utilizam diferentes linguagens \textit{assembly}, geralmente possuindo apenas algumas similaridades entre si. A transformação do código assembly para instruções de máquina se dá em compiladores especiais chamados \textit{assemblers} \cite[p.6-7]{catsoulis_designing_2002}.
 
 \section{Partes de uma Microarquitetura}
 Como visto anteriormente nas seções \ref{sec:maq_von_neumann} e \ref{sec:niveis_maquina}, podemos separar a microarquitetura em diversos componentes. Cada microarquitetura pode possuir seus próprios componentes, porém eles geralmente seguem alguma variação da organização ULA-Memória-Controle.
 
 \subsection{Unidade Lógica e Aritmética(ULA)}\label{sec:ULA}
-A ULA é o circuito responsável por realizar operações matemáticas lógicas e aritméticas, como somas e subtrações, "E", "OU" e deslocamento de bits.\cite[p.60]{favero_organizacao_2011}
+A ULA é o circuito responsável por realizar operações matemáticas lógicas e aritméticas, como somas e subtrações, "E", "OU" e deslocamento de bits \cite[p.60]{favero_organizacao_2011}.
 Alguns processadores porém, podem possuir unidades separadas para multiplicação e divisão, ou para o deslocamento de bits, como exemplo o RISC~I\cite[p.13]{catsoulis_designing_2002}
 
 \subsubsection{IEEE 754}
@@ -749,7 +762,7 @@ Esse padrão especifica:
 Esse componente pode ser implementado separadamente da Unidade Lógica e Aritmética (ULA), por meio de uma Unidade de Ponto Flutuante (FPU), dedicada exclusivamente ao processamento de operações em ponto flutuante, o que permite maior desempenho e precisão em cálculos científicos e gráficos.
 
 \subsection{Memória}\label{sec:memoria}
-A memória em sistemas de computação desempenha um papel crucial no armazenamento e recuperação de informações essenciais para o funcionamento do sistema. Conceitualmente, a memória é simples, atuando como um repositório de dados. Entretanto, na prática, ela se configura como um subsistema complexo, composto por diferentes tipos de memórias, integradas para garantir desempenho e eficiência.\cite[p.79]{monteiro_introducao_2007}
+A memória em sistemas de computação desempenha um papel crucial no armazenamento e recuperação de informações essenciais para o funcionamento do sistema. Conceitualmente, a memória é simples, atuando como um repositório de dados. Entretanto, na prática, ela se configura como um subsistema complexo, composto por diferentes tipos de memórias, integradas para garantir desempenho e eficiência \cite[p.79]{monteiro_introducao_2007}.
 
 Segundo \citeonline[p.79-80]{monteiro_introducao_2007}, a necessidade de múltiplos tipos de memória surge da crescente disparidade entre a velocidade dos processadores e o tempo de acesso às memórias. Enquanto a capacidade de processamento aumenta rapidamente, o avanço na velocidade de acesso à memória é mais lento. Além disso, o aumento no volume de dados e no tamanho dos programas exige maior capacidade de armazenamento.
 
@@ -762,7 +775,7 @@ Segundo \citeonline[p.14]{catsoulis_designing_2002}, os registradores são as un
     \item \textbf{Registradores de Estado}\\
     Servem para armazenar bits de estado que refletem resultados de operações anteriores, como zero, negativo ou interrupções.
     \item \textbf{Contadores de programa(PC)}\\
-     Estes são registradores especiais que apontam para a próxima instrução a ser buscada na memória e executada pelo processador. Quando a instrução é buscada, o sistema atualiza automaticamente o PC para armazenar o endereço da próxima instrução. Assim, o PC é essencial para o controle e sequenciamento da execução dos programas.\cite{favero_organizacao_2011}
+     Estes são registradores especiais que apontam para a próxima instrução a ser buscada na memória e executada pelo processador. Quando a instrução é buscada, o sistema atualiza automaticamente o PC para armazenar o endereço da próxima instrução. Assim, o PC é essencial para o controle e sequenciamento da execução dos programas \cite{favero_organizacao_2011}.
      \item \textbf{Registradores de Controle}\\
      Armazenam informações importantes para o controle, como código de operação ou resultado de sua decodificação.
 \end{itemize}
@@ -803,7 +816,7 @@ O mecanismo de paginação baseia-se na separação entre espaço de endereçame
 
 Quando a unidade de gerenciamento de memória (MMU) recebe um endereço virtual, ela o subdivide em duas partes: o número de página e o deslocamento interno. O número de página indexa a tabela de páginas, onde está registrado o número da moldura correspondente e bits de controle—por exemplo, presença, modificação e permissão de acesso. Se o bit de presença indicar que a página ainda não foi carregada, a MMU sinaliza uma falta de página e o sistema operacional intervém para buscar o bloco faltante no disco, transferi-lo para uma moldura livre e atualizar a tabela \cite[p.442]{tanenbaum_structured_2013}.
 
-Esse processo de carregamento sob demanda é transparente ao programador, que pode escrever códigos como se dispusesse de um espaço de memória contínuo e do tamanho total do espaço virtual. Na prática, mantém-se em memória principal apenas as páginas mais frequentemente acessadas, enquanto o restante permanece em armazenamento secundário até ser referenciado. Dessa forma, a paginação libera o desenvolvedor do gerenciamento manual de overlays e oferece a ilusão de uma grande memória linear, independentemente do tamanho físico real disponível.\cite[p.441]{tanenbaum_structured_2013}.
+Esse processo de carregamento sob demanda é transparente ao programador, que pode escrever códigos como se dispusesse de um espaço de memória contínuo e do tamanho total do espaço virtual. Na prática, mantém-se em memória principal apenas as páginas mais frequentemente acessadas, enquanto o restante permanece em armazenamento secundário até ser referenciado. Dessa forma, a paginação libera o desenvolvedor do gerenciamento manual de overlays e oferece a ilusão de uma grande memória linear, independentemente do tamanho físico real disponível \cite[p.441]{tanenbaum_structured_2013}.
 
 \subsubsubsection{Memória virtual e cache}
 
@@ -855,9 +868,9 @@ O RISC~II começou a ser criado em paralelo à produção do chip do RISC~I, e i
 
 \subsection{RISC-V}
 
-O RISC-V é uma arquitetura de conjunto de instruções (ISA) baseada nos princípios RISC, desenvolvida inicialmente em 2010 no Laboratório de Arquitetura de Computadores da Universidade da Califórnia, Berkeley. Diferente de seus predecessores acadêmicos, o RISC-V foi projetado com foco em extensibilidade, simplicidade e liberdade de uso, sendo disponibilizado como padrão aberto e livre de royalties, o que o torna altamente atrativo para pesquisa, ensino e aplicações comerciais.\cite[p.1]{patterson_risc-v_2016}
+O RISC-V é uma arquitetura de conjunto de instruções (ISA) baseada nos princípios RISC, desenvolvida inicialmente em 2010 no Laboratório de Arquitetura de Computadores da Universidade da Califórnia, Berkeley. Diferente de seus predecessores acadêmicos, o RISC-V foi projetado com foco em extensibilidade, simplicidade e liberdade de uso, sendo disponibilizado como padrão aberto e livre de royalties, o que o torna altamente atrativo para pesquisa, ensino e aplicações comerciais \cite[p.1]{patterson_risc-v_2016}.
 
-A arquitetura RISC-V mantém os fundamentos das arquiteturas RISC clássicas, como instruções de tamanho fixo, uso intensivo de registradores e separação clara entre instruções de carga/armazenamento e operações aritméticas. No entanto, ela introduz um sistema modular de extensões, permitindo que implementações sejam adaptadas conforme as necessidades específicas de cada projeto, desde microcontroladores até supercomputadores.\cite{risc-v_risc-v_2024}
+A arquitetura RISC-V mantém os fundamentos das arquiteturas RISC clássicas, como instruções de tamanho fixo, uso intensivo de registradores e separação clara entre instruções de carga/armazenamento e operações aritméticas. No entanto, ela introduz um sistema modular de extensões, permitindo que implementações sejam adaptadas conforme as necessidades específicas de cada projeto, desde microcontroladores até supercomputadores \cite{risc-v_risc-v_2024}.
 
 Entre suas principais características estão:
 \begin{itemize}
@@ -876,19 +889,19 @@ Por outro lado, a arquitetura RISC surgiu com a ideia de simplificar o processad
 
 RISC também se destaca pelo uso de \textit{pipelines}, permitindo a execução simultânea de várias instruções em diferentes estágios, o que aumenta ainda mais o desempenho. Devido ao baixo consumo de energia e alta eficiência, os processadores RISC são amplamente utilizados em sistemas embarcados e de baixa potência.
 
-Apesar dessas distinções, as arquiteturas CISC e RISC têm se aproximado ao longo do tempo, com processadores CISC adotando características de RISC, como \textit{pipelines} e simplificação de instruções, e processadores RISC~Incorporando recursos mais complexos típicos da CISC. A escolha entre essas arquiteturas depende das necessidades específicas de cada aplicação: enquanto RISC oferece vantagens em termos de eficiência energética, CISC pode ser preferível em sistemas com espaço limitado para armazenamento de programas, devido à sua maior densidade de instruções.\cite[p.19-21]{catsoulis_designing_2002}
+Apesar dessas distinções, as arquiteturas CISC e RISC têm se aproximado ao longo do tempo, com processadores CISC adotando características de RISC, como \textit{pipelines} e simplificação de instruções, e processadores RISC~Incorporando recursos mais complexos típicos da CISC. A escolha entre essas arquiteturas depende das necessidades específicas de cada aplicação: enquanto RISC oferece vantagens em termos de eficiência energética, CISC pode ser preferível em sistemas com espaço limitado para armazenamento de programas, devido à sua maior densidade de instruções \cite[p.19-21]{catsoulis_designing_2002}.
 
 \section{Simuladores}
-Um simulador é um software com uma interface interativa que facilita a construção de modelos de simulação. Ele permite que os usuários criem modelos através de elementos básicos e os interliguem conforme o fluxo lógico do sistema. A maioria dos simuladores modernos minimiza a necessidade de programação, tornando o processo mais acessível e rápido.\cite{chwif_modelagem_2014}
+Um simulador é um software com uma interface interativa que facilita a construção de modelos de simulação. Ele permite que os usuários criem modelos através de elementos básicos e os interliguem conforme o fluxo lógico do sistema. A maioria dos simuladores modernos minimiza a necessidade de programação, tornando o processo mais acessível e rápido \cite{chwif_modelagem_2014}.
 
-Os softwares de simulação permitem a criação de modelos computacionais que representam sistemas reais. Esses modelos podem ser usados para analisar e prever o comportamento do sistema sob diferentes condições. O processo envolve a definição de parâmetros, como tempos de chegada e atendimento, e a execução do modelo para obter medidas de desempenho, como a taxa de utilização de um atendente.\cite{chwif_modelagem_2014}
+Os softwares de simulação permitem a criação de modelos computacionais que representam sistemas reais. Esses modelos podem ser usados para analisar e prever o comportamento do sistema sob diferentes condições. O processo envolve a definição de parâmetros, como tempos de chegada e atendimento, e a execução do modelo para obter medidas de desempenho, como a taxa de utilização de um atendente \cite{chwif_modelagem_2014}.
 \subsection{Linguagens de Descrição de Hardware (HDLs)}
 
-As linguagens de descrição de hardware (\textit{Hardware Description Languages} — HDL) são ferramentas fundamentais para o desenvolvimento e simulação de circuitos digitais. Ao invés de utilizar esquemáticos visuais, que se tornam impraticáveis à medida que a complexidade dos circuitos aumenta, HDLs permitem representar digitalmente a estrutura e o comportamento de sistemas eletrônicos por meio de uma linguagem textual.\cite{keim_what_2020}
+As linguagens de descrição de hardware (\textit{Hardware Description Languages} — HDL) são ferramentas fundamentais para o desenvolvimento e simulação de circuitos digitais. Ao invés de utilizar esquemáticos visuais, que se tornam impraticáveis à medida que a complexidade dos circuitos aumenta, HDLs permitem representar digitalmente a estrutura e o comportamento de sistemas eletrônicos por meio de uma linguagem textual \cite{keim_what_2020}.
 
 Essa abordagem é especialmente útil na modelagem hierárquica de circuitos, que organiza transistores em portas lógicas, portas em módulos funcionais, e assim sucessivamente. Com HDLs como VHDL e Verilog, é possível expressar essas estruturas com precisão e eficiência, facilitando a síntese e simulação do circuito em plataformas como FPGAs.
 
-Ao contrário das linguagens de programação tradicionais, HDLs descrevem operações que ocorrem em paralelo, refletindo a natureza simultânea do funcionamento dos circuitos digitais. Isso permite que diferentes partes do hardware sejam simuladas ou executadas ao mesmo tempo, mesmo que a descrição textual siga uma ordem sequencial.\cite{keim_what_2020}
+Ao contrário das linguagens de programação tradicionais, HDLs descrevem operações que ocorrem em paralelo, refletindo a natureza simultânea do funcionamento dos circuitos digitais. Isso permite que diferentes partes do hardware sejam simuladas ou executadas ao mesmo tempo, mesmo que a descrição textual siga uma ordem sequencial \cite{keim_what_2020}.
 
 \chapter{Métodos e recursos}\label{metodos_e_recursos}
 \index{sinopse de capítulo}
@@ -946,7 +959,7 @@ Para o desenvolvimento deste trabalho, foi necessário seguir os seguintes passo
 \end{enumerate}
 \clearpage
 Na Figura~\ref{fig:Planejamento_Monografia} observa-se os passos previamente descritos, assim como objetivos citados na seção \ref{sec-objetivos} deste documento.
-\begin{figure}
+\begin{figure}[H]
     \includegraphics[width=1\linewidth]{Planejamento monografia.png}
     \caption{Planejamento Monografia}
     \label{fig:Planejamento_Monografia}
@@ -1016,13 +1029,13 @@ A segunda fase começou após a escolha da arquitetura e continuou durante o des
 
 \subsection{Trabalhos Encontrados}
 
-Os trabalhos encontrados foram classificados em três categorias de importância. A primeira categoria incluiu arquiteturas que não foram relevantes para este estudo devido à sua complexidade, simplicidade excessiva ou por não atenderem a requisitos específicos. A segunda categoria abrangeu trabalhos que, embora não fossem sobre a arquitetura escolhida, eram relacionados e poderiam inspirar futuros desenvolvimentos. A última categoria consistiu em trabalhos diretamente relacionados à arquitetura selecionada. Todas as arquiteturas pesquisadas podem ser vistas na Tabela \ref{tab:relatedWork}.
+Os trabalhos encontrados foram classificados em três categorias de importância. A primeira categoria incluiu arquiteturas que não foram relevantes para este estudo devido à sua complexidade, simplicidade excessiva ou por não atenderem a requisitos específicos. A segunda categoria abrangeu trabalhos que, embora não fossem sobre a arquitetura escolhida, eram relacionados e poderiam inspirar futuros desenvolvimentos. A última categoria consistiu em trabalhos diretamente relacionados à arquitetura selecionada. Todas as arquiteturas pesquisadas podem ser vistas na Tabela \ref{tab:relatedWork1}.
 
 \begin{table}[!htp]\centering
     \centering
     \includegraphics[width=1\linewidth]{tabelaTrabalhosRelacionados.png}
     \caption{Arquiteturas encontradas na primeira fase de pesquisa.}
-    \label{tab:relatedWork}
+    \label{tab:relatedWork1}
 \end{table}
 
 Na primeira categoria, destacaram-se as arquiteturas Intel 4004 (1971), Zilog Z80 (1976) e MOS Technology 6502 (1975). Essas arquiteturas comerciais foram descartadas por serem ou muito simples ou muito complexas, além de não oferecerem conteúdo relevante para os objetivos deste trabalho.
@@ -1039,13 +1052,13 @@ Finalmente, o artigo de \citeonline{stallings_reduced_1988} sobre arquiteturas R
 
 \subsection{Motivações da Escolha da arquitetura RISC~I}
 
-O RISC~I foi escolhido por oferecer uma quantidade balanceada de recursos, não sendo difícil de entender e replicar, mas ainda complexo o suficiente para servir como uma boa base para o trabalho. A quantidade de instruções é pequena, totalizando 39 ao final do seu desenvolvimento. Muitas das instruções possuem mecanismos e ativações de controle semelhantes, o que facilitou a criação do circuito. A \textit{pipeline} do RISC~I oferece 2 fases, sendo fácil de entender, e, caso necessário, algumas pequenas alterações podem aumentar esse número para 3 fases, conforme implementado no RISC~II.\cite{katevenis_reduced_1985}
+O RISC~I foi escolhido por oferecer uma quantidade balanceada de recursos, não sendo difícil de entender e replicar, mas ainda complexo o suficiente para servir como uma boa base para o trabalho. A quantidade de instruções é pequena, totalizando 39 ao final do seu desenvolvimento. Muitas das instruções possuem mecanismos e ativações de controle semelhantes, o que facilitou a criação do circuito. A \textit{pipeline} do RISC~I oferece 2 fases, sendo fácil de entender, e, caso necessário, algumas pequenas alterações podem aumentar esse número para 3 fases, conforme implementado no RISC~II \cite{katevenis_reduced_1985}.
 
-A arquitetura utiliza tanto largura de endereços quanto de dados de 32 bits, sendo similar a arquiteturas mais atuais. No quesito de operações matemáticas, o RISC~I não oferece muitas opções, contendo apenas algumas operações lógicas, soma e subtração. Apesar disso, operações adicionais como multiplicação, divisão ou operações com ponto flutuante podem ser adicionadas facilmente, tanto pelas facilidades do simulador quanto pelo espaço para expansão no conjunto de instruções.\cite{peek_vlsi_1983}
+A arquitetura utiliza tanto largura de endereços quanto de dados de 32 bits, sendo similar a arquiteturas mais atuais. No quesito de operações matemáticas, o RISC~I não oferece muitas opções, contendo apenas algumas operações lógicas, soma e subtração. Apesar disso, operações adicionais como multiplicação, divisão ou operações com ponto flutuante podem ser adicionadas facilmente, tanto pelas facilidades do simulador quanto pelo espaço para expansão no conjunto de instruções \cite{peek_vlsi_1983}.
 
 Outro recurso que o RISC~I apresenta é a janela de registradores, que, embora não seja exatamente uma pilha (\textit{stack}), possui uma função bem similar, além de ser um recurso interessante para apresentação didática. Esta janela de registradores acelera o processamento de programas no RISC~I, reduzindo a necessidade de acesso à memória primária do sistema\cite{peek_vlsi_1983}. No entanto, durante a segunda fase deste trabalho, esse recurso foi deprecado por razões que serão explicadas posteriormente.
 
-Esta arquitetura foi criada por estudantes em um meio acadêmico, demonstrando ser uma boa opção para uso didático. Além disso, o RISC~I foi uma arquitetura altamente influente, servindo de referência para diversas arquiteturas atuais, como as arquiteturas ARM, sendo um ótimo ponto de entrada para quem deseja aprender estas arquiteturas.\cite{tanenbaum_structured_2013}
+Esta arquitetura foi criada por estudantes em um meio acadêmico, demonstrando ser uma boa opção para uso didático. Além disso, o RISC~I foi uma arquitetura altamente influente, servindo de referência para diversas arquiteturas atuais, como as arquiteturas ARM, sendo um ótimo ponto de entrada para quem deseja aprender estas arquiteturas \cite{tanenbaum_structured_2013}.
 
 \section{Modelo de Simulação Base}\label{sec:modeloSim}
 
@@ -1058,13 +1071,13 @@ A criação de um modelo de simulação base foi um dos passos metodológicos ex
     \label{fig:simModel}
 \end{figure}
 
-A Figura~\ref{fig:simModel} mostra o modelo criado com todos os seus componentes. Para a execução de programas, os programas compilados podem ser carregados diretamente na memória RAM do sistema. A possibilidade de carregar programas diretamente no modelo de simulação simplificou seu teste e desenvolvimento. Na sua versão atual, o modelo não possui nenhum componente ou tela para exibir a saída de informações, sendo necessário observar diretamente o que está sendo gravado na memória e outros componentes para verificar seu funcionamento.
+A Figura~\ref{fig:simModel} mostra o modelo criado com todos os seus componentes. Para a execução de programas, os programas compilados podem ser carregados diretamente na memória RAM do sistema. A possibilidade de carregar programas diretamente no modelo de simulação simplificou seu teste e desenvolvimento. Nessa versão da simulação, o modelo não possui nenhum componente ou tela para exibir a saída de informações, sendo necessário observar diretamente o que está sendo gravado na memória e outros componentes para verificar seu funcionamento.
 
-Um componente adicional que foi inserido no sistema é um componente para entrada de teclado, que grava informações inseridas pelo usuário e que podem ser acessadas pelo resto do sistema. A implementação deste componente é rudimentar, servindo apenas como prova de conceito, mas pode ser aprimorada nas etapas seguintes de desenvolvimento do modelo, permitindo uma interação direta com o sistema sem a necessidade de manipulação da memória.
+Um componente adicional que foi inserido no sistema é um componente para entrada de teclado, que grava informações inseridas pelo usuário e que podem ser acessadas pelo resto do sistema. A implementação deste componente foi rudimentar, servindo apenas como prova de conceito, mas foi aprimorado nas etapas seguintes de desenvolvimento do modelo, permitindo uma interação direta com o sistema sem a necessidade de manipulação da memória.
 
-Apesar de o modelo de simulação estar completo, devido a limitações de tempo no desenvolvimento, não foi possível criar uma rotina de tratamento de \textit{overflow} do contador de número da janela de registradores, um componente essencial para a execução de programas que exigem chamadas de funções na memória. Esta rotina, implementada na memória do sistema como um programa, permite que mais instruções de chamadas sejam realizadas sem sobrescrever e perder dados, garantindo que o usuário não precise interferir diretamente no seu programa criado.
+Com o modelo de simulação concluido, foi criada uma rotina de tratamento de \textit{overflow} do contador de número da janela de registradores, um componente essencial para a execução de programas que realizam chamadas de funções na memória. Esta rotina, implementada na memória do sistema como um programa auxiliar, permite que múltiplas instruções de chamada sejam executadas sem sobrescrever ou perder dados, garantindo que o usuário não precise interferir diretamente no seu programa criado.
 
-Completando este passo metodológico, pode-se considerar o modelo de simulação um sucesso, apesar de algumas melhorias possíveis. Este modelo servirá como uma base sólida para o desenvolvimento de um novo modelo, objetivo da próxima etapa deste trabalho. As melhorias necessárias serão implementadas ao longo desse processo, garantindo que a arquitetura criada funcione como um ponto de partida eficiente para a criação de uma arquitetura didática e seu modelo de simulação.
+Completando este passo metodológico, pode-se considerar o modelo de simulação um sucesso, apesar de algumas melhorias possíveis. Este modelo serviu como uma base sólida para o desenvolvimento de um novo modelo, objetivo da próxima etapa deste trabalho. As melhorias necessárias foram implementadas ao longo desse processo, garantindo que a arquitetura criada funcione como um ponto de partida eficiente para a criação de uma arquitetura didática e seu modelo de simulação.
 
 \section{\textit{Assembler} Base}
 
@@ -1112,7 +1125,7 @@ Para utilizar o \textit{assembler}, um arquivo .asm contendo o código do progra
 
 Um Relatório Técnico no contexto acadêmico é um documento que detalha os métodos, resultados e conclusões de um projeto ou pesquisa. Na área de computação e arquitetura e organização de computadores, ele aborda desde a descrição de arquiteturas e algoritmos até a análise de desempenho e implementação de sistemas. Este modelo foi adotado por \cite{peek_vlsi_1983} em sua apresentação do RISC~I, o que inspirou a utilização deste modelo para a criação da documentação do que foi feito para este trabalho.
 
-O relatório técnico criado, intitulado "Uma Implementação do RISC-I utilizando o simulador Logisim Evolution", Disponível no Apêndice \ref{ap:tech_report}, focou em mostrar as diferenças de implementação entre a implementação original do RISC~I e a implementação realizada no Logisim. Também foram detalhados alguns aspectos do RISC~I além da implementação do \textit{assembler}. Diferentemente de um artigo, um relatório técnico não possui normas técnicas exatas a serem seguidas, o que facilitou e acelerou o processo de escrita. No entanto, foram mantidos alguns padrões da norma ABNT de artigo para garantir que o documento permanecesse organizado.
+O relatório técnico criado, intitulado "Uma Implementação do RISC-I utilizando o simulador Logisim Evolution", Disponível no Apêndice \ref{ap:tech_report}, focou em mostrar as diferenças de implementação entre a implementação original do RISC~I e a implementação realizada no Logisim. Também foram detalhados alguns aspectos do RISC~I além da implementação do \textit{assembler}.
 
 Diversas partes do relatório técnico serviram de base para a documentação didática que foi criada nos próximos passos da monografia. Além disso, o relatório pode ser facilmente adaptado para uma publicação formal, caso haja interesse. Uma das grandes motivações para a realização deste relatório técnico foi a necessidade de documentar o que foi feito de maneira detalhada e precisa, o que se encaixa perfeitamente no último passo metodológico realizado durante o TCC 1.
 
@@ -1126,19 +1139,19 @@ O segundo tipo de pesquisa foi similar ao de \citeonline{costa_modelo_2010}, por
 
 A Figura~\ref{fig:ngram} mostra o resultado da pesquisa das arquiteturas no \textit{Google Ngram Viewer}, enquanto as Tabelas \ref{fig:scholar} e \ref{fig:scholarProx} apresentam os resultados das pesquisas no \textit{Google Scholar}. A Tabela \ref{fig:scholarProx} exibe uma porcentagem correspondente à quantidade de resultados com filtragem utilizando termos adicionais em relação aos resultados sem filtragem.
 
-\begin{figure}[t]
+\begin{figure}[h]
     \centering
     \includegraphics[width=0.86\linewidth]{Webibliometria/full.png}
     \caption{Resultado das pesquisas no \textit{Google Ngram Viewer}}
     \label{fig:ngram}
 \end{figure}
-\begin{table}[t]
+\begin{table}[h]
     \centering
     \includegraphics[width=0.86\linewidth]{Webibliometria/scholar.png}
     \caption{Resultado das pesquisas do nome da arquitetura com termos adicionais para filtragem no \textit{Google Scholar}}
     \label{fig:scholar}
 \end{table}
-\begin{table}[t]
+\begin{table}[h]
     \centering
     \includegraphics[width=0.86\linewidth]{Webibliometria/scholarProx.png}
     \caption{Resultado relativo das pesquisas do nome da arquitetura com termos adicionais para filtragem no \textit{Google Scholar}}
@@ -1315,7 +1328,7 @@ Uma \textit{pipeline} de 5 passos é uma evolução da \textit{pipeline} de 3 pa
 
 Esse tipo de \textit{pipeline} é implementado em arquiteturas como a MIPS\cite{mips_tech_llc_mips32_2016} e fornece uma melhoria na performance. No entanto, pode aumentar a complexidade do circuito, o que pode dificultar o entendimento didático do funcionamento da \textit{pipeline}. Caso seja implementada, esse aspecto deve ser considerado.
 
-Vale destacar que os estágios de busca de instrução e acesso à memória podem gerar conflitos quando executados simultaneamente, já que ambos requerem acesso à memória principal. Para evitar esse problema, é necessário empregar técnicas que permitam o acesso paralelo ou escalonado à memória, garantindo o funcionamento correto da \textit{pipeline}.
+Vale destacar que os estágios de busca de instrução e acesso à memória para modificação obtenção de dados podem gerar conflitos quando executados simultaneamente, já que ambos requerem acesso à memória principal atravez do mesmo barramento. Para evitar esse problema, é necessário empregar técnicas que permitam o acesso paralelo ou escalonado à memória, garantindo o funcionamento correto da \textit{pipeline}.
 
 \subsubsection{Instruções \textit{branch}}\label{recursos_branch}%não precisa de modificações,
 
@@ -1489,14 +1502,14 @@ A Palavra de Status do Processador (PSW) no RISC-I servia apenas a duas funçõe
 
 Para adaptar o Controlador às novas modificações, seus registradores de instrução foram alterados, e a decodificação e transmissão de sinais para controle do número de janela e do PSW foram removidas. Em paralelo, o conjunto de instruções do RISC-V (\ref{recursos_risc-v}, consequentemente \ref{recursos_reorganizacao}) estava sendo adicionado ao modelo. Ao adaptar o conjunto de instruções do RISC-I para o RISC-V, notou-se que o circuito necessário para o controle tornou-se bem mais simples, como pode ser visto nas Figuras \ref{fig:Controlador_1_1} e \ref{fig:Controlador_1_2}.
 
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
     \includegraphics[width=1\linewidth]{ProcessoDesenvolvimento/Arquitetura/Controlador_1_1.png}
     \caption{Primeira fase de decodificação de instruções. Antes (esquerda) e depois (direita).}
     \label{fig:Controlador_1_1}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
     \includegraphics[width=1\linewidth]{ProcessoDesenvolvimento/Arquitetura/Controlador_1_2.png}
     \caption{Segunda fase de decodificação de instruções. Antes (esquerda) e depois (direita).}
@@ -1523,7 +1536,7 @@ Espero que essa versão expandida esteja mais clara e coesa. Se precisar de mais
 
 A Figura~\ref{fig:immediates1} mostra as diferenças entre os decodificadores. Além da alteração da forma de decodificação, a forma com que os valores são passados para os componentes também foi alterada, onde antes cada tipo tinha seu próprio barramento separado, agora todos os valores imediatos são estendidos para 32 bits e passados para um barramento unificado que passa em paralelo com os barramentos A,B e C, simplificando as conexões e controles necessários entre os componentes.
 
-\begin{figure}
+\begin{figure}[h]
     \centering
     \includegraphics[width=1\linewidth]{ProcessoDesenvolvimento/Arquitetura/Immediates1.png}
     \caption{Decodificador de imediato do RISC~I(esquerda) em comparação com o novo decodificador(direita)}
@@ -1580,19 +1593,19 @@ Tudo isso ocorre durante as fases que possuem o sufixo S, que podem ser vistas n
 
 A Figura~\ref{fig:pipelineRISCI} mostra como as instruções são divididas e executadas utilizando a \textit{Pipeline} do RISC~I. Dentro das divisões mostradas, o I corresponde ao primeiro estágio (IF + ID), o E corresponde ao segundo estágio (EX + WB) enquanto o estágio D corresponde à extensão que ocorre durante as instruções de carregamento e armazenamento (MEM).
 
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.5\linewidth]{ProcessoDesenvolvimento/Arquitetura/pipelineRISCI.png}
-    \caption{Demonstração da \textit{pipeline} do RISC~I.\cite{stallings_reduced_1988}}
+    \caption{Demonstração da \textit{pipeline} do RISC~I \cite{stallings_reduced_1988}}.
     \label{fig:pipelineRISCI}
 \end{figure}
 
 É visível que, em instruções que acessam a memória, a extensão de carregamento atrasa a coleta, decodificação e execução em um estágio da pipeline, tornando acessos à memória ineficientes na execução de programas. Durante o desenvolvimento do RISC~II, isso foi corrigido, o que fez a extensão de acesso à memória ser executada em paralelo com os outros estágios da pipeline, conforme mostrado na Figura~\ref{fig:pipelineRISCII}.
 
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.5\linewidth]{ProcessoDesenvolvimento/Arquitetura/PipelineRISCII.png}
-    \caption{Demonstração da \textit{pipeline} do RISC~II.\cite{stallings_reduced_1988}}
+    \caption{Demonstração da \textit{pipeline} do RISC~II \cite{stallings_reduced_1988}}.
     \label{fig:pipelineRISCII}
 \end{figure}
 
@@ -1613,7 +1626,7 @@ A Figura~\ref{fig:controlador_2_1} mostra o resultado das modificações realiza
 
 O Decodificador de Operação teve apenas seu encapsulamento alterado, com as saídas completamente visíveis. O Controlador de Imediato sofreu alterações mais significativas, com a substituição dos \textit{buffers tri-state} por multiplexadores para a seleção do valor de saída. Esta mudança foi feita porque FPGAs geralmente não suportam \textit{buffers tri-state} internamente. Além disso, permite que um valor padrão esteja sempre disponível; no caso, o imediato de 12 bits das instruções OP-IMM. A Figura~\ref{fig:Immediates2} mostra o resultado dessas mudanças.
 
-\begin{figure}
+\begin{figure}[h]
     \centering
     \includegraphics[width=1\linewidth]{ProcessoDesenvolvimento/Arquitetura/Immediates2.png}
     \caption{Comparação entre o Decodificador de Imediato com \textit{buffers tri-state} (esquerda) e multiplexadores (direita)}
@@ -1698,20 +1711,20 @@ Para executar um programa via simulação no SV, os programas montados pelo \tex
 
 Para permitir que o usuário troque o programa, o nome do arquivo pode ser passado como parâmetro durante a instanciação do componente no arquivo principal de testes. O arquivo principal também inclui parâmetros para controlar a largura do endereço de memória, o tamanho do programa em bytes, o tempo de oscilação do \textit{Clock}, o tempo limite de simulação e uma variável para selecionar uma das duas formas de impressão do estado do sistema.
 
-A Figura~\ref{fig:sv_tests1} mostra o início da execução da simulação, utilizando a exibição simplificada do estado do processador. Nesta exibição, os valores são exibidos ao final de cada fase da \textit{Pipeline} (a cada 3 ciclos de \textit{Clock}), e informações sobre a instrução atual são apresentadas. Um processo simples de decompilação é executado para exibir os nomes legíveis da instrução e função atuais.
-
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.75\linewidth]{ProcessoDesenvolvimento/Arquitetura/sv_tests1.png}
     \caption{Início da simulação do código SystemVerilog, com exibição simplificada do estado do sistema}
     \label{fig:sv_tests1}
 \end{figure}
 
+A Figura~\ref{fig:sv_tests1} mostra o início da execução da simulação, utilizando a exibição simplificada do estado do processador. Nesta exibição, os valores são exibidos ao final de cada fase da \textit{Pipeline} (a cada 3 ciclos de \textit{Clock}), e informações sobre a instrução atual são apresentadas. Um processo simples de decompilação é executado para exibir os nomes legíveis da instrução e função atuais.
+
 Embora essa simulação não seja interativa neste momento, ela ofereceu uma maneira alternativa de identificar erros no sistema. Ao intercalar a análise entre as simulações do Logisim Evolution e do Icarus Verilog, foi possível solucionar problemas que surgiam ao executar o algoritmo de ordenação \textit{quicksort}.
 
 O fim da simulação pode ocorrer quando o tempo limite é alcançado, quando um salto para o próprio endereço é identificado ou quando uma instrução ilegal é detectada. Após isso, o conteúdo do Arquivo de Registradores e da Memória RAM é impresso, com destaque para os espaços de memória que sofreram alterações, como mostra a Figura~\ref{fig:sv_tests2}.
 
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.75\linewidth]{ProcessoDesenvolvimento/Arquitetura/sv_testes2.png}
     \caption{Fim da simulação do código SystemVerilog}
@@ -1720,14 +1733,15 @@ O fim da simulação pode ocorrer quando o tempo limite é alcançado, quando um
 
 Durante a criação do sistema, foi observado que a maioria das detecções de \textit{Clock} utilizadas para atualizar os registradores ocorria durante a borda de descida. A ideia inicial era que faria mais sentido enviar os dados durante a borda de subida do \textit{Clock} e escrevê-los durante a borda de descida. No entanto, após alguns testes, decidiu-se manter todas as ativações na borda de subida (\ref{recursos_padronizacao_sinais}), pois isso não alterava significativamente o funcionamento do sistema. Essa alteração de temporização também foi aplicada ao modelo de simulação no Logisim.
 
+
+Enquanto os sinais de ativação estavam sendo definidos, a entrada de fases do processador foi alterada para um gerador de fases interno. Esse gerador funciona com um contador em anel, que é atualizado durante a borda positiva do \textit{Clock}, conforme mostra a Figura~\ref{fig:cont_anel}.
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.25\linewidth]{ProcessoDesenvolvimento/Arquitetura/ContAnel.png}
     \caption{Contador em Anel, implementado com um Registrador de Deslocamento de 3 bits}
     \label{fig:cont_anel}
 \end{figure}
-
-Enquanto os sinais de ativação estavam sendo definidos, a entrada de fases do processador foi alterada para um gerador de fases interno. Esse gerador funciona com um contador em anel, que é atualizado durante a borda positiva do \textit{Clock}, conforme mostra a Figura~\ref{fig:cont_anel}.
 
 Finalmente, durante essa fase, o sinal de \textit{overflow} calculado pela ULA foi alterado tanto no DRISC quanto no circuito do RISC~I. Esse sinal apresentava alguns problemas anteriormente, embora não afetasse o funcionamento de alguns programas de teste.
 
@@ -1755,14 +1769,14 @@ Para conectar esses componentes ao processador, foi criado um componente que tra
 
 Com este novo componente, foram criadas alocações fixas para cada dispositivo de entrada e saída, conforme mostrado na Figura~\ref{fig:NewIOLogisim}. Considerando o último valor como exclusivo, a memória RAM ficou alocada entre os endereços \texttt{0x00000000} e \texttt{0x00fffffc}; um gerador de número aleatório, 8 interruptores, um \textit{joystick} e o teclado ficaram com os endereços \texttt{0x00fffffc} a \texttt{0x01000000}, e a tela com os endereços \texttt{0x01000000} a \texttt{0x01100000}.
 
-\begin{figure}[h]
+Como cada dispositivo de entrada emite apenas um byte de informação, os 4 dispositivos de entrada foram colocados em uma palavra, o que permite o carregamento dos valores de todos os dispositivos simultaneamente ou o carregamento de um dos valores utilizando a instrução \texttt{lbu(load byte unsigned)}. Por exemplo, a partir do endereço \texttt{0x01000000} armazenado no registrador \texttt{gp}, podemos obter o valor do teclado com a instrução "\texttt{lbu~rd~gp~-1}" (carregar byte de [gp - 1] para o registrador \texttt{rd}), e o valor do \textit{joystick} com a instrução "\texttt{lbu~rd~gp~-2}" (carregar byte de [gp - 2] para o registrador \texttt{rd}).
+
+\begin{figure}[H]
     \centering
     \includegraphics[width=1\linewidth]{ProcessoDesenvolvimento/Arquitetura/NewIOLogisim.png}
-    \caption{Enter Caption}
+    \caption{Novos dispositivos de entrada e saída adicionados, incluindo um teclado(acima) e uma tela(direita).}
     \label{fig:NewIOLogisim}
 \end{figure}
-
-Como cada dispositivo de entrada emite apenas um byte de informação, os 4 dispositivos de entrada foram colocados em uma palavra, o que permite o carregamento dos valores de todos os dispositivos simultaneamente ou o carregamento de um dos valores utilizando a instrução \texttt{lbu(load byte unsigned)}. Por exemplo, a partir do endereço \texttt{0x01000000} armazenado no registrador \texttt{gp}, podemos obter o valor do teclado com a instrução "\texttt{lbu~rd~gp~-1}" (carregar byte de [gp - 1] para o registrador \texttt{rd}), e o valor do \textit{joystick} com a instrução "\texttt{lbu~rd~gp~-2}" (carregar byte de [gp - 2] para o registrador \texttt{rd}).
 
 Já a tela foi configurada de modo que cada pixel possuísse seu próprio endereço, com os 6 bits menos significativos representando a posição horizontal, enquanto os 6 bits subsequentes representam a posição vertical. Esse tamanho pode ser alterado para aumentar ou diminuir o tamanho da tela, porém, 6 bits por coordenada foram definidos como padrão por fins práticos.
 
@@ -1775,7 +1789,7 @@ Após a definição das interfaces de entrada e saída, foi notado que os regist
 Essa remoção dos registradores também tirou a necessidade de um sistema de encaminhamento de dados (\ref{recursos_forward}), pois assim que o arquivo de registradores recebe os dados da memória, os dados atualizados não precisam ser repassados para os outros componentes.
 
 Sem os registradores, a ULA de endereços e o Deslocador se tornaram muito simples para continuarem como componentes próprios, então o Deslocador foi fundido à ULA e a ULA de endereços foi fundida ao Contador de Programa. Os resultados dessas alterações podem ser vistos na Figura~\ref{fig:Shifter_removal}.
-\begin{figure}
+\begin{figure}[H]
     \centering
     \includegraphics[width=1\linewidth]{ProcessoDesenvolvimento/Arquitetura/Shifter_removal.png}
     \caption{Resultado da remoção de registradores de entrada, do Deslocador e da ULA de endereços}
@@ -1955,7 +1969,7 @@ O Algoritmo \ref{alg:rotina_sincrona} ilustra como as instruções são implemen
 
 Já o Algoritmo \ref{alg:novo_valor_calculado} apresenta a lógica utilizada para calcular o novo valor que será gravado nos CSRs durante a execução das instruções de manipulação.
 
-\begin{algorithm}[h!]
+\begin{algorithm}[H]
 \caption{Função NovoValorCalculado()}
 \label{alg:novo_valor_calculado}
 \begin{algorithmic}[1]
@@ -1984,7 +1998,29 @@ Com a manipulação dos CSRs devidamente implementada, o próximo passo foi a in
 
 Esses sinais são gerenciados de forma assíncrona por meio do decodificador, cuja lógica está detalhada no Algoritmo \ref{alg:rotina_assincrona}.
 
-\begin{algorithm}[h!]
+É importante destacar que há uma ordem de prioridade codificada conforme especificado por \citeonline{risc-v_risc-v_2024-1}. Essa ordem segue o seguinte esquema:
+\begin{enumerate}
+    \item \textbf{Interrupções:}
+    \begin{enumerate}
+        \item Externa (prioridade mais alta).
+        \item Software.
+        \item Timer.
+    \end{enumerate}
+    \item \textbf{Exceções:}
+    \begin{enumerate}
+        \item Instrução Ilegal.
+        \item Endereço de Instrução Desalinhado.
+        \item Breakpoint.
+        \item ECALL a partir do Modo Máquina.
+        \item ECALL a partir do Modo Usuário.
+        \item Endereço de Carregamento Desalinhado.
+        \item Endereço de Salvamento Desalinhado.
+    \end{enumerate}
+\end{enumerate}
+
+Vale observar que alguns eventos possuem a mesma prioridade ou não podem ocorrer simultaneamente.
+
+\begin{algorithm}[H]
 \caption{Rotina Assíncrona do Controlador de CSR}
 \label{alg:rotina_assincrona}
 \begin{algorithmic}[1]
@@ -2021,31 +2057,11 @@ Esses sinais são gerenciados de forma assíncrona por meio do decodificador, cu
 \end{algorithmic}
 \end{algorithm}
 
-É importante destacar que há uma ordem de prioridade codificada conforme especificado por \citeonline{risc-v_risc-v_2024-1}. Essa ordem segue o seguinte esquema:
-\begin{enumerate}
-    \item \textbf{Interrupções:}
-    \begin{enumerate}
-        \item Externa (prioridade mais alta).
-        \item Software.
-        \item Timer.
-    \end{enumerate}
-    \item \textbf{Exceções:}
-    \begin{enumerate}
-        \item Instrução Ilegal.
-        \item Endereço de Instrução Desalinhado.
-        \item Breakpoint.
-        \item ECALL a partir do Modo Máquina.
-        \item ECALL a partir do Modo Usuário.
-        \item Endereço de Carregamento Desalinhado.
-        \item Endereço de Salvamento Desalinhado.
-    \end{enumerate}
-\end{enumerate}
-
-Vale observar que alguns eventos possuem a mesma prioridade ou não podem ocorrer simultaneamente.
-
 Os sinais são então utilizados durante a rotina de execução das \textit{traps}, bem como na gravação dos CSRs relacionados, conforme apresentado no Algoritmo \ref{alg:rotina_trap}. Esta rotina faz parte da execução síncrona detalhada anteriormente no Algoritmo \ref{alg:rotina_sincrona}.
 
-\begin{algorithm}[h!]
+Inicialmente, a rotina foca em desativar as interrupções para evitar que novas \textit{traps} sejam acionadas enquanto as interrupções pendentes estão sendo tratadas. Além disso, o Modo Máquina é ativado, permitindo que o sistema em execução acesse recursos privilegiados, como CSRs específicos que são essenciais para o tratamento de exceções e interrupções.
+
+\begin{algorithm}[H]
 \caption{Rotina de \textit{Trap} (Porção Síncrona)}
 \label{alg:rotina_trap}
 \begin{algorithmic}[1]
@@ -2058,8 +2074,6 @@ Os sinais são então utilizados durante a rotina de execução das \textit{trap
     \STATE MTVAL $\leftarrow$ Valor (da \textit{trap})
 \end{algorithmic}
 \end{algorithm}
-
-Inicialmente, a rotina foca em desativar as interrupções para evitar que novas \textit{traps} sejam acionadas enquanto as interrupções pendentes estão sendo tratadas. Além disso, o Modo Máquina é ativado, permitindo que o sistema em execução acesse recursos privilegiados, como CSRs específicos que são essenciais para o tratamento de exceções e interrupções.
 
 Ao final da rotina, o contador de programa é salvo no CSR MEPC, garantindo que o retorno ao programa ocorra após o término do tratamento da exceção ou interrupção. Além disso, os CSRs responsáveis por armazenar a causa e o valor da \textit{trap} são atualizados, proporcionando informações essenciais para o processamento dessas situações no nível de sistema.
 
@@ -2104,20 +2118,20 @@ O Circuito 1 processa a entrada da fase e da instrução atual, separando-a em s
 
 O Circuito 2 é responsável pelo armazenamento e manipulação dos CSRs. Sua lógica de funcionamento simplificada é representada na Figura~\ref{fig:CSR_2}. Cada registrador possui sua escrita ativada por meio de um decodificador conectado a um sinal de controle. Para evitar a criação de um decodificador excessivamente grande, a implementação dividiu esse componente em módulos menores, utilizando apenas alguns dos 12 bits do endereço. Além disso, certos registradores, como aqueles de leitura exclusiva, não são conectados a um decodificador.
 
-As saídas dos registradores são encaminhadas para multiplexadores, que, de maneira análoga à lógica de escrita, utilizam apenas alguns bits para selecionar os registradores apropriados. A saída do último demultiplexador é direcionada tanto para o barramento C quanto para o circuito responsável pelo cálculo do novo valor do CSR.
-
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.75\linewidth]{ProcessoDesenvolvimento/Arquitetura/CSR_2.png}
     \caption{Representação simplificada do circuito de armazenamento e manipulação de CSRs.}
     \label{fig:CSR_2}
 \end{figure}
 
+As saídas dos registradores são encaminhadas para multiplexadores, que, de maneira análoga à lógica de escrita, utilizam apenas alguns bits para selecionar os registradores apropriados. A saída do último demultiplexador é direcionada tanto para o barramento C quanto para o circuito responsável pelo cálculo do novo valor do CSR.
+
 O cálculo do novo valor do CSR segue a lógica estabelecida no Algoritmo \ref{alg:novo_valor_calculado}. O resultado é conectado a todos os registradores, sendo sua entrada proveniente do barramento A ou de um valor imediato de 5 bits (sem sinal), extraído do campo \texttt{Rs2} da instrução.
 
 Os Circuitos 3, 4, 5 (Figura~\ref{fig:CSR_3_4_5}) e parte do Circuito 6 são responsáveis pela lógica assíncrona do tratamento de \textit{traps}. O Circuito 4 detecta endereços desalinhados gerados pelo contador de programas, identificando desalinhamentos para instruções de salto, carregamento e armazenamento. Já o Circuito 5 utiliza os campos \texttt{func\_3} e \texttt{funct\_12} (últimos 12 bits da instrução) para gerar sinais indicativos de instrução de sistema ilegal, além de instruções \texttt{EBREAK}, \texttt{ECALL} e \texttt{MRET}.
 
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
     \includegraphics[width=1\linewidth]{ProcessoDesenvolvimento/Arquitetura/CSR_3_4_5_6.png}
     \caption{Circuitos de tratamento de \textit{traps}.}
@@ -2130,7 +2144,7 @@ Por fim, o Circuito 3 é, em sua essência, uma implementação da lógica descr
 
 A Figura~\ref{fig:CSR_6} apresenta o Circuito 6. A porção superior está relacionada à detecção de CSRs ilegais, enquanto a parte inferior gerencia os sinais de pulo e carregamento de sistema, além de definir o endereço alvo enviado ao contador de programas.
 
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.5\linewidth]{ProcessoDesenvolvimento/Arquitetura/CSR_6.png}
     \caption{Circuito de verificação de CSRs e controle de sinais de pulo e carregamento.}
@@ -2139,7 +2153,7 @@ A Figura~\ref{fig:CSR_6} apresenta o Circuito 6. A porção superior está relac
 
 A Figura~\ref{fig:CSR_Controller_Visual} apresenta o encapsulamento visual do controlador. Nela, é possível observar os valores de todos os CSRs escrevíveis. Bits não utilizados (sempre 0) não são exibidos. Pequenas legendas foram adicionadas aos registradores MISA e MIE para indicar o significado dos valores. O bit de privilégio foi posicionado ao lado do registrador \texttt{MSTATUS}, pois, apesar de não estar incluído no CSR, trata-se de uma informação relevante.
 
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.5\linewidth]{ProcessoDesenvolvimento/Arquitetura/CSR_Controler_Component.png}
     \caption{Encapsulamento do Controlador de CSR}
@@ -2210,33 +2224,35 @@ O controlador de programa também inclui três registradores introduzidos em eta
 
 Alguns sinais de controle não utilizaram registradores ou foram alocados ainda com uma ou duas portas lógicas após os registradores. Isso se deve ao fato de que esses sinais são gerados durante a fase de execução ou precisariam de mais um registrador que aumentaria a complexidade do circuito sem melhorias significativas na velocidade de decodificação. A Figura~\ref{fig:Controlador_Pipeline_Fix} ilustra o novo controlador de operações, com as devidas correções à pipeline.
 
-\begin{figure}[h]
+Além dos registradores adicionados, é possível ver a implementação do sinal de exceção, que assim que ativado, impede que os sinais de carregamento, salvamento e escrita no Arquivo de Registradores continuem ativados. Isso evita os efeitos colaterais provenientes de instruções que causam exceções.
+
+Com o controlador de operações corrigido, o próximo passo foi a revisão do controlador de CSR. Devido à sua complexidade, as alterações iniciais foram realizadas por meio do código em SV. O foco dessas modificações foi o mesmo aplicado ao controlador de instruções: mover o máximo possível da etapa de decodificação para o primeiro ciclo da pipeline. Para isso, realizou-se primeiramente uma análise do circuito, visando identificar quais sinais são gerados na fase de decodificação e quais são processados durante a execução da instrução.
+
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.95\textwidth]{ProcessoDesenvolvimento/Arquitetura/Controlador_Pipeline_Fix.png}
     \caption{Controlador de Operações com \textit{Pipeline} Corrigida.}
     \label{fig:Controlador_Pipeline_Fix}
 \end{figure}
 
-Além dos registradores adicionados, é possível ver a implementação do sinal de exceção, que assim que ativado, impede que os sinais de carregamento, salvamento e escrita no Arquivo de Registradores continuem ativados. Isso evita os efeitos colaterais provenientes de instruções que causam exceções.
-
-Com o controlador de operações corrigido, o próximo passo foi a revisão do controlador de CSR. Devido à sua complexidade, as alterações iniciais foram realizadas por meio do código em SV. O foco dessas modificações foi o mesmo aplicado ao controlador de instruções: mover o máximo possível da etapa de decodificação para o primeiro ciclo da pipeline. Para isso, realizou-se primeiramente uma análise do circuito, visando identificar quais sinais são gerados na fase de decodificação e quais são processados durante a execução da instrução.
-
 Os sinais marcados para decodificação no controlador de CSR são aqueles relacionados às instruções seguintes, incluindo se a próxima instrução é uma instrução de sistema (\texttt{mret}, \texttt{ecall}, \texttt{ebreak} e \texttt{csrrw}) ou se é uma instrução ilegal. As demais informações necessárias são fornecidas pelo controlador de operações e abrangem o valor da palavra da próxima instrução, o valor da instrução atual, a próxima instrução já decodificada, e se a instrução atual corresponde a um \texttt{load}, \texttt{store} ou se está executando um desvio.
 
 A Figura~\ref{fig:Controlador_CSR_Pipeline_Fix} apresenta os circuitos que receberam registradores adicionais no controlador de CSR. Nota-se que, em comparação com versões anteriores, quase todos os sinais de entrada foram modificados para refletirem valores referentes à próxima instrução.
 
-A única exceção a essa regra é o teste de privilégio ao acessar os CSRs, pois a única maneira de o nível de privilégio ser alterado é mediante uma \textit{trap} ou através da instrução \texttt{mret}. Após um desses eventos ocorrer, um desvio é executado, e como desvios são sempre seguidos por um ciclo de instrução vazio (\texttt{nop}), torna-se impossível que o privilégio seja modificado entre duas instruções consecutivas.
-
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.95\textwidth]{ProcessoDesenvolvimento/Arquitetura/CSR_Controller_Pipeline_Fix1.png}
     \caption{Controlador de Operações com \textit{Pipeline} Corrigida.}
     \label{fig:Controlador_CSR_Pipeline_Fix}
 \end{figure}
 
+A única exceção a essa regra é o teste de privilégio ao acessar os CSRs, pois a única maneira de o nível de privilégio ser alterado é mediante uma \textit{trap} ou através da instrução \texttt{mret}. Após um desses eventos ocorrer, um desvio é executado, e como desvios são sempre seguidos por um ciclo de instrução vazio (\texttt{nop}), torna-se impossível que o privilégio seja modificado entre duas instruções consecutivas.
+
 Durante as correções executadas, outro componente que foi modificado foi o Contador de Programa. Foi observado que os sinais de pulo eram sempre ativados durante a segunda fase do pipeline. No entanto, não era necessário combinar o sinal de fase nos controladores, pois o próprio Contador de Programa já recebia esse sinal para atualizar seu registrador interno por meio do sinal \texttt{write}.
 
-Dessa forma, o sinal \texttt{write} foi combinado diretamente com os sinais de desvio dentro do próprio contador, o que resultou na simplificação de algumas partes do circuito. As modificações realizadas no Contador de Programa estão detalhadas no Código~\ref{lst:pc_counter_pipeline_fix}.
+Dessa forma, o sinal \texttt{write} foi combinado diretamente com os sinais de desvio dentro do próprio contador, o que resultou na simplificação de algumas partes do circuito. As modificações realizadas no Contador de Programa estão detalhadas no Algorítmo~\ref{alg:pc_counter_pipeline_fix}.
+
+Por fim, outra modificação realizada foi a remoção do registrador responsável por armazenar a última instrução no Contador de Programa. Após alterações estruturais em passos anteriores, esse registrador deixou de ter relevância na arquitetura e, portanto, pôde ser eliminado sem impactos funcionais.
 
 \begin{algorithm}[H]
 \caption{Alterações realizadas no Contador de Programa}
@@ -2273,8 +2289,6 @@ Dessa forma, o sinal \texttt{write} foi combinado diretamente com os sinais de d
 \ENDIF
 \end{algorithmic}
 \end{algorithm}
-
-Por fim, outra modificação realizada foi a remoção do registrador responsável por armazenar a última instrução no Contador de Programa. Após alterações estruturais em passos anteriores, esse registrador deixou de ter relevância na arquitetura e, portanto, pôde ser eliminado sem impactos funcionais.
 
 Durante o processo de desenvolvimento dessa fase, melhorias foram realizadas no código SV para impressão de mensagens mais informativas. Alterações inclusas foram a adição de uma coluna para exibir valores decimais com sinal ao lado de cada registrador e a adição de uma coluna com valores ASCII correspondentes a cada byte da memória RAM, que podem ser vistos na Figura~\ref{fig:SV_Print_Upgrade}.
 
@@ -2339,15 +2353,14 @@ Com todas essas ferramentas de depuração disponíveis, foi possível avaliar o
 
 Essa inconsistência indicou uma desincronização entre o processador e a memória RAM. Após investigação, verificou-se que a memória sintetizada introduzia um atraso de um ciclo de clock, fazendo com que o processador recebesse a instrução anterior àquela solicitada. Embora fosse possível criar um circuito para compensar essa latência adicional, optou-se por operar a RAM com clock duas vezes mais rápido que o processador. Com essa mudança, todas as instruções passaram a funcionar corretamente, inclusive programas mais complexos, como o \textit{quicksort}.
 
-Para exibir texto no FPGA, o decodificador de segmentos foi estendido para aceitar qualquer sequência de quatro caracteres da tabela ASCII estendida. Apesar das limitações do display de sete segmentos, esse recurso mostrou-se adequado para exibições simples. O mesmo circuito foi portado para o Logisim Evolution, permitindo testes no simulador antes da síntese em hardware real. Essa implementação pode ser vista na Figura \ref{fig:hex_display_logisim}, e baseia-se em um registrador de 32 bits e quatro PLAs que traduzem cada byte em seu padrão de segmentos.
-
-\begin{figure}[ht]
+\begin{figure}[H]
   \centering
   \includegraphics[width=0.75\linewidth]{ProcessoDesenvolvimento/Arquitetura/HexDisplay.png}
   \caption{Decodificador de display de sete segmentos no Logisim Evolution.}
   \label{fig:hex_display_logisim}
 \end{figure}
 
+Para exibir texto no FPGA, o decodificador de segmentos foi estendido para aceitar qualquer sequência de quatro caracteres da tabela ASCII estendida. Apesar das limitações do display de sete segmentos, esse recurso mostrou-se adequado para exibições simples. O mesmo circuito foi portado para o Logisim Evolution, permitindo testes no simulador antes da síntese em hardware real. Essa implementação pode ser vista na Figura \ref{fig:hex_display_logisim}, e baseia-se em um registrador de 32 bits e quatro PLAs que traduzem cada byte em seu padrão de segmentos.
 
 Com o novo componente inserido, o programa de \textit{quicksort} foi adaptado para utilizá-lo. Nesta versão, o display inicia exibindo o texto ``arr='', seguido pelos valores embaralhados do vetor. Em seguida, o algoritmo de \textit{quicksort} realiza a ordenação e o resultado é apresentado no display após a mensagem ``res=''. Por fim, a memória que armazena o vetor ordenado é recarregada com os valores originais, reiniciando o ciclo de demonstração. Apesar de sua simplicidade e interação limitada, esse exemplo evidencia claramente as capacidades e a robustez do processador.
 
@@ -2362,7 +2375,7 @@ Além de melhorias no código de tradução de instruções, foram realizadas me
 
 \subsubsection{Adaptação para RISC-V}
 
-A primeira versão do \textit{assembler} apresentava limitações significativas, pois utilizava um processo de decodificação fixo para todas as instruções, o que dificultava a adição ou modificação de formatos diferentes. No caso do RISC~I, isso não representava um problema, uma vez que havia apenas dois formatos de instrução: \texttt{OPCode~<rd|cond>~<rs1>~<rs2|Imediato13>} e \texttt{OPCode~<rd>~<imediato-19>}. Contudo, no RISC-V existem diversos outros formatos, além de pseudoinstruções definidas especificamente para \textit{assemblers}\cite{risc-v_risc-v_2025}.
+A primeira versão do \textit{assembler} apresentava limitações significativas, pois utilizava um processo de decodificação fixo para todas as instruções, o que dificultava a adição ou modificação de formatos diferentes. No caso do RISC~I, isso não representava um problema, uma vez que havia apenas dois formatos de instrução: \texttt{OPCode~<rd|cond> <rs1>~<rs2|Imediato13>} e \texttt{OPCode~<rd>~<imediato-19>}. Contudo, no RISC-V existem diversos outros formatos, além de pseudoinstruções definidas especificamente para \textit{assemblers}\cite{risc-v_risc-v_2025}.
 
 Para solucionar essa limitação, foi realizada uma reescrita do \textit{assembler}. Em vez de adotar uma tradução fixa, a nova versão passou a utilizar \textit{dicionários} de funções de tradução. Assim, para adicionar novas instruções, basta incluí-las no dicionário, usando o nome como chave e associando a ele uma função que recebe uma lista de parâmetros como entrada e retorna o código de máquina correspondente como saída.
 
@@ -2458,7 +2471,7 @@ O pré-processamento do código pode ser dividido em quatro etapas principais. A
 
 Na mesma função responsável pela substituição dos \textit{defines}, ocorre também a substituição de macros. Esse processo segue uma lógica semelhante, porém leva em consideração os parâmetros de entrada das macros. Para isso, os parâmetros devem ser armazenados no dicionário da macro, permitindo que sejam corretamente inseridos durante a expansão da chamada.
 
-O Código~\ref{codigo:macro_beqi} apresenta um exemplo de macro que realiza um desvio condicional caso um registrador seja igual a um valor imediato. Para a declaração da macro, utiliza-se a diretiva ``\texttt{.macro}'', seguida do nome da macro (no caso, \texttt{beqi}) e dos parâmetros que serão usados. O corpo da macro contém as instruções desejadas e é finalizado pela diretiva ``\texttt{.endmacro}''.
+O Algorítmo~\ref{codigo:macro_beqi} apresenta um exemplo de macro que realiza um desvio condicional caso um registrador seja igual a um valor imediato. Para a declaração da macro, utiliza-se a diretiva ``\texttt{.macro}'', seguida do nome da macro (no caso, \texttt{beqi}) e dos parâmetros que serão usados. O corpo da macro contém as instruções desejadas e é finalizado pela diretiva ``\texttt{.endmacro}''.
 
 \begin{algorithm}[H]
 \caption{Exemplo de macro}
@@ -2706,7 +2719,7 @@ Dos recursos e melhorias planejados na Seção \ref{recursosMelhorias}, foram im
 
 Os recursos que \textbf{não} foram implementados apresentaram complexidade elevada para os limites de um trabalho de monografia, sendo mais adequados a projetos com maior prazo. Entre eles, destacam-se:
 
-\begin{itemize}
+\begin{itemize}\label{recursos_nao_implementados}
     \item \textbf{Predição de desvios} (\ref{recursos_pred_pulo}) — exigiria uma lógica mais complexa na decodificação e no controle da pipeline;
 
     \item \textbf{Operações com ponto flutuante} (\ref{recursos_float}) — o padrão RISC-V possui diversas extensões específicas para diferentes tamanhos de ponto flutuante, porém até em sua forma mais simples, tornaria o projeto muito extenso;
@@ -2717,7 +2730,7 @@ Os recursos que \textbf{não} foram implementados apresentaram complexidade elev
 
     \item \textbf{Proteção de memória física} (\ref{recursos_pmp}) — além de não ser um recurso complexo, seria uma excelente extensão ao Controlador de CSR; no entanto, foi identificado tardiamente no projeto, e o tempo restante não permitiu sua implementação;
 
-    \item \textbf{Pipeline de cinco estágios} (\ref{recursos_pipe5}) — semelhante à utilizada no MIPS, requer separação entre os barramentos de dados e instruções para evitar conflitos de acesso à memória, geralmente resolvidos com cache L1, que não foi implementado;
+    \item \textbf{Pipeline de cinco estágios} (\ref{recursos_pipe5}) — semelhante à utilizada no MIPS, requer separação entre os barramentos de dados e instruções para evitar conflitos entre o acesso a memória para obtenção de instrução e a modificação e obtenção de dados, geralmente resolvidos com cache L1, que não foi implementado;
 
     \item \textbf{Interface de expansão} (\ref{recursos_expan}) — não foram adicionadas interfaces externas, pois a interface de entrada e saída foi considerada suficiente para os objetivos do projeto;
 \end{itemize}
@@ -2767,11 +2780,18 @@ Ao todo, foram criadas 29 páginas de documentação, originalmente redigidas em
 
 \section{Bibliometria}
 
-A bibliometria, referente ao Objetivo \ref{ob:bibliometria}, embora represente apenas uma das etapas na pesquisa por arquiteturas relevantes, introduz uma técnica inovadora inspirada em estudos bibliométricos anteriores. Essa abordagem tem potencial para se consolidar como uma ferramenta eficiente na realização de análises rápidas sobre a relevância de temas ao longo do tempo.
+A bibliometria, referente ao Objetivo \ref{ob:bibliometria}, embora represente apenas uma das etapas na pesquisa por arquiteturas atuais relevantes, introduz uma técnica inovadora inspirada em estudos bibliométricos anteriores. Essa abordagem tem potencial para se consolidar como uma ferramenta eficiente na realização de análises rápidas sobre a relevância de temas ao longo do tempo.
 
 Essa técnica foi detalhada em um artigo específico, com 19 páginas, desenvolvido paralelamente ao projeto principal. Embora ainda não tenha sido publicado formalmente, o artigo está disponível no repositório do projeto, permitindo acesso aberto ao conteúdo e à metodologia proposta.
 
 Dada sua originalidade e aplicabilidade, essa técnica bibliométrica poderia, inclusive, ser desenvolvida e publicada futuramente como um artigo independente, contribuindo para o avanço metodológico na área.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{Webibliometria/full.png}
+    \caption{Gráfico resultante de um dos métodos utilizado na bibliometria, utilizando a ferramenta Google Ngrams}
+\end{figure}
+
 
 
 % ----------------------------------------------------------
@@ -2793,9 +2813,15 @@ A arquitetura DRISC-V, desenvolvida ao longo deste trabalho, apresenta uma estru
 
 Os resultados obtidos, incluindo a implementação de um modelo de simulação no Logisim Evolution e no SystemVerilog, bem como o desenvolvimento de um assembler didático, destacam a relevância do projeto como ferramenta educacional. A documentação detalhada e a disponibilização pública do repositório no GitHub ampliam o alcance do trabalho, permitindo que outros estudantes e pesquisadores utilizem e expandam os resultados obtidos.
 
-Embora o projeto tenha alcançado seus principais objetivos, algumas limitações foram identificadas, como a ausência de recursos mais avançados, como cache, operações com ponto flutuante e multithreading. Esses aspectos podem ser explorados em trabalhos futuros, ampliando ainda mais o potencial didático e funcional da arquitetura.
+Com o desenvolvimento de diversos programas voltados para a arquitetura proposta, bem como a implementação de múltiplas estratégias para inspecionar a funcionalidade dos circuitos internos, todas as instruções foram devidamente testadas. No entanto, devido à ampla escala do projeto, ainda podem existir falhas não identificadas ou tratadas nos circuitos. Assim, a validação completa da arquitetura poderá ser aprofundada em trabalhos futuros, permitindo uma análise mais minuciosa e refinada de seu desempenho.
 
-Em suma, este trabalho contribui significativamente para o ensino de arquitetura de computadores, oferecendo uma plataforma prática e acessível para o aprendizado. A arquitetura DRISC-V, com sua simplicidade e flexibilidade, representa um avanço na criação de ferramentas educacionais na área, alinhando-se às necessidades de ensino e pesquisa em computação.
+Embora o projeto tenha alcançado seus principais objetivos, algumas limitações foram identificadas, conforme apresentado ao final da Seção~(\ref{recursos_nao_implementados}). Certos recursos não implementados apresentam complexidade suficiente para justificarem trabalhos dedicados exclusivamente a eles, como \textit{multithreading}, \textit{cache} e paginação de memória, \textit{pipeline} de 5 fases e a interface de expansão.
+
+Por outro lado, funcionalidades de menor complexidade, como predição de desvios, proteção de memória física, suporte a divisões e operações com pontos flutuantes (desde que os circuitos sejam abstraídos), podem ser incorporadas em trabalhos futuros semelhantes a este. A inclusão desses recursos pode ampliar ainda mais o potencial didático e funcional da arquitetura.
+
+O design modular da arquitetura RISC-V reforça a adequação da escolha arquitetural ao proporcionar baixa complexidade de controle, especialmente nos modelos de simulação mais simples. Essa característica facilita a implementação de futuras expansões, como a inclusão de extensões adicionais, por exemplo, o suporte a operações de divisão. Além disso, quando combinado com as melhorias aplicadas à pipeline, o projeto resultou em um aumento significativo na quantidade de instruções executadas por ciclo, evidenciando ganhos de desempenho e eficiência.
+
+Em suma, este trabalho contribui significativamente para o ensino de arquitetura de computadores, ao oferecer uma plataforma prática e acessível para o aprendizado. A arquitetura DRISC-V, com sua simplicidade e flexibilidade, representa um avanço na criação de ferramentas educacionais na área, alinhando-se às demandas de ensino e pesquisa em computação.
 
 
 
@@ -2878,18 +2904,20 @@ Trap Handler: \url{https://github.com/Diogo-Valadares/Didactic-RISC-V/blob/main/
 
 UserIO: \url{https://github.com/Diogo-Valadares/Didactic-RISC-V/blob/main/DRISC%20Programs/src/UserIO.dasm}
 
+Wozmon: \url{https://github.com/Diogo-Valadares/Didactic-RISC-V/blob/main/DRISC%20Programs/src/Wozmon.dasm}
+
 % ----------------------------------------------------------
 % Anexos
 % ----------------------------------------------------------
 
-\begin{anexosenv}
+%\begin{anexosenv}
 
 % Imprime uma página indicando o início dos anexos
-\partanexos
+%\partanexos
 % ----------------------------------------------------------
 %\chapter{Cronograma}
 
-\end{anexosenv}
+%\end{anexosenv}
 
 %---------------------------------------------------------------------
 % INDICE REMISSIVO

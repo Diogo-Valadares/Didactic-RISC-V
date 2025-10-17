@@ -1,21 +1,21 @@
 # Fdb version 4
-["bibtex abntex2-modelo-projeto-pesquisa"] 1757622233.47004 "abntex2-modelo-projeto-pesquisa.aux" "abntex2-modelo-projeto-pesquisa.bbl" "abntex2-modelo-projeto-pesquisa" 1757622260.01176 0
+["bibtex abntex2-modelo-projeto-pesquisa"] 1759844782.00773 "abntex2-modelo-projeto-pesquisa.aux" "abntex2-modelo-projeto-pesquisa.bbl" "abntex2-modelo-projeto-pesquisa" 1759846469.45242 0
   "./references.bib" 1756315816 59484 ad4a621e53eb3b166909b2fce0baa26a ""
   "C:/Users/diogo/AppData/Local/Programs/MiKTeX/bibtex/bib/abntex2/abntex2-options.bib" 1543103229 5396 4eb260dac60f150ae608d45252853090 ""
   "C:/Users/diogo/AppData/Local/Programs/MiKTeX/bibtex/bst/abntex2/abntex2-alf.bst" 1543103230 60064 0819ac8568f9a482510a46e3a8a6f605 ""
-  "abntex2-modelo-projeto-pesquisa.aux" 1757622255 117352 802eda85000a560827a00a55cf920ced "pdflatex"
+  "abntex2-modelo-projeto-pesquisa.aux" 1759846465 117901 25f7cfaabaaeb394ba3331a2b9f1d508 "pdflatex"
   (generated)
   "abntex2-modelo-projeto-pesquisa.bbl"
   "abntex2-modelo-projeto-pesquisa.blg"
   (rewritten before read)
-["makeindex abntex2-modelo-projeto-pesquisa.idx"] 1757622220.66387 "abntex2-modelo-projeto-pesquisa.idx" "abntex2-modelo-projeto-pesquisa.ind" "abntex2-modelo-projeto-pesquisa" 1757622260.01013 0
-  "abntex2-modelo-projeto-pesquisa.idx" 1757622255 94 4514199bdee1f8556585438aa99d5acf "pdflatex"
+["makeindex abntex2-modelo-projeto-pesquisa.idx"] 1759844606.86947 "abntex2-modelo-projeto-pesquisa.idx" "abntex2-modelo-projeto-pesquisa.ind" "abntex2-modelo-projeto-pesquisa" 1759846469.45114 0
+  "abntex2-modelo-projeto-pesquisa.idx" 1759846465 94 54937660f3c8661abf3a245e91b8a888 "pdflatex"
   (generated)
   "abntex2-modelo-projeto-pesquisa.ilg"
   "abntex2-modelo-projeto-pesquisa.ind"
   (rewritten before read)
-["pdflatex"] 1757622234.36807 "c:/Users/diogo/Documents/GitHub/Didactic-RISC-I/Documentation/Monography/abntex2-modelo-projeto-pesquisa.tex" "abntex2-modelo-projeto-pesquisa.pdf" "abntex2-modelo-projeto-pesquisa" 1757622260.01543 0
-  "C:/Users/diogo/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1756147179 80909 eab91d9745dd2edfd62a31d53cd5fe15 ""
+["pdflatex"] 1759846445.56822 "c:/Users/diogo/Documents/GitHub/Didactic-RISC-I/Documentation/Monography/abntex2-modelo-projeto-pesquisa.tex" "abntex2-modelo-projeto-pesquisa.pdf" "abntex2-modelo-projeto-pesquisa" 1759846469.45473 0
+  "C:/Users/diogo/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1758897511 80909 eab91d9745dd2edfd62a31d53cd5fe15 ""
   "C:/Users/diogo/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1754068324 13254353 9df9b104f4a880bac8a38e6366db9248 ""
   "C:/Users/diogo/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-ec.enc" 1256929440 2375 baa924870cfb487815765f9094cf3728 ""
   "C:/Users/diogo/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-mathsy.enc" 1256929440 2840 216e6e45ad352e2456e1149f28885bee ""
@@ -24,6 +24,7 @@
   "C:/Users/diogo/AppData/Local/Programs/MiKTeX/fonts/tfm/public/cm/cmr12.tfm" 1136765053 1288 655e228510b4c2a1abe905c368440826 ""
   "C:/Users/diogo/AppData/Local/Programs/MiKTeX/fonts/tfm/public/lm/ec-lmbx10.tfm" 1256929440 12076 b54175e02101bea1addf6b2d0197ed12 ""
   "C:/Users/diogo/AppData/Local/Programs/MiKTeX/fonts/tfm/public/lm/ec-lmbx12.tfm" 1256929440 12088 d750ac78274fa7c9f73ba09914c04f8a ""
+  "C:/Users/diogo/AppData/Local/Programs/MiKTeX/fonts/tfm/public/lm/ec-lmbx8.tfm" 1256929440 12076 360d279d01701e9e9f0f2427c1d230fe ""
   "C:/Users/diogo/AppData/Local/Programs/MiKTeX/fonts/tfm/public/lm/ec-lmbxi10.tfm" 1256929440 17180 a5723008921cdcb0c5f4ebe997919b73 ""
   "C:/Users/diogo/AppData/Local/Programs/MiKTeX/fonts/tfm/public/lm/ec-lmr10.tfm" 1256929440 12056 7e13df7fe4cbce21b072ba7c4f4deb6e ""
   "C:/Users/diogo/AppData/Local/Programs/MiKTeX/fonts/tfm/public/lm/ec-lmr12.tfm" 1256929440 12092 7b1546e2d096cfd5dcbd4049b0b1ec2e ""
@@ -61,6 +62,7 @@
   "C:/Users/diogo/AppData/Local/Programs/MiKTeX/fonts/tfm/public/lm/ts1-lmr12.tfm" 1256929440 1596 1d4548788e389ded56d0b01b28377882 ""
   "C:/Users/diogo/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbx10.pfb" 1256929440 121021 836464b5fe0c782d94085eb083550ccc ""
   "C:/Users/diogo/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbx12.pfb" 1256929440 116908 9a7a12d1e4df280ea0ab4aad83cdef88 ""
+  "C:/Users/diogo/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbx8.pfb" 1256929440 125241 791aeb35ceacc2764a175b32709cc6a9 ""
   "C:/Users/diogo/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbxi10.pfb" 1256929440 112766 6259d69aa3d87a505f375e49d8f6bf3a ""
   "C:/Users/diogo/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr10.pfb" 1256929440 119235 05e5c8d6d60439433e50047898c2c0e0 ""
   "C:/Users/diogo/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr12.pfb" 1256929440 113634 9384aebdf26f9881e046a4b5574566db ""
@@ -341,16 +343,16 @@
   "Webibliometria/full.png" 1754076720 116100 6cb632736dd12be8c4bbc3d680c002d5 ""
   "Webibliometria/scholar.png" 1754076724 101367 83604a3423995dc2849f5fc80563bb9e ""
   "Webibliometria/scholarProx.png" 1754076720 157736 9abd179dbe3fbe36b0ba728bb4cfadc3 ""
-  "abntex2-modelo-projeto-pesquisa.aux" 1757622255 117352 802eda85000a560827a00a55cf920ced "pdflatex"
-  "abntex2-modelo-projeto-pesquisa.bbl" 1757622234 12358 85f5817538ca1032c44b71c8ff35bca5 "bibtex abntex2-modelo-projeto-pesquisa"
-  "abntex2-modelo-projeto-pesquisa.brf" 1757622255 9361 18599c77956808a49e417a5784d4fdc8 "pdflatex"
-  "abntex2-modelo-projeto-pesquisa.ind" 1757622220 138 99e90a16a575994e68449d8a5d99f2a9 "makeindex abntex2-modelo-projeto-pesquisa.idx"
-  "abntex2-modelo-projeto-pesquisa.loa" 1757622255 946 d84f0ee51e399333a16f24642431c4fe "pdflatex"
-  "abntex2-modelo-projeto-pesquisa.lof" 1757622255 8563 583bf4f1d5be6cb52a2e2e912d3c48cb "pdflatex"
-  "abntex2-modelo-projeto-pesquisa.lot" 1757622255 2046 04562d5d40dd1fb9333e3da2a7785114 "pdflatex"
-  "abntex2-modelo-projeto-pesquisa.tex" 1757622178 265815 678d54281cde863ce91867935da5b61b ""
-  "abntex2-modelo-projeto-pesquisa.toc" 1757622255 14192 1b4c09ea56537258580ec844a8c41008 "pdflatex"
-  "c:/Users/diogo/Documents/GitHub/Didactic-RISC-I/Documentation/Monography/abntex2-modelo-projeto-pesquisa.tex" 1757622178 265815 678d54281cde863ce91867935da5b61b ""
+  "abntex2-modelo-projeto-pesquisa.aux" 1759846465 117901 25f7cfaabaaeb394ba3331a2b9f1d508 "pdflatex"
+  "abntex2-modelo-projeto-pesquisa.bbl" 1759844782 12358 85f5817538ca1032c44b71c8ff35bca5 "bibtex abntex2-modelo-projeto-pesquisa"
+  "abntex2-modelo-projeto-pesquisa.brf" 1759846465 9361 2f41fe510a14f646a37732a7f0701dc1 "pdflatex"
+  "abntex2-modelo-projeto-pesquisa.ind" 1759844607 138 ecfb3138e4a585672d5c647d71b73ee3 "makeindex abntex2-modelo-projeto-pesquisa.idx"
+  "abntex2-modelo-projeto-pesquisa.loa" 1759846465 946 2a535f4936523f5792f17c3e553b17b4 "pdflatex"
+  "abntex2-modelo-projeto-pesquisa.lof" 1759846465 8836 a4cf874977950113b3f7b205ab43a383 "pdflatex"
+  "abntex2-modelo-projeto-pesquisa.lot" 1759846465 2046 cd97e6ddd6b0bd9285b75fe95077e680 "pdflatex"
+  "abntex2-modelo-projeto-pesquisa.tex" 1759846442 270242 a0c318b372be04e4e175fdf9072a37f4 ""
+  "abntex2-modelo-projeto-pesquisa.toc" 1759846465 14145 fdc380a4cad53826e50641d45486098e "pdflatex"
+  "c:/Users/diogo/Documents/GitHub/Didactic-RISC-I/Documentation/Monography/abntex2-modelo-projeto-pesquisa.tex" 1759846442 270242 a0c318b372be04e4e175fdf9072a37f4 ""
   "quartus_1PORT_RAM.png" 1757611187 55115 ae3d928deaf96ac1a459ce1d786200b0 ""
   "riscInternal.png" 1754076720 542897 41a4a044aae786c73f5a29c1830f2f52 ""
   "tabelaTrabalhosRelacionados.png" 1754076720 55357 228153055227ce9450ea90df1e6f5cfa ""

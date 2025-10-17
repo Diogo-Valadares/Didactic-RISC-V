@@ -1,13 +1,13 @@
 \babel@toc {brazil}{}\relax 
 \babel@toc {brazil}{}\relax 
-\contentsline {table}{\numberline {1}{\ignorespaces Comparação entre execução sequencial (acima) e com \textit {pipeline} de instruções (abaixo). Os passos utilizados são busca e decodificação de instrução(I), execução(E) e acesso à memória(D). \cite [p.49-50]{stallings_reduced_1988}}}{22}{table.caption.13}%
-\contentsline {table}{\numberline {2}{\ignorespaces Exemplo de \textit {pipeline} com \textit {hazards} de dados e controle sendo resolvidos com ciclos ociosos e limpeza da \textit {pipeline}(\textit {pipeline flush})\cite [p.50]{stallings_reduced_1988}.}}{22}{table.caption.14}%
-\contentsline {table}{\numberline {3}{\ignorespaces Arquiteturas encontradas na primeira fase de pesquisa.}}{42}{table.caption.16}%
-\contentsline {table}{\numberline {4}{\ignorespaces Resultado das pesquisas do nome da arquitetura com termos adicionais para filtragem no \textit {Google Scholar}}}{48}{table.caption.19}%
-\contentsline {table}{\numberline {5}{\ignorespaces Resultado relativo das pesquisas do nome da arquitetura com termos adicionais para filtragem no \textit {Google Scholar}}}{48}{table.caption.20}%
-\contentsline {table}{\numberline {6}{\ignorespaces Lista de possíveis recursos e melhorias para implementação no \textit {assembler}}}{50}{table.caption.21}%
-\contentsline {table}{\numberline {7}{\ignorespaces Lista de possíveis recursos e melhorias para implementação no \textit {assembler}}}{51}{table.caption.22}%
-\contentsline {table}{\numberline {8}{\ignorespaces Nova \textit {Pipeline} de 3 passos e 2 fases}}{85}{table.caption.54}%
-\contentsline {table}{\numberline {9}{\ignorespaces Registradores de Controle e Estado implementados na arquitetura.}}{86}{table.4.9}%
-\contentsline {table}{\numberline {10}{\ignorespaces Exemplos de declarações de variáveis e seus valores em compilados}}{107}{table.caption.71}%
-\contentsline {table}{\numberline {11}{\ignorespaces Arquiteturas encontradas na primeira fase de pesquisa.}}{114}{table.caption.74}%
+\contentsline {table}{\numberline {1}{\ignorespaces Comparação entre execução sequencial (acima) e com \textit {pipeline} de instruções (abaixo). Os passos utilizados são busca e decodificação de instrução(I), execução(E) e acesso à memória(D). \cite [p.49-50]{stallings_reduced_1988}}}{24}{table.caption.14}%
+\contentsline {table}{\numberline {2}{\ignorespaces Exemplo de \textit {pipeline} com \textit {hazards} de dados e controle sendo resolvidos com ciclos ociosos e limpeza da \textit {pipeline}(\textit {pipeline flush})\cite [p.50]{stallings_reduced_1988}.}}{24}{table.caption.15}%
+\contentsline {table}{\numberline {3}{\ignorespaces Arquiteturas encontradas na primeira fase de pesquisa.}}{44}{table.caption.17}%
+\contentsline {table}{\numberline {4}{\ignorespaces Resultado das pesquisas do nome da arquitetura com termos adicionais para filtragem no \textit {Google Scholar}}}{50}{table.caption.20}%
+\contentsline {table}{\numberline {5}{\ignorespaces Resultado relativo das pesquisas do nome da arquitetura com termos adicionais para filtragem no \textit {Google Scholar}}}{50}{table.caption.21}%
+\contentsline {table}{\numberline {6}{\ignorespaces Lista de possíveis recursos e melhorias para implementação no \textit {assembler}}}{52}{table.caption.22}%
+\contentsline {table}{\numberline {7}{\ignorespaces Lista de possíveis recursos e melhorias para implementação no \textit {assembler}}}{53}{table.caption.23}%
+\contentsline {table}{\numberline {8}{\ignorespaces Nova \textit {Pipeline} de 3 passos e 2 fases}}{87}{table.caption.55}%
+\contentsline {table}{\numberline {9}{\ignorespaces Registradores de Controle e Estado implementados na arquitetura.}}{89}{table.4.9}%
+\contentsline {table}{\numberline {10}{\ignorespaces Exemplos de declarações de variáveis e seus valores em compilados}}{109}{table.caption.72}%
+\contentsline {table}{\numberline {11}{\ignorespaces Arquiteturas encontradas na primeira fase de pesquisa.}}{116}{table.caption.75}%
